@@ -1347,14 +1347,52 @@ try {
 //==            printf( "TIMER: PLAN\n" );
             /******** lock mutex ********/
             pthread_mutex_lock(&CSTC::_stc_mutex);
-            if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC){
-                mn="_stc_thread_light_control_func's 1000";
+            if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC)
+            {
+              unsigned short planorderTem;
+              planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
 
-              ReSetStep(true,mn);
-              ReSetExtendTimer();
-              SetLightAfterExtendTimerReSet();
-              if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) {
-                vCheckPhaseForTFDActuateExtendTime_5FCF();
+              if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
+              {
+                AllRed5Seconds();
+                _current_strategy = STRATEGY_TOD;
+                _exec_phase._phase_order = 0xB0;
+                _exec_phase_current_subphase = 0;
+                _exec_phase_current_subphase_step = 0;
+                // ReSetStep(true);
+                SendRequestToKeypad();
+                ReSetExtendTimer();
+                SetLightAfterExtendTimerReSet();
+                if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();         
+              }
+              else if(planorderTem == 0x80 || planorderTem == 0xB0)//舊Plan order == 閃光
+              {
+                ReSetStep(true);
+                if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
+                {
+                  // printf("\n\n\n\n\n\nnow is add ALLRED 3sec test!!!\n\n\n\n\n");
+                  AllRed5Seconds();
+                  _current_strategy = STRATEGY_TOD;
+                  _exec_phase_current_subphase = 0;
+                  _exec_phase_current_subphase_step = 0;
+                  SendRequestToKeypad();
+                  ReSetExtendTimer();
+                  SetLightAfterExtendTimerReSet();
+                  if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();                                
+                }
+                else//新舊Plan order == 閃光
+                {
+                  ReSetExtendTimer();
+                  SetLightAfterExtendTimerReSet();
+                  if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();
+                }
+              }
+              else
+              {
+                ReSetStep(true);
+                ReSetExtendTimer();
+                SetLightAfterExtendTimerReSet();
+                if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();     
               }
             }
             /******** unlock mutex ********/
@@ -3939,98 +3977,119 @@ try {
 //****       Calculate Compensation of _exec_plan
 //**********************************************************
 //----------------------------------------------------------
-unsigned short int CSTC::CalculateCompensationBase(void)
-{
-try {
+unsigned short int CSTC::CalculateCompensationBase(void) {
+  try {
 
-bool SET_COMPENSATE_BASE_TO_SEGMENT = true;                                            //true:  set compensation caculated base from start of current segment (tainan)
-                                                                              //false: set compensation caculated base from 00:00 (hsinchu)
+    bool SET_COMPENSATE_BASE_TO_SEGMENT =
+        true;                                            //true:  set compensation caculated base from start of current segment (tainan)
+    //false: set compensation caculated base from 00:00 (hsinchu)
 
-  offset_not_been_adjusted_by_CADC=0;
+    offset_not_been_adjusted_by_CADC = 0;
 
-  static time_t now;
-  static struct tm* currenttime;
+    static time_t now;
+    static struct tm *currenttime;
 
-  now = time(NULL);
-  currenttime = localtime(&now);
+    now = time(NULL);
+    currenttime = localtime(&now);
 
-    printf("    Current Time: %2d:%2d:%2d\n", currenttime->tm_hour, currenttime->tm_min, currenttime->tm_sec);
+    printf("    Current Time: %2d:%2d:%2d\n",
+           currenttime->tm_hour,
+           currenttime->tm_min,
+           currenttime->tm_sec);
 
 
-  unsigned short int compensation_base_hour=0;
-  unsigned short int compensation_base_minute=0;
-  unsigned short int compensation_base_second=0;
+    unsigned short int compensation_base_hour = 0;
+    unsigned short int compensation_base_minute = 0;
+    unsigned short int compensation_base_second = 0;
 
-  //OT Change 951114
-  // if(MACHINELOCATE == MACHINELOCATEATHSINCHU) {
-  //OT20111128
-  if(smem.vGetUCData(TC_CCT_MachineLocation) == MACHINELOCATEATHSINCHU) {
-    SET_COMPENSATE_BASE_TO_SEGMENT = false;
-  }
+    //OT Change 951114
+    // if(MACHINELOCATE == MACHINELOCATEATHSINCHU) {
+    //OT20111128
+    if (smem.vGetUCData(TC_CCT_MachineLocation) == MACHINELOCATEATHSINCHU) {
+      SET_COMPENSATE_BASE_TO_SEGMENT = false;
+    }
 
-  if(SET_COMPENSATE_BASE_TO_SEGMENT) {
-    for(int i=0;i<_exec_segment._segment_count;i++){
-      if( i < (_exec_segment._segment_count-1) ){ //if(not last segment)
-        if(    (    ( currenttime->tm_hour >  _exec_segment._ptr_seg_exec_time[i]._hour )
-                 || ( currenttime->tm_hour == _exec_segment._ptr_seg_exec_time[i]._hour    && currenttime->tm_min >=_exec_segment._ptr_seg_exec_time[i]._minute  ) )
-            && (    ( currenttime->tm_hour  < _exec_segment._ptr_seg_exec_time[i+1]._hour)
-                 || ( currenttime->tm_hour == _exec_segment._ptr_seg_exec_time[i+1]._hour  && currenttime->tm_min  <_exec_segment._ptr_seg_exec_time[i+1]._minute) ) )
+    if (SET_COMPENSATE_BASE_TO_SEGMENT) {
+      for (int i = 0; i < _exec_segment._segment_count; i++) {
+        if (i < (_exec_segment._segment_count - 1))   //if(not last segment)
         {
-          compensation_base_hour   = _exec_segment._ptr_seg_exec_time[i]._hour;
-          compensation_base_minute = _exec_segment._ptr_seg_exec_time[i]._minute;
-          break;
+          if ((
+              (currenttime->tm_hour > _exec_segment._ptr_seg_exec_time[i]._hour)
+                  || (currenttime->tm_hour
+                      == _exec_segment._ptr_seg_exec_time[i]._hour &&
+                      currenttime->tm_min
+                          >= _exec_segment._ptr_seg_exec_time[i]._minute))
+              && ((currenttime->tm_hour
+                  < _exec_segment._ptr_seg_exec_time[i + 1]._hour)
+                  || (currenttime->tm_hour
+                      == _exec_segment._ptr_seg_exec_time[i + 1]._hour &&
+                      currenttime->tm_min
+                          < _exec_segment._ptr_seg_exec_time[i + 1]._minute))) {
+            compensation_base_hour = _exec_segment._ptr_seg_exec_time[i]._hour;
+            compensation_base_minute =
+                _exec_segment._ptr_seg_exec_time[i]._minute;
+            break;
+          }
+        } //end if(not last segment)
+        else   //else(last segment)
+        {
+          compensation_base_hour = _exec_segment._ptr_seg_exec_time[i]._hour;
+          compensation_base_minute =
+              _exec_segment._ptr_seg_exec_time[i]._minute;
         }
-      } //end if(not last segment)
-      else{ //else(last segment)
-        compensation_base_hour   = _exec_segment._ptr_seg_exec_time[i]._hour;
-        compensation_base_minute = _exec_segment._ptr_seg_exec_time[i]._minute;
       }
     }
-  }
 
-  compensation_base_second += _exec_plan._offset;
-  if(compensation_base_second >= 60){
-    compensation_base_minute += (compensation_base_second/60);
-    compensation_base_second %= 60;
-    if(compensation_base_minute >= 60){
-      compensation_base_hour = ( (compensation_base_hour+(compensation_base_minute/60))%24 );
-      compensation_base_minute %= 60;
+    compensation_base_second += _exec_plan._offset;
+    if (compensation_base_second >= 60) {
+      compensation_base_minute += (compensation_base_second / 60);
+      compensation_base_second %= 60;
+      if (compensation_base_minute >= 60) {
+        compensation_base_hour =
+            ((compensation_base_hour + (compensation_base_minute / 60)) % 24);
+        compensation_base_minute %= 60;
+      }
     }
-  }
 
 //OT Debug compensation 950814
 //OT Debug compensation 951109
-  long remainder
-     = (  (currenttime->tm_hour*3600   + currenttime->tm_min*60      + currenttime->tm_sec)
-        - (compensation_base_hour*3600 + compensation_base_minute*60 + compensation_base_second) );
-    if(remainder < 0) return 0;                                                 // no compensation
+    long remainder
+        = ((currenttime->tm_hour * 3600 + currenttime->tm_min * 60
+            + currenttime->tm_sec)
+            - (compensation_base_hour * 3600 + compensation_base_minute * 60
+                + compensation_base_second));
+    if (remainder < 0)
+      return 0;                                                 // no compensation
     printf("    compensation_base_hour remainder=%d\n", remainder);
+    if (_exec_plan.calculated_cycle_time() <= 0)return 0;
     remainder = remainder % _exec_plan.calculated_cycle_time();
 
 
-    printf("    Base Time:    %2d:%2d:%2d  cycle_time:%3d  remainder:%3d\n"
-        , compensation_base_hour, compensation_base_minute, compensation_base_second
-        , _exec_plan.calculated_cycle_time(), remainder);
+    printf("    Base Time:    %2d:%2d:%2d  cycle_time:%3d  remainder:%3d\n",
+           compensation_base_hour,
+           compensation_base_minute,
+           compensation_base_second,
+           _exec_plan.calculated_cycle_time(),
+           remainder);
 
 
-  unsigned short int total_compensation=0;
-  if(remainder>=(_exec_plan.calculated_cycle_time()/2)){
-    _exec_plan._shorten_cycle=false;  //extend the cycle_tiem
-    total_compensation = _exec_plan.calculated_cycle_time() - remainder;
+    unsigned short int total_compensation = 0;
+    if (remainder >= (_exec_plan.calculated_cycle_time() / 2)) {
+      _exec_plan._shorten_cycle = false;  //extend the cycle_tiem
+      total_compensation = _exec_plan.calculated_cycle_time() - remainder;
 
-    printf("    Extending the next cycle via %3d(s)\n", total_compensation);
+      printf("    Extending the next cycle via %3d(s)\n", total_compensation);
 
+    } else {
+      _exec_plan._shorten_cycle = true;  //shorten the cycle_time
+      total_compensation = remainder;
+
+      printf("    Shortening the next cycle via %3d(s)\n", total_compensation);
+
+    }
+    return total_compensation;
   }
-  else{
-    _exec_plan._shorten_cycle=true;  //shorten the cycle_time
-    total_compensation = remainder;
-
-    printf("    Shortening the next cycle via %3d(s)\n", total_compensation);
-
-  }
-  return total_compensation;
-}
-catch(...){}
+  catch (...) {}
 }
 
 //----------------------------------------------------------
