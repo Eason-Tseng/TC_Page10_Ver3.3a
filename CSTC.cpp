@@ -7408,7 +7408,8 @@ try{
 
     case(CSTC_exec_segment_current_seg_no):
 //      pthread_mutex_lock(&mutexCSTCSmem);
-      usiRet = _exec_segment_current_seg_no;
+      // usiRet = _exec_segment_current_seg_no;
+      usiRet = _exec_segment._segment_type;
 //      pthread_mutex_unlock(&mutexCSTCSmem);
       break;
 
