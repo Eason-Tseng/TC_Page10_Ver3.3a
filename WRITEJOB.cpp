@@ -291,14 +291,14 @@ try {
 
     switch (device) {
 
-            case DEVICECENTER92:                                                //92¦~ª©¥æ±±¤¤¤ß
+            case DEVICECENTER92:                                                //92ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
 
 //cal iPacketLcn
-                 if (smem.vGetAdjudicateReturnAddressBCDorHEX() == cBCD) {  //BCD code½s½X
+                 if (smem.vGetAdjudicateReturnAddressBCDorHEX() == cBCD) {  //BCD codeï¿½sï¿½X
                      bcdSwitchHi.bcdCode=packet[3];
                      bcdSwitchLo.bcdCode=packet[4];
                      iPacketLcn=bcdSwitchHi.bcdHiLo.b2*1000+bcdSwitchHi.bcdHiLo.b1*100+bcdSwitchLo.bcdHiLo.b2*10+bcdSwitchLo.bcdHiLo.b1;
-                 } else {                                                 //16¶i¦ì½s½X
+                 } else {                                                 //16ï¿½iï¿½ï¿½sï¿½X
                      iPacketLcn=(int)packet[3]*256+(int)packet[4];
                  }
                  iTCLCN = smem.GetAddress();
@@ -352,14 +352,14 @@ try {
                      statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS0");
 //                 if (smem.centerSocket.GetPortAlreadyOpen())
 //                     statusUdp=smem.centerSocket.UdpSend(packet,length,"192.168.1.101:6003");
-                 //¼g¦^¤¤¤ßªº¤]­n¼g¦^¸ô¤f´ú¸Õ¾÷
+                 //ï¿½gï¿½^ï¿½ï¿½ï¿½ßªï¿½ï¿½]ï¿½nï¿½gï¿½^ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Õ¾ï¿½
                  }
 
 
                  if(smem.vGetINTData(Com2_TYPE) == Com2IsTesterPort) {
                  }
 
-//                 if(iTCLCN == iPacketLcn) {                                     //iTCLCN¬°TCªº¸ô¤f½s¸¹¡AiPacketLcn¬°¨ó©w°e¥X¤§¸ô¤f½s¸¹
+//                 if(iTCLCN == iPacketLcn) {                                     //iTCLCNï¿½ï¿½TCï¿½ï¿½ï¿½ï¿½ï¿½fï¿½sï¿½ï¿½ï¿½AiPacketLcnï¿½ï¿½ï¿½ï¿½wï¿½eï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½fï¿½sï¿½ï¿½
 
 //OT FIX 950726 LCN0000 crash center soft bug
                    if (smem.DynCalServerInCrossSocket.GetPortAlreadyOpen()  && (iPacketLcn != 0) )
@@ -397,22 +397,22 @@ try {
             break;
 //OTSS--
 
-            case DEVICEKEYPAD:                                                  //ªF¥Í­±ªO±±¨îÁä½L
+            case DEVICEKEYPAD:                                                  //ï¿½Fï¿½Í­ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½L
                  if (smem.keypadPort.GetPortAlreadyOpen())
                      statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS2");
                  statusUdp=true;
             break;
 
 /*OTCombo0713
-            case DEVICETESTER92:                                                //92¦~ª©²{³õ¤â´£´ú¸Õ¾÷
+            case DEVICETESTER92:                                                //92ï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
                  if (smem.testerPort.GetPortAlreadyOpen())
                      statusRs232=smem.testerPort.Rs232Write(packet,length,"/dev/ttyS3");
                  if (smem.testerSocket.GetPortAlreadyOpen())
                      statusUdp=smem.testerSocket.UdpSend(packet,length,"192.168.1.102:6003");
-                 //¼g¦^¸ô¤f´ú¸Õ¾÷ªº¤]­n¼g¦^¤¤¤ß
+                 //ï¿½gï¿½^ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½]ï¿½nï¿½gï¿½^ï¿½ï¿½ï¿½ï¿½
             break;
 */
-            case DEVICETRAFFICLIGHT:                                            //«Øµ{¬õºñ¿ORS232±±¨îªO
+            case DEVICETRAFFICLIGHT:                                            //ï¿½Øµ{ï¿½ï¿½ï¿½ï¿½ORS232ï¿½ï¿½ï¿½ï¿½O
             /*
                  ucTmpLight[0] = 0x55;
                  ucTmpLight[1] = 0x55;
@@ -559,18 +559,18 @@ try {
                  }
             break;
 
-            case DEVICETAINANPEOPLELIGHT:                                                //92¦~ª©¥æ±±¤¤¤ß
+            case DEVICETAINANPEOPLELIGHT:                                                //92ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
               if (smem.com2Port.GetPortAlreadyOpen())
                   statusRs232 = smem.com2Port.Rs232Write(packet,length,"dev-PGLight");
               statusUdp = true;
             break;
 
             case DEVICECCJDYNCTL:
-            if (smem.vGetAdjudicateReturnAddressBCDorHEX()==cBCD) {  //BCD code½s½X
+            if (smem.vGetAdjudicateReturnAddressBCDorHEX()==cBCD) {  //BCD codeï¿½sï¿½X
                 bcdSwitchHi.bcdCode=packet[3];
                 bcdSwitchLo.bcdCode=packet[4];
                 iPacketLcn=bcdSwitchHi.bcdHiLo.b2*1000+bcdSwitchHi.bcdHiLo.b1*100+bcdSwitchLo.bcdHiLo.b2*10+bcdSwitchLo.bcdHiLo.b1;
-            } else {                                                 //16¶i¦ì½s½X
+            } else {                                                 //16ï¿½iï¿½ï¿½sï¿½X
                 iPacketLcn=(int)packet[3]*256+(int)packet[4];
             }
             iTCLCN = smem.GetAddress();
@@ -603,33 +603,37 @@ try {
                 statusUdp=smem.amegidsSocket.UdpSend(packet,length,"amegidsSocket");
                 statusUdp=true;
             }
+            case DEVICEREDCOUNTVERV3:
+              if(smem.redCountPort.GetPortAlreadyOpen()) {
+                statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCountV3");
+            }
             break;
 
 
 
-            //¥H¤U¼È®É¤£³B²z
-            case DEVICEUNKNOW:                                                  //¤£ª¾¨ì¬O¤°ªFªF
-            case DEVICEMUTILPROTOCOL:                                           //¥i¯à¦³¦hºØ¨ó©w±q³o­Óport¶i¨Ó
-            case DEVICECENTER77:                                                //77¦~ª©¥æ±±¤¤¤ß
-            case DEVICECENTER87:                                                //87¦~ª©¥æ±±¤¤¤ß
-            case DEVICECENTERNTCIP:                                             //NTCIP¦~ª©¥æ±±¤¤¤ß
-            case DEVICETESTER77:                                                //77¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICETESTER87:                                                //87¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICETESTERNTCIP:                                             //NTCIP¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICE77TC:                                                    //77¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE87TC:                                                    //87¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE87CMS:                                                   //87¦~ª©¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICE87VD:                                                    //87¦~ª©°»´ú¾¹±±¨î¾¹
-            case DEVICE92TC:                                                    //92¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE92CMS:                                                   //92¦~ª©¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICE92VD:                                                    //92¦~ª©°»´ú¾¹±±¨î¾¹
-            case DEVICENTCIPTC:                                                 //NTCIP¸¹»x±±¨î¾¹
-            case DEVICENTCIPCMS:                                                //NTCIP¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICENTCIPVD:                                                 //NTCIP°»´ú¾¹±±¨î¾¹
+            //ï¿½Hï¿½Uï¿½È®É¤ï¿½ï¿½Bï¿½z
+            case DEVICEUNKNOW:                                                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½Fï¿½F
+            case DEVICEMUTILPROTOCOL:                                           //ï¿½iï¿½à¦³ï¿½hï¿½Ø¨ï¿½wï¿½qï¿½oï¿½ï¿½portï¿½iï¿½ï¿½
+            case DEVICECENTER77:                                                //77ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICECENTER87:                                                //87ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICECENTERNTCIP:                                             //NTCIPï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICETESTER77:                                                //77ï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICETESTER87:                                                //87ï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICETESTERNTCIP:                                             //NTCIPï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICE77TC:                                                    //77ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE87TC:                                                    //87ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE87CMS:                                                   //87ï¿½~ï¿½ï¿½ï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICE87VD:                                                    //87ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
+            case DEVICE92TC:                                                    //92ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE92CMS:                                                   //92ï¿½~ï¿½ï¿½ï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICE92VD:                                                    //92ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
+            case DEVICENTCIPTC:                                                 //NTCIPï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICENTCIPCMS:                                                //NTCIPï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICENTCIPVD:                                                 //NTCIPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
             case DEVICERTMS:                                                    //RTMS
-            case DEVICEOWNWAY:                                                  //§»·¢¬õ¿O­Ë¼Æ
-            case DEVICEEOI:                                                     //«í¹Å¬õ¿O­Ë¼Æ
-            case DEVICELISCMS:                                                  //¥x¥_¥ÃµaCMS
+            case DEVICEOWNWAY:                                                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Ë¼ï¿½
+            case DEVICEEOI:                                                     //ï¿½ï¿½ï¿½Å¬ï¿½ï¿½Oï¿½Ë¼ï¿½
+            case DEVICELISCMS:                                                  //ï¿½xï¿½_ï¿½ÃµaCMS
             break;
 
             default:
@@ -651,13 +655,13 @@ try {
 
     switch (device) {
 
-            case DEVICECENTER92:                                                //92¦~ª©¥æ±±¤¤¤ß
+            case DEVICECENTER92:                                                //92ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
 
-                 if (smem.vGetAdjudicateReturnAddressBCDorHEX()==cBCD) {  //BCD code½s½X
+                 if (smem.vGetAdjudicateReturnAddressBCDorHEX()==cBCD) {  //BCD codeï¿½sï¿½X
                      bcdSwitchHi.bcdCode=packet[3];
                      bcdSwitchLo.bcdCode=packet[4];
                      iPacketLcn=bcdSwitchHi.bcdHiLo.b2*1000+bcdSwitchHi.bcdHiLo.b1*100+bcdSwitchLo.bcdHiLo.b2*10+bcdSwitchLo.bcdHiLo.b1;
-                 } else {                                                 //16¶i¦ì½s½X
+                 } else {                                                 //16ï¿½iï¿½ï¿½sï¿½X
                      iPacketLcn=(int)packet[3]*256+(int)packet[4];
                  }
                  iTCLCN = smem.GetAddress();
@@ -688,13 +692,13 @@ try {
 
             break;
 
-            case DEVICEKEYPAD:                                                  //ªF¥Í­±ªO±±¨îÁä½L
+            case DEVICEKEYPAD:                                                  //ï¿½Fï¿½Í­ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½L
                  if (smem.keypadPort.GetPortAlreadyOpen())
                      statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS2");
                  statusUdp=true;
             break;
 
-            case DEVICETRAFFICLIGHT:                                            //«Øµ{¬õºñ¿ORS232±±¨îªO
+            case DEVICETRAFFICLIGHT:                                            //ï¿½Øµ{ï¿½ï¿½ï¿½ï¿½ORS232ï¿½ï¿½ï¿½ï¿½O
                  if (smem.lightPort.GetPortAlreadyOpen())
                      statusRs232=smem.lightPort.Rs232Write(packet,length,"/dev/ttyS3");
                  statusUdp=true;
@@ -732,29 +736,29 @@ try {
             break;
 
 
-            //¥H¤U¼È®É¤£³B²z
-            case DEVICEUNKNOW:                                                  //¤£ª¾¨ì¬O¤°ªFªF
-            case DEVICEMUTILPROTOCOL:                                           //¥i¯à¦³¦hºØ¨ó©w±q³o­Óport¶i¨Ó
-            case DEVICECENTER77:                                                //77¦~ª©¥æ±±¤¤¤ß
-            case DEVICECENTER87:                                                //87¦~ª©¥æ±±¤¤¤ß
-            case DEVICECENTERNTCIP:                                             //NTCIP¦~ª©¥æ±±¤¤¤ß
-            case DEVICETESTER77:                                                //77¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICETESTER87:                                                //87¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICETESTERNTCIP:                                             //NTCIP¦~ª©²{³õ¤â´£´ú¸Õ¾÷
-            case DEVICE77TC:                                                    //77¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE87TC:                                                    //87¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE87CMS:                                                   //87¦~ª©¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICE87VD:                                                    //87¦~ª©°»´ú¾¹±±¨î¾¹
-            case DEVICE92TC:                                                    //92¦~ª©¸¹»x±±¨î¾¹
-            case DEVICE92CMS:                                                   //92¦~ª©¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICE92VD:                                                    //92¦~ª©°»´ú¾¹±±¨î¾¹
-            case DEVICENTCIPTC:                                                 //NTCIP¸¹»x±±¨î¾¹
-            case DEVICENTCIPCMS:                                                //NTCIP¸ê°T¥iÅÜ±±¨î¾¹
-            case DEVICENTCIPVD:                                                 //NTCIP°»´ú¾¹±±¨î¾¹
+            //ï¿½Hï¿½Uï¿½È®É¤ï¿½ï¿½Bï¿½z
+            case DEVICEUNKNOW:                                                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½Fï¿½F
+            case DEVICEMUTILPROTOCOL:                                           //ï¿½iï¿½à¦³ï¿½hï¿½Ø¨ï¿½wï¿½qï¿½oï¿½ï¿½portï¿½iï¿½ï¿½
+            case DEVICECENTER77:                                                //77ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICECENTER87:                                                //87ï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICECENTERNTCIP:                                             //NTCIPï¿½~ï¿½ï¿½ï¿½æ±±ï¿½ï¿½ï¿½ï¿½
+            case DEVICETESTER77:                                                //77ï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICETESTER87:                                                //87ï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICETESTERNTCIP:                                             //NTCIPï¿½~ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½
+            case DEVICE77TC:                                                    //77ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE87TC:                                                    //87ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE87CMS:                                                   //87ï¿½~ï¿½ï¿½ï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICE87VD:                                                    //87ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
+            case DEVICE92TC:                                                    //92ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICE92CMS:                                                   //92ï¿½~ï¿½ï¿½ï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICE92VD:                                                    //92ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
+            case DEVICENTCIPTC:                                                 //NTCIPï¿½ï¿½ï¿½xï¿½ï¿½ï¿½î¾¹
+            case DEVICENTCIPCMS:                                                //NTCIPï¿½ï¿½Tï¿½iï¿½Ü±ï¿½ï¿½î¾¹
+            case DEVICENTCIPVD:                                                 //NTCIPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¾¹
             case DEVICERTMS:                                                    //RTMS
-            case DEVICEOWNWAY:                                                  //§»·¢¬õ¿O­Ë¼Æ
-            case DEVICEEOI:                                                     //«í¹Å¬õ¿O­Ë¼Æ
-            case DEVICELISCMS:                                                  //¥x¥_¥ÃµaCMS
+            case DEVICEOWNWAY:                                                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½Ë¼ï¿½
+            case DEVICEEOI:                                                     //ï¿½ï¿½ï¿½Å¬ï¿½ï¿½Oï¿½Ë¼ï¿½
+            case DEVICELISCMS:                                                  //ï¿½xï¿½_ï¿½ÃµaCMS
             break;
 
             default:

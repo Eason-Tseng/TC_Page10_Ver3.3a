@@ -1347,7 +1347,7 @@ try {
 //==            printf( "TIMER: PLAN\n" );
             /******** lock mutex ********/
             pthread_mutex_lock(&CSTC::_stc_mutex);
-            if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC)
+            if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC) //Eason_Ver3.3
             {
               unsigned short planorderTem;
               planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
@@ -1954,7 +1954,7 @@ try {
         }
       }
 
-      if( _exec_phase_current_subphase_step==0 ) CalculateAndSendRedCount(0); //calculate red count after compensation calculated
+      // if( _exec_phase_current_subphase_step==0 ) CalculateAndSendRedCount(0); //calculate red count after compensation calculated
 
       pthread_mutex_lock(&CPlanInfo::_plan_mutex);
       vCalculateAndSendPeopleLightCount();
@@ -1998,6 +1998,12 @@ try {
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_allred(_exec_plan._shorten_cycle);
           break;
       }
+      if( _exec_phase_current_subphase_step==0 ) //Eason_Ver3.4 fix redcountdown sec not compen
+        {
+        CalculatePgCount();
+        CalculatePrCount();
+        CalculateAndSendRedCount(0); 
+        }
       pthread_mutex_unlock(&CPlanInfo::_plan_mutex);
     }
 
@@ -5617,7 +5623,27 @@ try {
       printf("\n     ********  Mapped RedCountTimer: %3d %3d %3d %3d %3d %3d %3d %3d********\n\n", usiHCRedcountMapping[0],usiHCRedcountMapping[1],usiHCRedcountMapping[2],usiHCRedcountMapping[3], usiHCRedcountMapping[4], usiHCRedcountMapping[5], usiHCRedcountMapping[6], usiHCRedcountMapping[7]);
 
     }
-
+          for(int i = 0; i < 8; i ++) {
+      if(smem.vGetWayMappingRedCount(i) == 0)
+        usiHCRedcountMapping[i] = Data[0] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 1)
+        usiHCRedcountMapping[i] = Data[1] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 2)
+        usiHCRedcountMapping[i] = Data[2] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 3)
+        usiHCRedcountMapping[i] = Data[3] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 4)
+        usiHCRedcountMapping[i] = Data[4] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 5)
+        usiHCRedcountMapping[i] = Data[5] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 6)
+        usiHCRedcountMapping[i] = Data[6] & 0xFF;
+      else if(smem.vGetWayMappingRedCount(i) == 7)
+        usiHCRedcountMapping[i] = Data[7] & 0xFF;
+      else
+        usiHCRedcountMapping[i] = 0;
+    }
+smem.vSetRedCountRemainder(usiHCRedcountMapping);
     int iTempScreenID;
     iTempScreenID = smem.GetcFace();
     if(iTempScreenID == cREDCOUNTHWCHECKSEL) { screenRedCountHWCheckSel.DisplayRedCountSec(
@@ -7409,7 +7435,7 @@ try{
     case(CSTC_exec_segment_current_seg_no):
 //      pthread_mutex_lock(&mutexCSTCSmem);
       // usiRet = _exec_segment_current_seg_no;
-      usiRet = _exec_segment._segment_type;
+      usiRet = _exec_segment._segment_type; //Eason_Ver3.3
 //      pthread_mutex_unlock(&mutexCSTCSmem);
       break;
 
@@ -9627,4 +9653,361 @@ try {
 
 } catch (...) {}
 }
+//------------------Eason_Ver3.3------------------------------------------------------
+void CSTC::CalculatePgCount(void) 
+{
+try {
+    unsigned char ucSend[5];
+    unsigned short int Data[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned short int usiHCPGcountMapping[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
+    bool bCountIF[8][5][8];   // 8subphase, 5 steps, 8output
+    bool bCountIFEnable[8];   // 8output
+
+    unsigned short int usiPhaseTmp;
+
+    int iSubCnt;
+    int iSignalCnt;
+    int iSubCalCntTmp;
+//no stepCnt, because only see step0
+
+//OT20110624
+    unsigned char ucRedCountRepeatCount = smem.vGetUCData(CSTC_RedcountRepeatCount);
+    printf("in Pg-Send, ucRedCountRepeatCount:%d\n", ucRedCountRepeatCount);
+
+//OT1000107
+    unsigned char ucNextLightStatus[8];
+    for(int i = 0; i < 8; i++) {
+      ucNextLightStatus[i] = 255;
+    }
+
+    iSubCnt = _exec_phase._subphase_count;
+    printf("\nNOW _exec_phase._subphase_count is %d\n",_exec_phase._subphase_count);
+    iSignalCnt = _exec_phase._signal_count;
+    printf("\nNOW _exec_phase._signal_count is %d\n",_exec_phase._signal_count);
+
+//init. check val.
+    for(int i = 0; i < 8; i++) {
+        Data[i] = 0;
+        bCountIFEnable[i] = true;   //[分相]
+        for(int j = 0; j < 5; j++) {
+            for(int k = 0; k < 8; k++) {
+                bCountIF[i][j][k] = false;  //[分相][步階][卡號]
+            }
+        }
+    }
+
+    for(int i = 0; i < iSignalCnt; i++) {  //max 8 singal output (卡數)
+        iSubCalCntTmp = 0;
+        for(int j = _exec_phase_current_subphase; iSubCalCntTmp < iSubCnt; j++) {  //(分相)
+            if(j >= iSubCnt) { j = 0; }
+            for(int k = 0; k < 5; k++) {  //check 5 steps. (步階)
+                usiPhaseTmp = _exec_phase._ptr_subphase_step_signal_status[j][k][i] & 0xC000;  //[分相][步階][卡號]
+                if(usiPhaseTmp > 0) {  //means Pg have light/flash
+                    bCountIF[j][k][i] = true;
+                } else if(_exec_phase_current_subphase_step >=2 ) {  //in Pr, Y, R light status
+                    bCountIF[j][k][i] = true;
+                } else {
+                    bCountIFEnable[i] = false;
+                    // printf("\nbCountIF[%d][%d][%d] = %d\n",j,k,i,bCountIFEnable[i]);
+                }
+
+                if(bCountIFEnable[i] == true && bCountIF[j][k][i] == true) {  //can add Pg Sec.
+                    switch(k) {
+                        case(0):
+                          Data[i] += _exec_plan._ptr_subplaninfo[j].compensated_green(_exec_plan._shorten_cycle);
+                          break;
+                        case(1):
+                          Data[i] += _exec_plan._ptr_subplaninfo[j].compensated_pedgreen_flash(_exec_plan._shorten_cycle);
+                          break;
+                        case(2):
+                          Data[i] += _exec_plan._ptr_subplaninfo[j].compensated_pedred(_exec_plan._shorten_cycle);
+                          break;
+                        case(3):
+                          Data[i] += _exec_plan._ptr_subplaninfo[j].compensated_yellow(_exec_plan._shorten_cycle);
+                          break;
+                        case(4):
+                          Data[i] += _exec_plan._ptr_subplaninfo[j].compensated_allred(_exec_plan._shorten_cycle);
+                          break;
+                        default:
+                          break;
+                    }
+                    // printf("\nData[%d] == %d\n",i,Data[i]);
+                }
+            }
+            iSubCalCntTmp++;
+        }
+    }
+
+
+//recheck
+    if( _exec_plan._phase_order == FLASH_PHASEORDER ||
+      _exec_plan._phase_order == FLASH_PHASEORDER_HSINCHU ||
+      _exec_plan._phase_order == ALLRED_PHASEORDER ||
+      _exec_plan._phase_order == FLASH_PHASEORDER_HSINCHU2 ||
+      _current_strategy==STRATEGY_MANUAL ||
+      _current_strategy==STRATEGY_ALLDYNAMIC ||
+      /*_exec_plan._phase_order ==0xB1 ||*/ _exec_plan._phase_order ==0xB0) {//arwen++ 1001206
+        for(int i = 0; i < 8; i++) {
+          Data[i] = 0;
+        }
+    }
+    if( smem.vGetBOOLData(TC_SignalConflictError) == true) {
+      printf("TC SignalConflictError, Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        Data[i] = 0;
+      }
+    }
+
+    //OT980420
+    if(_exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x1004 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x1004 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x2008 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x2008 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x2002 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x2002    ) {
+       printf("Flash light!, no redcount\n");
+       for(int i = 0; i < 8; i++) {
+         Data[i] = 0;
+       }
+    }
+
+    if(_exec_phase._subphase_count == 1 && _exec_phase._total_step_count == 1) {
+      printf("special phase, no redcount\n");
+      for(int i = 0; i < 8; i++) {
+        Data[i] = 0;
+      }
+    }
+
+
+    if( smem.vGetUCData(TC_Redcount_Display_Enable) == 0) {
+      printf("\nTC Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        Data[i] = 0;
+      }
+    }
+
+    if(smem.vGetUCData(TC_TrainChainNOW) == 1) {
+      printf("\nTrain coming, TC Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        Data[i] = 0;
+      }
+    }
+
+    for(int i = 0 ; i < 8; i++) {
+      if( Data[i] > 255 ) { Data[i] = 0; }          //Data[i] only 1 Byte
+      if( Data[i] > 0) { Data[i] = Data[i]+1; }     // add 1 sec
+    }
+
+    printf("\n    ********  PgCountTimer: %3d %3d %3d %3d %3d %3d %3d %3d  ********\n\n", Data[0],Data[1],Data[2],Data[3], Data[4],Data[5],Data[6], Data[7]);
+
+    //OT20131219
+    for(int i = 0; i < 8; i ++) {
+        if(smem.vGetWayMappingRedCount(i) == 0){
+          usiHCPGcountMapping[i] = Data[0] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 1){
+          usiHCPGcountMapping[i] = Data[1] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 2){
+          usiHCPGcountMapping[i] = Data[2] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 3){
+          usiHCPGcountMapping[i] = Data[3] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 4){
+          usiHCPGcountMapping[i] = Data[4] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 5){
+          usiHCPGcountMapping[i] = Data[5] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 6){
+          usiHCPGcountMapping[i] = Data[6] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 7){
+          usiHCPGcountMapping[i] = Data[7] & 0xFF;
+        }else{
+          usiHCPGcountMapping[i] = 0;
+        }
+    }
+
+//    if(_current_strategy == STRATEGY_MANUAL) {
+
+//    if(smem.vGetUCData(TC92_ucControlStrategy) = STRATEGY_MANUAL){
+        smem.GreenmanManual(bCountIF);
+//    }
+
+    smem.vSetPgRemainder(usiHCPGcountMapping);
+}
+catch(...){}
+}
+//------------------Eason_Ver3.3------------------------------------------------------
+void CSTC::CalculatePrCount(void) 
+{
+try {
+    unsigned char ucSend[5];
+    unsigned short int PRData[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned short int usiHCPRcountMapping[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+//    bool bCountIF[8][5][8];   // 8subphase, 5 steps, 8output
+//    bool bCountIFEnable[8];   // 8output
+    bool bPRCountIF[8][5][8];   // 8subphase, 5 steps, 8output
+    bool bPRCountIFEnable[8];   // 8output
+    bool bPRCountIFEnableTwo[8];
+
+    unsigned short int usiPhaseTmp;
+
+    int iSubCnt;
+    int iSignalCnt;
+    int iSubCalCntTmp;
+//no stepCnt, because only see step0
+
+//OT20110624
+    unsigned char ucRedCountRepeatCount = smem.vGetUCData(CSTC_RedcountRepeatCount);
+//    printf("in Pg-Send, ucRedCountRepeatCount:%d\n", ucRedCountRepeatCount);
+
+//OT1000107
+    unsigned char ucNextLightStatus[8];
+    for(int i = 0; i < 8; i++) {
+      ucNextLightStatus[i] = 255;
+    }
+
+    iSubCnt = _exec_phase._subphase_count;
+    iSignalCnt = _exec_phase._signal_count;
+
+//init. check val.
+    for(int i = 0; i < 8; i++) {
+//        bCountIFEnable[i] = true;   //[分相]
+        PRData[i] = 0;  //jacky20141114
+        bPRCountIFEnable[i] = true;
+        bPRCountIFEnableTwo[i] = false;
+        for(int j = 0; j < 5; j++) {
+            for(int k = 0; k < 8; k++) {
+//                bCountIF[i][j][k] = false;  //[分相][步階][卡號]
+                bPRCountIF[i][j][k] = false;  //jacky20141114
+            }
+        }
+    }
+
+    for(int i = 0; i < iSignalCnt; i++) {  //max 8 singal output (卡數)
+        iSubCalCntTmp = 0;
+        for(int j = _exec_phase_current_subphase; iSubCalCntTmp < iSubCnt; j++) {  //(分相)
+            if(j >= iSubCnt) { j = 0; }
+            usiPhaseTmp = _exec_phase._ptr_subphase_step_signal_status[j][0][i] & 0x3000;  //[分相][步階][卡號]
+            if(usiPhaseTmp > 0) bPRCountIFEnableTwo[i] = true;
+            for(int k = 0; k < 5; k++) {  //check 5 steps. (步階)
+                usiPhaseTmp = _exec_phase._ptr_subphase_step_signal_status[j][k][i] & 0x3000;  //[分相][步階][卡號]
+                if(usiPhaseTmp > 0) bPRCountIF[j][k][i] = true;
+                if(bPRCountIFEnableTwo[i] == true){
+                    usiPhaseTmp = _exec_phase._ptr_subphase_step_signal_status[j][k][i] & 0xC000;  //[分相][步階][卡號]
+                    if(usiPhaseTmp > 0) bPRCountIFEnable[i] = false;
+                }
+
+                if(bPRCountIFEnable[i] == true && bPRCountIF[j][k][i] == true){
+                    switch(k) {
+                        case(0):
+                          PRData[i] += _exec_plan._ptr_subplaninfo[j].compensated_green(_exec_plan._shorten_cycle);
+                          break;
+                        case(1):
+                          PRData[i] += _exec_plan._ptr_subplaninfo[j].compensated_pedgreen_flash(_exec_plan._shorten_cycle);
+                          break;
+                        case(2):
+                          PRData[i] += _exec_plan._ptr_subplaninfo[j].compensated_pedred(_exec_plan._shorten_cycle);
+                          break;
+                        case(3):
+                          PRData[i] += _exec_plan._ptr_subplaninfo[j].compensated_yellow(_exec_plan._shorten_cycle);
+                          break;
+                        case(4):
+                          PRData[i] += _exec_plan._ptr_subplaninfo[j].compensated_allred(_exec_plan._shorten_cycle);
+                          break;
+                        default:
+                          break;
+                    }
+                }
+
+            }
+            iSubCalCntTmp++;
+        }
+    }
+
+
+//recheck
+    if( _exec_plan._phase_order == FLASH_PHASEORDER ||
+      _exec_plan._phase_order == FLASH_PHASEORDER_HSINCHU ||
+      _exec_plan._phase_order == ALLRED_PHASEORDER ||
+      _exec_plan._phase_order == FLASH_PHASEORDER_HSINCHU2 ||
+      _current_strategy==STRATEGY_MANUAL ||
+      _current_strategy==STRATEGY_ALLDYNAMIC ||
+     /* _exec_plan._phase_order ==0xB1 ||*/ _exec_plan._phase_order ==0xB0) {//arwen++ 1001206
+        for(int i = 0; i < 8; i++) {
+          PRData[i] = 0;
+        }
+    }
+    if( smem.vGetBOOLData(TC_SignalConflictError) == true) {
+      printf("TC SignalConflictError, Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        PRData[i] = 0;
+      }
+    }
+
+    //OT980420
+    if(_exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x1004 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x1004 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x2008 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x2008 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][0] == 0x2002 ||
+       _exec_phase._ptr_subphase_step_signal_status[0][0][1] == 0x2002    ) {
+       printf("Flash light!, no redcount\n");
+       for(int i = 0; i < 8; i++) {
+         PRData[i] = 0;
+       }
+    }
+
+    if(_exec_phase._subphase_count == 1 && _exec_phase._total_step_count == 1) {
+      printf("special phase, no redcount\n");
+      for(int i = 0; i < 8; i++) {
+        PRData[i] = 0;
+      }
+    }
+
+
+    if( smem.vGetUCData(TC_Redcount_Display_Enable) == 0) {
+      printf("\nTC Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        PRData[i] = 0;
+      }
+    }
+
+    if(smem.vGetUCData(TC_TrainChainNOW) == 1) {
+      printf("\nTrain coming, TC Redcount Display Disable!\n");
+      for(int i = 0; i < 8; i++) {
+        PRData[i] = 0;
+      }
+    }
+
+    for(int i = 0 ; i < 8; i++) {
+      if( PRData[i] > 255 ) { PRData[i] = 0; }
+      if( PRData[i] > 0 ) { PRData[i] = PRData[i]+1; }
+    }
+
+    printf("\n    ********  PrCountTimer: %3d %3d %3d %3d %3d %3d %3d %3d  ********\n\n", PRData[0],PRData[1],PRData[2],PRData[3], PRData[4],PRData[5],PRData[6], PRData[7]);
+
+    //OT20131219
+    for(int i = 0; i < 8; i ++) {
+        if(smem.vGetWayMappingRedCount(i) == 0){
+          usiHCPRcountMapping[i] = PRData[0] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 1){
+          usiHCPRcountMapping[i] = PRData[1] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 2){
+          usiHCPRcountMapping[i] = PRData[2] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 3){
+          usiHCPRcountMapping[i] = PRData[3] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 4){
+          usiHCPRcountMapping[i] = PRData[4] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 5){
+          usiHCPRcountMapping[i] = PRData[5] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 6){
+          usiHCPRcountMapping[i] = PRData[6] & 0xFF;
+        }else if(smem.vGetWayMappingRedCount(i) == 7){
+          usiHCPRcountMapping[i] = PRData[7] & 0xFF;
+        }else{
+          usiHCPRcountMapping[i] = 0;
+        }
+    }
+    smem.vSetPrRemainder(usiHCPRcountMapping);
+}
+catch(...){}
+}

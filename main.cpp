@@ -427,9 +427,19 @@ try {
              if (tempmax>maxport)  maxport=tempmax;
              printf("open RedCountPortCCT97-/dev/ttyS1 (fdValue:%d) Success!!\n",tempmax);
         } else printf("open RedCountPortCCT97 Fail!!\n");
+      } 
+    else if(smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerV3)  //Eason_Ver3.3
+      {
+        if(smem.redCountPort.SetConnDevice(DEVICEREDCOUNTVERV3))
+        if((tempmax = smem.redCountPort.OpenRs232Port("/dev/ttyS1",9600,false)) > 0) 
+        {
+          if(tempmax > maxport) maxport = tempmax;
+          printf("open RedCountPortVerTaichung-/dev/ttyS1 (fdValue:%d) Success!!\n", tempmax);
+        } 
+        else printf("open RedCountPortVerTaichung Fail!!\n");
       }
-
-    } else if (iCom2Type == Com2IsTainanPeopleLight) {
+    }
+      else if (iCom2Type == Com2IsTainanPeopleLight) {
       printf("Com2 is TainanPeopleLight Port!\n");
       if (smem.com2Port.SetConnDevice(DEVICETAINANPEOPLELIGHT))                 //ForTainan
       if ((tempmax=smem.com2Port.OpenRs232Port("/dev/ttyS1",9600,false))>0)  {

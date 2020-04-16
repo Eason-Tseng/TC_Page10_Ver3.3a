@@ -115,7 +115,7 @@ union byteunion{
   unsigned char byte;
 };
 
-/* ¤U´å¸ô¤fÂà¶Çªº­ÈFor RTMS */
+/* ï¿½Uï¿½ï¿½ï¿½ï¿½fï¿½ï¿½Çªï¿½ï¿½ï¿½For RTMS */
 class Down_crossing
 {
   public:
@@ -289,6 +289,8 @@ class CSTC
   static int iDynSeg_SegCount;
   static int iDynSeg_PlanID;
 
+  static void CalculatePgCount(void);  //è¨ˆç®—è¡Œäººç¶ ç‡ˆç§’æ•¸
+  static void CalculatePrCount(void);  //è¨ˆç®—è¡Œäººç´…ç‡ˆç§’æ•¸
 
   public:
     static pthread_t _stc_thread_detector_info;

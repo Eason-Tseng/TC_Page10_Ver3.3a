@@ -368,7 +368,7 @@ try {
                       switch (VDrid) {
                               case( 10 ):
                               //WatchDog
-
+                                  smem.vSendPedAndRedCountEverySec();   //Eason_Ver3.3
                                   //OT20110526
                                   currentTime = time(NULL);
                                   now = localtime(&currentTime);
@@ -641,7 +641,7 @@ try {
 //Remove                                   _intervalTimer.vCheckAndReSendSS_SK_Status();
                                    _intervalTimer.vCheckScreenAndDoSomething();
 
-//Remove                                    _SSLastRun = smem.vGetSSCommTime();         //檢�\uFFFDSmartSensor
+//Remove                                    _SSLastRun = smem.vGetSSCommTime();         //檢�\uFFFDSmartSensor
                                     _RunSec = time(NULL);
 //                                    bConnectCenterStatus = smem.vLoadCenterConnectStatus();
 //                                    if(bConnectCenterStatus)  usiTmp = smem.vGet92VDTransmitType(1);

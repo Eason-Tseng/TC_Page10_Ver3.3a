@@ -44,14 +44,16 @@ try {
     smem.SetcFace(cREDCOUNTHWVERMENU);
     lcd240x128.DISPLAY_GRAPHIC(0,redCountHWVerMenuBitmap,128,30);
 
-    if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerHK)
+    if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerHK)  //紅鍇
       cSelect = 0;
-    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94)
+    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94)  //恆嘉
       cSelect = 1;
-    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94v2)
+    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94v2)  //建程v97
       cSelect = 2;
-    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerCCT97)
+    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerCCT97)  //建程v98
       cSelect = 3;
+    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerV3) //V3版    Eason_Ver3.3
+      cSelect = 4;
 
     setSelectPoint16x16(mark[cSelect].X,mark[cSelect].Y,mark[cSelect].height,mark[cSelect].width/8);
   } catch (...) {}
@@ -225,8 +227,18 @@ void ScreenRedCountHWVerMenu::doKey4Work(void)
 
 }
 //---------------------------------------------------------------------------
-void ScreenRedCountHWVerMenu::doKey5Work(void)
+void ScreenRedCountHWVerMenu::doKey5Work(void) //Eason_Ver3.3
 {
+  smem.vSetINTData(TC92_RedCountVer, TC_RedCountVerV3);
+
+  system("sync");
+  stc.CalculateAndSendRedCount(10);
+  writeJob.WriteLetW77E58AutoControl();
+  system("sync");
+  system("sync");
+  system("reboot");
+
+  screenHWReset.DisplayHWReset();
 }
 //---------------------------------------------------------------------------
 void ScreenRedCountHWVerMenu::doKey6Work(void)

@@ -40,7 +40,7 @@ void SendRequestToKeypad(void);                                                 
 #define cOutWard              86                                                //�z�LI/O�ǿ�
 
 #define cComingFromScreen     87                                                //�����L�ӡA�P�ɦ�cInner���ʽ�
-#define cTester               88                                                //�ⴣ��վ�\uFFFD
+#define cTester               88                                                //�ⴣ��վ�\uFFFD
 
 //OT Pass
 #define cP1ToCenter           91
@@ -194,6 +194,7 @@ void SendRequestToKeypad(void);                                                 
 #define TC_RedCountVer94 2
 #define TC_RedCountVer94v2 3
 #define TC_RedCountVerCCT97  4
+#define TC_RedCountVerV3 5 //Eason_Ver3.3
 
 #define Com2IsGPSPort 0
 #define Com2IsTesterPort 1
@@ -235,7 +236,7 @@ typedef struct MESSAGEOK {
         int protocol;                                                           //�ϥΪ��q�T��w����,�аѦ�var.h�w�q�i�઺��w
         BYTE packet[BUFFERSIZE];                                                //��ڨ�w�ʥ]���e
         int packetLcn;                                                          //����w����f�s��,�u�A�Ω�PTRAFFIC(��q���q�T��w)�ΥõaCMS...��
-        int packetLength;                                                       //����w���\uFFFD
+        int packetLength;                                                       //����w���\uFFFD
         bool cksStatus;                                                         //�P�O���ʥ]��checkSum���T�P�_,�i�a��
         bool success;                                                           //�P�O���ʥ]����w��׵���L�ԭ����P�O,�i�a��
         int UDPorRS232;                                                         //���ʥ]�Ӧۦ�B
@@ -295,10 +296,10 @@ typedef struct sRevSyncStatus{
 #define DEVICECENTER87       102                                                //87�~���汱����
 #define DEVICECENTER92       103                                                //92�~���汱����
 #define DEVICECENTERNTCIP    104                                                //NTCIP�~���汱����
-#define DEVICETESTER77       105                                                //77�~���{���\uFFFD���վ�
-#define DEVICETESTER87       106                                                //87�~���{���\uFFFD���վ�
-#define DEVICETESTER92       107                                                //92�~���{���\uFFFD���վ�
-#define DEVICETESTERNTCIP    108                                                //NTCIP�~���{���\uFFFD���վ�
+#define DEVICETESTER77       105                                                //77�~���{���\uFFFD���վ�
+#define DEVICETESTER87       106                                                //87�~���{���\uFFFD���վ�
+#define DEVICETESTER92       107                                                //92�~���{���\uFFFD���վ�
+#define DEVICETESTERNTCIP    108                                                //NTCIP�~���{���\uFFFD���վ�
 #define DEVICE77TC           109                                                //77�~�����x���
 #define DEVICE87TC           110                                                //87�~�����x���
 #define DEVICE87CMS          111                                                //87�~����T�i�ܱ��
@@ -317,7 +318,7 @@ typedef struct sRevSyncStatus{
 #define DEVICELISCMS         124                                                //�x�_�õaCMS
 /*OTCombo0713*/
 #define DEVICETRAFFICLIGHT   125                                                //�ص{���O����O
-#define DEVICEREDCOUNTVER94  126                                                //��O�˼Ƹ˸m (���\uFFFD
+#define DEVICEREDCOUNTVER94  126                                                //��O�˼Ƹ˸m (���\uFFFD
 #define DEVICEREDCOUNTVERHK  127                                                //��O�˼Ƹ˸m (����)
 #define DEVICEGPS            128
 #define DEVICETAINANPEOPLELIGHT 129
@@ -328,6 +329,7 @@ typedef struct sRevSyncStatus{
 
 #define DEVICEREVSYNC   133
 #define DEVICEAMEGIDS   134
+#define DEVICEREDCOUNTVERV3 135 //Eason_Ver3.3
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------   //�w�q�i�઺��w
 #define PROTOCOLUNKNOW       200                                                //���M������w
@@ -351,6 +353,7 @@ typedef struct sRevSyncStatus{
 
 #define PROTOCOLREVSYNC      217
 #define PROTOCOLAMEGIDS      218
+#define PROTOCOLREDCOUNTVERV3 219 //Eason_Ver3.3
 
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------   //�w�q�i�઺LCD�e��
@@ -358,12 +361,12 @@ typedef struct sRevSyncStatus{
 #define cLOGO                301                                                //����LOGO
 #define cLOGIN               302                                                //�n�J�e��
 #define cLOGINERR            303                                                //�n�J��~�e��
-#define cMAIN                304                                                //�D���\uFFFD
-#define cCTLSETUP            305                                                //����]�w�D���\uFFFD
+#define cMAIN                304                                                //�D���\uFFFD
+#define cCTLSETUP            305                                                //����]�w�D���\uFFFD
 #define cCTLNO               306                                                //�]�ƽs��
 #define cLASTDOWN            307                                                //�W���_�q�ɶ�
 #define cMODIFYDT            308                                                //��nɶ��޲z
-#define cFWVERDT             309                                                //�b�骩�����\uFFFD
+#define cFWVERDT             309                                                //�b�骩�����\uFFFD
 #define cHWCYCLE             310                                                //�w��^��g�s]�w
 #define cMODIFYPWD           311                                                //���K�X
 #define cDBSETUP             312                                                //��s�t�αK�X
@@ -375,14 +378,14 @@ typedef struct sRevSyncStatus{
 #define cSENDCYCLE           317                                                //�ǿ�g�s]�w
 #define cRECORDCYCLE         318                                                //�O��g�s]�w
 #define cUPDATEDB            319                                                //��s��Ʈw
-#define cLANESET             320                                                //���D��Ӫ�\uFFFD
+#define cLANESET             320                                                //���D��Ӫ�\uFFFD
 #define cREALSTAT            321                                                //���y�Y�ɸ�T
 #define cREALEVENT           322                                                //�Y�ɨƥ�
 
 #define cONLINE              323                                                //���ߦ��s�u���n�J�e��
 #define cOFFLINE             324                                                //���ߨS���s�u���n�J�e��
 #define cLOCKDB              325                                                //���O��Ū���e��
-#define cTOTALRUN            326                                                //�`�}��ɶ�\uFFFD
+#define cTOTALRUN            326                                                //�`�}��ɶ�\uFFFD
 
 #define cABOERROR            327                                                //�T���]�w�v������
 #define cCMDSET              328                                                //�T���]�w
@@ -678,7 +681,7 @@ typedef struct tsUDPInfo {
 #define RTSIGNAL_Timer 52                                                       //InterVal Timer�Ϊ�RT signal
 #define RTSIGNAL_RECODE_SMEM 53                                                 //�����O���T�Ϊ�
 
-#define simulationNum 720                                                       //VD���\uFFFD�ưO���\uFFFD
+#define simulationNum 720                                                       //VD���\uFFFD�ưO���\uFFFD
 #define realRecordNum 1000
 #define cSTOPSENDTIME 14400
 

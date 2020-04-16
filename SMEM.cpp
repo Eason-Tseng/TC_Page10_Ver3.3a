@@ -62,7 +62,7 @@ try {
     gateway4 = 254;
 
     siTransmitType[0] = cSTOPSENDTIME;                                                      //In VD TransmitType[0] = 0; //page 6-42
-    siTransmitType[1] = 5;                                                          //5sec°AΩs∏π¨∞3
+    siTransmitType[1] = 5;                                                          //5secÔøΩAÔøΩsÔøΩÔøΩÔøΩÔøΩ3
     siTransmitType[2] = cSTOPSENDTIME;
     siTransmitType[3] = cSTOPSENDTIME;
     siTransmitType[4] = cSTOPSENDTIME;
@@ -78,7 +78,7 @@ try {
 
 //92COMM
     ucCommandSet = 0x03;
-    for (int i=0;i<6;i++) password[i]='0';  //º»¶sfrom∂∂¥‹code
+    for (int i=0;i<6;i++) password[i]='0';  //ÔøΩ»¶sfromÔøΩÔøΩÔøΩÔøΩcode
     operMode = 0;
     HWCycleCode = 0x05;
 
@@ -200,10 +200,10 @@ try {
     ui5F18EffectTime = 0;
     iSmem92TC_ChangePlanOneTime5F18_PlanID = 255; //default
 
-    cFace=cLOGO;                                                                //™≈•’≠∂≠±
+    cFace=cLOGO;                                                                //ÔøΩ≈•’≠ÔøΩÔøΩÔøΩ
     lastFace=cMAIN;
     address=0;
-    operMode=99;                                                                //≥Ã™Ï®S¶≥≠»,´›¡‰ΩLøÈ§J´·§~¶≥≠»™∫∑N∏q
+    operMode=99;                                                                //ÔøΩÃ™ÔøΩSÔøΩÔøΩÔøΩÔøΩ,ÔøΩÔøΩÔøΩÔøΩLÔøΩÔøΩJÔøΩÔøΩ~ÔøΩÔøΩÔøΩ»™ÔøΩÔøΩNÔøΩq
     dbOperStat=0;
 
     iAdjudicateReturnAddressBCDorHEX = cHEX;
@@ -214,9 +214,9 @@ try {
     lastKeypadTime=time(NULL);
 
 
-    for (int i=0;i<6;i++) password[i]='0';  //º»¶s
+    for (int i=0;i<6;i++) password[i]='0';  //ÔøΩ»¶s
 
-    iSmem92TC_PhaseUpdateFlag = 0;                                              //ßÛ∑s•Œflag
+    iSmem92TC_PhaseUpdateFlag = 0;                                              //ÔøΩÔøΩsÔøΩÔøΩflag
     bSmem92TC_TransmitCycle5F0F_ChangeFlag = false;
     bSmem92TC_TransmitCycle5F03_ChangeFlag = false;
 
@@ -228,7 +228,7 @@ try {
     bSmem92TC_ChangePlanOneTime5F18_ChangeFlag = false;
 
     //OTADD
-    for(int i = 0; i < 255; i++) {                                                //•˝∞≤≥]•˛≥°∏ÍÆ∆≥£®S¶≥
+    for(int i = 0; i < 255; i++) {                                                //ÔøΩÔøΩÔøΩÔøΩÔøΩ]ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ∆≥ÔøΩÔøΩSÔøΩÔøΩ
       bSmemTC_PhaseAlive[i] = false;
       bSmemTC_PlanAlive[i] = false;
       bSmemTC_SegTypeAlive[i] = false;
@@ -239,15 +239,15 @@ try {
     bTCSignalConflictError = false;
     bSmem92TC_SubPhaseOfPhasePlanIncorrent = false;
 
-    long lTmpTime = 0;                                                          //≥Ã´·≠´∂}æ˜Æ…∂°
+    long lTmpTime = 0;                                                          //ÔøΩÃ´·≠´ÔøΩ}ÔøΩÔøΩÔøΩ…∂ÔøΩ
     disk.vReadLastAliveTimeStampFile(&lTmpTime);
     lTmpTime;
 
     pthread_mutex_unlock(&mutexSmem);
 
-    smem.vSetLastResetTime(lTmpTime);                                           //ß‚≠´∂}æ˜Æ…∂°©Ò®Ïsmem∏Ã
+    smem.vSetLastResetTime(lTmpTime);                                           //ÔøΩ‚≠´ÔøΩ}ÔøΩÔøΩÔøΩ…∂ÔøΩÔøΩÔøΩÔøΩsmemÔøΩÔøΩ
 
-    vReadUDPMappingLCNDataFromStorage();                                        //≈™IP∏ÍÆ∆
+    vReadUDPMappingLCNDataFromStorage();                                        //≈™IPÔøΩÔøΩÔøΩ
 
 //OT Debug 951121
     vReadLCNFromDisk();
@@ -275,8 +275,8 @@ try {
     usiSignamMapMappingLightBoard[5] = 5;
 
 //    iSmem_Com2Type = Com2IsTesterPort;
-    iSmem_Com2Type = Com2IsGPSPort;                                             //ºg¶∫™∫
-//    iSmem_Com2Type = Com2IsPassingPort;                                     //ºg¶∫™∫
+    iSmem_Com2Type = Com2IsGPSPort;                                             //ÔøΩgÔøΩÔøΩÔøΩÔøΩ
+//    iSmem_Com2Type = Com2IsPassingPort;                                     //ÔøΩgÔøΩÔøΩÔøΩÔøΩ
 //    iSmem_Com2Type = Com2IsRedCount;
 //    iSmem_Com2Type = Com2IsTainanPeopleLight;
 
@@ -292,7 +292,7 @@ try {
 
 //OT Debug 0523
     bTC_ActuateTypeFunctionEnable = true;
-    bSmemTC_CCT_In_LongTanu_ActuateType_Switch = false;                                 //¿sºÊØSßOƒ≤∞ , 1 cycle change execplan
+    bSmemTC_CCT_In_LongTanu_ActuateType_Switch = false;                                 //ÔøΩsÔøΩÔøΩSÔøΩOƒ≤ÔøΩÔøΩ, 1 cycle change execplan
     usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID = 1;                               //when actuating, change to this plan
 
     //OT Pass
@@ -592,8 +592,8 @@ try {
     int tempSequence;
     pthread_mutex_lock(&mutexSmem);
     tempSequence=sequence;
-    sequence++;                                          //≥Q§H®˙®´´·¨y§Ù∏π≠n•[§@
-    if (sequence>=256) sequence=0;                       //¨y§Ù∏π•u¶≥§@≠”BYTE,©“•H≥Ã¶h®Ï255
+    sequence++;                                          //ÔøΩQÔøΩHÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩyÔøΩÔøΩÔøΩÔøΩÔøΩnÔøΩ[ÔøΩ@
+    if (sequence>=256) sequence=0;                       //ÔøΩyÔøΩÔøΩÔøΩÔøΩÔøΩuÔøΩÔøΩÔøΩ@ÔøΩÔøΩBYTE,ÔøΩ“•HÔøΩÃ¶hÔøΩÔøΩ255
     pthread_mutex_unlock(&mutexSmem);
     return tempSequence;
   } catch (...) {}
@@ -830,7 +830,7 @@ bool SMEM::vSetSimIntervalTime(itimerspec _SimInterVal)
 {
 try {
    pthread_mutex_lock(&mutexSmem);
-   bSimIntervalTimeChange = true;                                           //µπCTIMER∞µ¿À¨d
+   bSimIntervalTimeChange = true;                                           //ÔøΩÔøΩCTIMERÔøΩÔøΩÔøΩÀ¨d
    _ShareSimCycle = _SimInterVal;  //save struct in Share mem
    pthread_mutex_unlock(&mutexSmem);
    return true;
@@ -862,7 +862,7 @@ bool SMEM::vSet0FHardwareCycle(itimerspec _HWCycleReportIntervalIN)
 {
 try {
    pthread_mutex_lock(&mutexSmem);
-    bHWCycleReportIntervalChange = true;                                        //µπCTIMER∞µ¿À¨d
+    bHWCycleReportIntervalChange = true;                                        //ÔøΩÔøΩCTIMERÔøΩÔøΩÔøΩÀ¨d
    _HWCycleReportInterval = _HWCycleReportIntervalIN;  //save struct in Share mem
    vSave92COMMToDisk();                                                   //SAVE to DOM
    pthread_mutex_unlock(&mutexSmem);
@@ -1069,9 +1069,9 @@ try{
     bool bConnecting, bConnectingStatus;
     pthread_mutex_lock(&mutexSmem);
 
-    if(connected != INVAILDVALUE ) siTransmitType[1] = connected;               //≠Y¨∞999´h§£≥]©w
+    if(connected != INVAILDVALUE ) siTransmitType[1] = connected;               //ÔøΩYÔøΩÔøΩ999ÔøΩhÔøΩÔøΩÔøΩ]ÔøΩw
 
-    if(disconnected != INVAILDVALUE ) siTimeGap = disconnected;       //≠Y¨∞999´h§£≥]©w
+    if(disconnected != INVAILDVALUE ) siTimeGap = disconnected;       //ÔøΩYÔøΩÔøΩ999ÔøΩhÔøΩÔøΩÔøΩ]ÔøΩw
 
 
     fprintf(stderr, "%sSend TimeInterval change to T[1]:%d, TimeGap:%d.%s\n", ColorRed, siTransmitType[1], siTimeGap, ColorNormal);
@@ -1105,8 +1105,8 @@ try {
     pthread_mutex_unlock(&mutexSmem);
 
     MESSAGEOK _MSG;
-    if(bConnectingStatus) {                                                     //¶p™G≤{¶b¨O≥sΩu§~ßÛßÔInterval
-       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(connected);                //≥]©wSmartSensor
+    if(bConnectingStatus) {                                                     //ÔøΩpÔøΩGÔøΩ{ÔøΩbÔøΩOÔøΩsÔøΩuÔøΩ~ÔøΩÔøΩÔøΩInterval
+       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(connected);                //ÔøΩ]ÔøΩwSmartSensor
 
      //OTMARKPRINTF  printf("[MESSAGE] Now in connect mode, set time interval is %d\n", connected);
 
@@ -2730,7 +2730,7 @@ try {
 }
 
 //---------------------------------------------------------------------------
-bool SMEM::vSaveLastAliveStatus(void)                                           //∑ÌSS¬_ΩuÆ…°A•Œinterval®”¨ˆø˝Æ…∂°toDOM
+bool SMEM::vSaveLastAliveStatus(void)                                           //ÔøΩÔøΩSSÔøΩ_ÔøΩuÔøΩ…°AÔøΩÔøΩintervalÔøΩ”¨ÔøΩÔøΩÔøΩÔøΩ…∂ÔøΩtoDOM
 {
 try {
     time_t NowSec = time(NULL);
@@ -4864,4 +4864,235 @@ try{
     pthread_mutex_unlock(&mutexSmem);
     return temp;
  } catch (...) {}
+}
+//----------------------------Eason_Ver3.3---------------------------------------------
+bool SMEM::vSendPedAndRedCountEverySec(void)    // ÊØèÁßíÈÄÅV3 Á¥ÖÁáàÂÄíÊï∏ Ë°å‰∫∫ÂÄíÊï∏
+{
+try {
+
+    unsigned char PgCtl;
+    unsigned char PrCtl;
+    unsigned char ucTmp;
+    unsigned short int stc_subphase;
+    unsigned short int stc_subphase_step;
+    unsigned short int PGPR[4];
+
+    printf("\n");
+    MESSAGEOK _MsgOK;
+    if(ucCSTCControlStrategy == 70 || ucCSTCControlStrategy == 80 || ucCSTCControlStrategy == 90 || ucCSTCControlStrategy == 95){ //ÂãïÊÖã ÊâãÂãï ÂÖ®Á¥Ö ÈñÉÂÖâ
+
+        _MsgOK = oDataToMessageOK.vPackageINFOToredcountV3(0x99 ,0x99 ,0x99, 0x99, 0x99, 0x99, 0x99, 0x99, 0);
+        _MsgOK.InnerOrOutWard = cOutWard;
+        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);
+
+        _MsgOK = oDataToMessageOK.vPackageINFOToredcountV3(0x99 ,0x99 ,0x99, 0x99, 0x99, 0x99, 0x99, 0x99, 1);
+        _MsgOK.InnerOrOutWard = cOutWard;
+        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);
+    }
+    else
+    {
+        _MsgOK = oDataToMessageOK.vPackageINFOToredcountV3(0 ,redcount_remainder[0], 0, redcount_remainder[1], 0, redcount_remainder[2], 0, redcount_remainder[3], 0);
+        _MsgOK.InnerOrOutWard = cOutWard;
+
+                // for(int i;i<_MsgOK.packetLength;i++) printf("%d ",_MsgOK.packet[i]);
+        // printf("usiHCRedcountMapping[0]:%d\n", usiHCRedcountMapping[0]);
+        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);
+
+        // printf("usiHCRedcountMapping[1]:%d\n", usiHCRedcountMapping[1]);
+
+        _MsgOK = oDataToMessageOK.vPackageINFOToredcountV3(0 ,redcount_remainder[4], 0, redcount_remainder[5], 0, redcount_remainder[6], 0, redcount_remainder[7], 1);
+        _MsgOK.InnerOrOutWard = cOutWard;
+        // printf("usiHCRedcountMapping[0]:%d\n", usiHCRedcountMapping[0]);
+        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);
+    }
+
+
+
+//-----------------------------Green man-----------------------------------------------------------------
+    if(ucCSTCControlStrategy == 70 || ucCSTCControlStrategy == 80 || ucCSTCControlStrategy == 90 || ucCSTCControlStrategy == 95) {  //ALLDYNAMIC MANUAL  FLASH  ALLRED
+        for(int i = 0; i < 8; i++)  Pr_remainder[i] = 0xFF;
+        for(int i = 0; i < 8; i++)  Pg_remainder[i] = 0xFF;        
+    }
+    
+    PgCtl = 0;
+    PrCtl = 0;
+    ucTmp = 0x80;
+    for(int i = 0; i < 4; i++) {
+        if(Pg_remainder[i] > 0) {
+            PgCtl += ucTmp;
+            PGPR[i] = Pg_remainder[i];
+            // printf("\n\nPgCtl=%d \n\n",PgCtl);
+        } else {
+            PrCtl += ucTmp;
+            PGPR[i] = Pr_remainder[i];
+        }
+        ucTmp = ucTmp >> 1;
+    }
+        _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(PgCtl, PrCtl, PGPR[0], PGPR[1], PGPR[2], PGPR[3], 0);
+        _MsgOK.InnerOrOutWard = cOutWard;
+
+
+        unsigned short int phase_order_flash  = stc.vGetUSIData(CSTC_exec_plan_phase_order);
+        if (phase_order_flash == 0x80 || phase_order_flash == 0xB0)
+        {   if(FlashClear == true){
+                _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(0xF0, 0x00, 0x00, 0x00, 0x00, 0x00 , 0);
+                _MsgOK.InnerOrOutWard = cOutWard;
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+
+                _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(0xF0, 0x00, 0x00, 0x00, 0x00, 0x00 , 1);
+                _MsgOK.InnerOrOutWard = cOutWard;
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+
+                FlashClear = false;
+            }
+            else{
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+            }
+        }
+        else {
+//            if(GetGreenManonoff5014() == 0){
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+//            }
+            FlashClear = true;
+        }
+
+    //OT20140329
+    PgCtl = 0;
+    PrCtl = 0;
+    ucTmp = 0x80;
+    for(int i = 4; i < 8; i++) {
+        if(Pg_remainder[i] > 0) {
+            PgCtl += ucTmp;
+            PGPR[i-4] = Pg_remainder[i];
+        } else {
+            PrCtl += ucTmp;
+            PGPR[i-4] = Pr_remainder[i];
+        }
+        ucTmp = ucTmp >> 1;
+    }
+   // printf("\n");
+  //  if(GetPriorityswitch() == true || GetGreenManonoff5014() == 1){
+  //       _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(PgCtl, PrCtl, 255, 255, 255, 255, 1);
+  //       _MsgOK.InnerOrOutWard = cOutWard;
+        
+  //       writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERTAICHUNG);
+  //   }
+  //   else {
+        _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(PgCtl, PrCtl, PGPR[0], PGPR[1], PGPR[2], PGPR[3], 1);
+        _MsgOK.InnerOrOutWard = cOutWard;
+
+        //jacky20131225 FLASH
+     /*   unsigned short int*/ phase_order_flash  = stc.vGetUSIData(CSTC_exec_plan_phase_order);
+        if (phase_order_flash == 0x80 || phase_order_flash == 0xB0)
+        {   if(FlashClear == true){
+                _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(0xF0, 0x00, 0x00, 0x00, 0x00, 0x00 , 0);
+                _MsgOK.InnerOrOutWard = cOutWard;
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+
+                _MsgOK = oDataToMessageOK.vPackageINFOToGreenmanCount(0xF0, 0x00, 0x00, 0x00, 0x00, 0x00 , 1);
+                _MsgOK.InnerOrOutWard = cOutWard;
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+
+                FlashClear = false;
+            }
+            else{
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+            }
+        }
+        else {
+// //            if(GetGreenManonoff5014() == 0){
+                
+                writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERV3);   //jacky20140331
+// //            }
+            FlashClear = true;
+        }
+    // }
+        printf("*********************************************************************\n");
+        printf("send redcount remainder:");
+    for(int i = 0; i < 8; i++) {
+        if(redcount_remainder[i] > 0) {
+            redcount_remainder[i]--;
+            printf("%d ",redcount_remainder[i]);
+        }
+    }
+    printf("\n");
+    //OT20131221
+    printf("send People remainder:");
+    for(int i = 0; i < 8; i++) {
+        if(Pg_remainder[i] > 0) {
+            Pg_remainder[i]--;
+            printf("G %d ", Pg_remainder[i]);
+        }else if(Pr_remainder[i] > 0){
+            Pr_remainder[i]--;
+            printf("R %d ", Pr_remainder[i]);
+        }
+    }
+    printf("\n");
+    return true;
+  } catch (...) {}
+}
+//----------------------Eason_Ver3.3------------------------------
+bool SMEM::vSetRedCountRemainder(unsigned short int usiRedTime[])
+{
+try {
+    for(int i = 0; i < 8; i++) {
+        if(usiRedTime[i] > 1) {
+            redcount_remainder[i] = usiRedTime[i] - 1;
+        } else {
+            redcount_remainder[i] = 0;
+        }
+    }
+    return true;
+  } catch (...) {}
+}
+//---------------------Eason_Ver3.3-----------------------------
+bool SMEM::vSetPgRemainder(unsigned short int usiPgTime[])
+{
+try {
+    for(int i = 0; i < 8; i++) {
+        if(usiPgTime[i] > 1) {
+            Pg_remainder[i] = usiPgTime[i] - 1;
+        } else {
+            Pg_remainder[i] = 0;
+        }
+    }
+    return true;
+  } catch (...) {}
+}
+//---------------------Eason_Ver3.3-----------------------------
+bool SMEM::vSetPrRemainder(unsigned short int usiPrTime[])
+{
+try {
+    for(int i = 0; i < 8; i++) {
+        if(usiPrTime[i] > 1) {
+            Pr_remainder[i] = usiPrTime[i] - 1;
+        } else {
+            Pr_remainder[i] = 0;
+        }
+    }
+    return true;
+  } catch (...) {}
+}
+//---------------------Eason_Ver3.3-----------------------------
+bool SMEM::GreenmanManual(bool (*bCountIF)[5][8])
+{
+try {
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 5; j++) {
+            for(int k = 0; k < 8; k++) {
+                CheckbCountIF[i][j][k] = bCountIF[i][j][k];
+                //printf("in_GreenmanManual");
+            }
+        }
+    }
+
+    return true;
+  } catch (...) {}
 }

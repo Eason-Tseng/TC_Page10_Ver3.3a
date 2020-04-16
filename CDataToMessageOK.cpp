@@ -13,9 +13,9 @@
 CDataToMessageOK oDataToMessageOK;
 //-------------------------------------------------------------------
 /*
-MESSAGEOK CDataToMessageOK::SendSSProtocalSetTimeInterval(int intervalSec)      //³]©wSmartSensorªºIntervalTime
-{                                                                               //¦¨¥\·|¦^À³SKSuccess~
-try {                                                                           //¥¢±Ñ¦^À³SKFailure~
+MESSAGEOK CDataToMessageOK::SendSSProtocalSetTimeInterval(int intervalSec)      //ï¿½]ï¿½wSmartSensorï¿½ï¿½IntervalTime
+{                                                                               //ï¿½ï¿½ï¿½\ï¿½|ï¿½^ï¿½ï¿½SKSuccess~
+try {                                                                           //ï¿½ï¿½ï¿½Ñ¦^ï¿½ï¿½SKFailure~
     int i;
     short int siDataLenth = 0;
     char data[30];
@@ -25,20 +25,20 @@ try {                                                                           
     sprintf(data, "SKS00008E0008");
     siDataLenth += 13;
 
-    char cIntervalSec[9];                                                       // 8+1­Ó \0
+    char cIntervalSec[9];                                                       // 8+1ï¿½ï¿½ \0
     int chkSumTmp = 0;
     char Checksum[5];
-    sprintf(cIntervalSec, "%8X", intervalSec);                                  //intervalSec¬°8¦ì¼Æ
+    sprintf(cIntervalSec, "%8X", intervalSec);                                  //intervalSecï¿½ï¿½8ï¿½ï¿½ï¿½
 
-    for(i = 0; i < 8; i++) {                                                    //±N 0x0 ´«¦¨ ASCII '0'
+    for(i = 0; i < 8; i++) {                                                    //ï¿½N 0x0 ï¿½ï¿½ï¿½ï¿½ ASCII '0'
         if(cIntervalSec[i] == 0x20)
            cIntervalSec[i] = '0';
-        data[siDataLenth+i] = cIntervalSec[i];                                  //¶¶«K©ñ¨ìData¸Ì
+        data[siDataLenth+i] = cIntervalSec[i];                                  //ï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½Dataï¿½ï¿½
     }
     siDataLenth += i;
 //---------------
 
-    for(i =2; i < siDataLenth; i++)                                             //­pºâcheckSUM
+    for(i =2; i < siDataLenth; i++)                                             //ï¿½pï¿½ï¿½checkSUM
         chkSumTmp += data[i];
 
     sprintf(Checksum, "%4X", chkSumTmp);
@@ -68,7 +68,7 @@ try {                                                                           
 }
 //-------------------------------------------------------------------
 MESSAGEOK CDataToMessageOK::SendSSProtocalSetClassificationLengths(int C1, int C2)
-{                                                                               //³]©w¨®ªøÃþ§O
+{                                                                               //ï¿½]ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½O
 try {
     int i;
 //    C1 = C1*dCmToFt;
@@ -175,7 +175,7 @@ try {
   } catch(...) {}
 }
 //-------------------------------------------------------------------
-MESSAGEOK CDataToMessageOK::SendSSProtocalSetTime(void)                         //»PIPC¦P¨B®É¶¡
+MESSAGEOK CDataToMessageOK::SendSSProtocalSetTime(void)                         //ï¿½PIPCï¿½Pï¿½Bï¿½É¶ï¿½
 {
 try {
     int i;
@@ -225,7 +225,7 @@ try {
   } catch(...) {}
 }
 //-------------------------------------------------------------------
-MESSAGEOK CDataToMessageOK::QuerySSProtocalClassificationLengths(void)          //¬d¸ß¨®ªø³]©w
+MESSAGEOK CDataToMessageOK::QuerySSProtocalClassificationLengths(void)          //ï¿½dï¿½ß¨ï¿½ï¿½ï¿½ï¿½]ï¿½w
 {
 try {
     int i;
@@ -307,7 +307,7 @@ try {
 
 /*
 //-----------------------------------------------------------------------
-MESSAGEOK CDataToMessageOK::vSet92VDTimeGap_6F14ToMessageOK(int iTimeGap)       //µ¹­±ª©¥Îªº
+MESSAGEOK CDataToMessageOK::vSet92VDTimeGap_6F14ToMessageOK(int iTimeGap)       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½
 {
 try {
     unsigned char cData[3];
@@ -393,7 +393,7 @@ try {
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 //OT20110707,
-MESSAGEOK CDataToMessageOK::vPackageINFOToVer94RedCount(BYTE byteCMD,           //«í¹Å
+MESSAGEOK CDataToMessageOK::vPackageINFOToVer94RedCount(BYTE byteCMD,           //ï¿½ï¿½ï¿½ï¿½
                                                         unsigned short int usiWay1,
                                                         unsigned short int usiWay2,
                                                         unsigned short int usiWay3,
@@ -460,7 +460,7 @@ try {
 
 //cct
 //-------------------------------------------------------------------
-MESSAGEOK CDataToMessageOK::vPackageINFOToVer94v2RedCount(BYTE byteCMD,           //«í¹Å
+MESSAGEOK CDataToMessageOK::vPackageINFOToVer94v2RedCount(BYTE byteCMD,           //ï¿½ï¿½ï¿½ï¿½
                                                         unsigned short int usiWay1,
                                                         unsigned short int usiWay2,
                                                         unsigned short int usiWay3,
@@ -529,7 +529,7 @@ try {
 
 
 
-//§»³Í
+//ï¿½ï¿½ï¿½ï¿½
 //-------------------------------------------------------------------
 MESSAGEOK CDataToMessageOK::vPackageINFOToVerHKRedCount(int Data1, int Data2,
                                                         int Data3, int Data4)
@@ -627,4 +627,159 @@ try {
 
   } catch(...) {}
 }
+//------------------------------------Eason_Ver3.3--------------------------------------------------------
+MESSAGEOK CDataToMessageOK::vPackageINFOToredcountV3(unsigned short int phase0H,            
+                                                           unsigned short int phase0L,
+                                                           unsigned short int phase1H,
+                                                           unsigned short int phase1L,
+                                                           unsigned short int phase2H,
+                                                           unsigned short int phase2L,
+                                                           unsigned short int phase3H,
+                                                           unsigned short int phase3L, unsigned char group)
+{
+try {
+  int iTmp;
 
+  MESSAGEOK _MESSAGEOUT;
+  _MESSAGEOUT.packetLcn=smem.GetAddress();
+  _MESSAGEOUT.packet[0] = 0xAB;
+  _MESSAGEOUT.packet[1] = 0x0C;
+
+   //OT20140329
+  if(group == 0) {
+    _MESSAGEOUT.packet[2] = 0x02;
+  } else {
+    _MESSAGEOUT.packet[2] = 0x12;
+  }
+
+  // printf("A-phase0L:%d", phase0L);
+  _MESSAGEOUT.packet[3] = phase0H;
+  if(phase0L > 99) {
+    _MESSAGEOUT.packet[3] = 0x99;
+    _MESSAGEOUT.packet[4] = 0x99;
+  } else if(phase0L > 9 && phase0L < 100) {
+      iTmp = ((phase0L) / 10) * 6;
+      phase0L += iTmp;
+    _MESSAGEOUT.packet[4] = phase0L;
+  } else {
+    _MESSAGEOUT.packet[4] = phase0L;
+  }
+
+ // printf("A-phase1L:%d", phase1L);
+    _MESSAGEOUT.packet[5] = phase1H;
+   if(phase1L > 99) {
+    _MESSAGEOUT.packet[5] = 0x99;
+    _MESSAGEOUT.packet[6] = 0x99;
+  } else if(phase1L > 9 && phase1L < 100) {
+      iTmp = ((phase1L) / 10) * 6;
+      phase1L += iTmp;
+     _MESSAGEOUT.packet[6] = phase1L;
+  } else {
+    _MESSAGEOUT.packet[6] = phase1L;
+  }
+
+  _MESSAGEOUT.packet[7] = phase2H;
+  if(phase2L > 99) {
+    _MESSAGEOUT.packet[7] = 0x99;
+    _MESSAGEOUT.packet[8] = 0x99;
+  } else if(phase2L > 9 && phase2L < 100) {
+      iTmp = ((phase2L) / 10) * 6;
+      phase2L += iTmp;
+    _MESSAGEOUT.packet[8] = phase2L;
+  } else {
+    _MESSAGEOUT.packet[8] = phase2L;
+  }
+
+  _MESSAGEOUT.packet[9] = phase3H;
+  if(phase3L >99) {
+    _MESSAGEOUT.packet[9] = 0x99;
+    _MESSAGEOUT.packet[10] = 0x99;
+  } else if(phase3L > 9 && phase3L < 100) {
+      iTmp = ((phase3L) / 10) * 6;
+      phase3L += iTmp;
+   _MESSAGEOUT.packet[10] = phase3L;
+  } else {
+    _MESSAGEOUT.packet[10] = phase3L;
+  }
+
+  unsigned short int CKSsum = 0;
+  for(int i = 0 ;i< 11;i++){
+      CKSsum += _MESSAGEOUT.packet[i];
+  }
+
+
+//   for(int i=0;i<_MESSAGEOUT.packetLength-1;i++)
+// _MESSAGEOUT.packet[_MESSAGEOUT.packetLength-1] ^= _MESSAGEOUT.packet[i];
+
+  _MESSAGEOUT.packet[11] = 0x100 - (CKSsum & 0xFF);
+  _MESSAGEOUT.packet[12] = 0x0;
+  _MESSAGEOUT.packet[13] = 0x0;
+  _MESSAGEOUT.packet[14] = 0x0;
+  _MESSAGEOUT.packet[15] = 0x0;
+  _MESSAGEOUT.packet[16] = 0x0;
+  _MESSAGEOUT.packet[17] = 0x0;
+  _MESSAGEOUT.packet[18] = 0x0;
+  _MESSAGEOUT.packet[19] = 0x0;
+  _MESSAGEOUT.packet[20] = 0x0;
+  _MESSAGEOUT.packet[21] = 0x0;
+  _MESSAGEOUT.packetLength = 12;                                     //packet Length
+  _MESSAGEOUT.protocol = PROTOCOLREDCOUNTVERV3;
+  _MESSAGEOUT.UDPorRS232 = cRS232;
+
+  return _MESSAGEOUT;
+
+}catch(...){}
+}
+//------------------------------------Eason_Ver3.3--------------------------------------------------------
+MESSAGEOK CDataToMessageOK::vPackageINFOToGreenmanCount(unsigned short int greencontrol,     
+                                                        unsigned short int redcontrol,
+                                                        unsigned short int phase0,
+                                                        unsigned short int phase1,
+                                                        unsigned short int phase2,
+                                                        unsigned short int phase3, unsigned char group)
+{
+try {
+  MESSAGEOK _MESSAGEOUT;
+  _MESSAGEOUT.packetLcn=smem.GetAddress();
+  _MESSAGEOUT.packet[0] = 0xAB;
+  _MESSAGEOUT.packet[1] = 0x0A;
+
+  //OT20140329
+  if(group == 0) {
+    _MESSAGEOUT.packet[2] = 0x01;
+  } else {
+    _MESSAGEOUT.packet[2] = 0x11;
+  }
+
+  _MESSAGEOUT.packet[3] = greencontrol;              //green control
+  _MESSAGEOUT.packet[4] = redcontrol;              //redcontrol
+  _MESSAGEOUT.packet[5] = phase0;
+  _MESSAGEOUT.packet[6] = phase1;
+  _MESSAGEOUT.packet[7] = phase2;
+  _MESSAGEOUT.packet[8] = phase3;
+  _MESSAGEOUT.packet[9] = 0;
+  _MESSAGEOUT.packet[10] = 0;
+  _MESSAGEOUT.packet[11] = 0;
+  _MESSAGEOUT.packet[12] = 0;
+  _MESSAGEOUT.packet[13] = 0;
+  _MESSAGEOUT.packet[14] = 0;
+  _MESSAGEOUT.packet[15] = 0;
+  _MESSAGEOUT.packet[16] = 0;
+  _MESSAGEOUT.packet[17] = 0;
+  _MESSAGEOUT.packet[18] = 0;
+  _MESSAGEOUT.packet[19] = 0;
+  _MESSAGEOUT.packet[20] = 0;
+  _MESSAGEOUT.packet[21] = 0;
+  unsigned short int CKSsum = 0;
+  for(int i = 0 ;i< 9;i++){
+      CKSsum += _MESSAGEOUT.packet[i];
+  }
+  _MESSAGEOUT.packet[9] = 0x100 - (CKSsum & 0xFF);
+  _MESSAGEOUT.packetLength = 10;                                     //packet Length
+  _MESSAGEOUT.protocol = PROTOCOLREDCOUNTVERV3;
+  _MESSAGEOUT.UDPorRS232 = cRS232;
+
+  return _MESSAGEOUT;
+
+}catch(...){}
+}

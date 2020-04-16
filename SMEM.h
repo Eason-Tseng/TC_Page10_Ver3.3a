@@ -23,11 +23,11 @@ class SMEM
         SMEM(void);
         ~SMEM(void);
 
-        STORAGE disk;                                                           //¼gÀÉ®×¥Î
+        STORAGE disk;                                                           //ï¿½gï¿½É®×¥ï¿½
         /*OTCombo0713*/
-//        RS232 centerPort,lightPort,ssPort,keypadPort,testerPort,rtmsPort;       //¥æ±±¤¤¤ß,Light,SmartSensor,­±ªO,¤â´£´ú¸Õ¾÷,RTMS
+//        RS232 centerPort,lightPort,ssPort,keypadPort,testerPort,rtmsPort;       //ï¿½æ±±ï¿½ï¿½ï¿½ï¿½,Light,SmartSensor,ï¿½ï¿½ï¿½O,ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½,RTMS
         RS232 centerPort,testerPort,keypadPort,lightPort;
-        RS232 redCountPort;                                                     //¬õ¿O­Ë¼Æ
+        RS232 redCountPort;                                                     //ï¿½ï¿½ï¿½Oï¿½Ë¼ï¿½
         RS232 NMEAPort;                                                         //GPS Com2
         RS232 passingPort;
 //OTSS++
@@ -39,9 +39,9 @@ class SMEM
         UDP revSyncSocket;
 
 //OTSS++
-        UDP centerSocket,testerSocket,tempSocket;                               //¥æ±±¤¤¤ß,¤â´£´ú¸Õ¾÷,«O¯d
-//        UDP VDBcastForListen5003Socket;                                         //VD¼s¼·Socket
-        UDP DynCalServerInCrossSocket, DynCalServerInCenterSocket;              //¥þ°ÊºA­pºâ¥D¾÷
+        UDP centerSocket,testerSocket,tempSocket;                               //ï¿½æ±±ï¿½ï¿½ï¿½ï¿½,ï¿½â´£ï¿½ï¿½ï¿½Õ¾ï¿½,ï¿½Oï¿½d
+//        UDP VDBcastForListen5003Socket;                                         //VDï¿½sï¿½ï¿½Socket
+        UDP DynCalServerInCrossSocket, DynCalServerInCenterSocket;              //ï¿½ï¿½ï¿½ÊºAï¿½pï¿½ï¿½Dï¿½ï¿½
         UDP SSVD01Socket, SSVD02Socket, SSVD03Socket, SSVD04Socket;
 
         //OT Pass
@@ -59,32 +59,32 @@ class SMEM
 
         UDP amegidsSocket;
 
-        int GetcFace(void);                                                     //±o¨ì¥Ø«eLCD¤W¬O­þ­Óµe­±
-        int GetLastFace(void);                                                  //±o¨ì¤W¦¸LCD¤W¬O­þ­Óµe­±
-        int GetAddress(void);                                                   //±o¨ì¥Ø«e¸ô¤f½s¸¹
-        int GetOperMode(void);                                                  //±o¨ì¥Ø«e¾Þ§@¼Ò¦¡ 1:»·ºÝ¾Þ§@ 0:²{³õ¾Þ§@
-        int GetSequence(void);                                                  //±o¨ì¾÷¾¹¤Wªº¬y¤ô½s¸¹
-        bool GetKeypadReturn(void);                                             //±o¨ìkeypad¬O§_¦³¦^¶Ç¤F
-        char * GetPassword(void);                                               //±o¨ì±±¨î¾¹±K½X
-        int GetDbOperStat(void);                                                //±o¨ì¸ê®Æ®w¾Þ§@³]©w(0:¤¹³\²{³õ¾Þ§@,1:¤£¤¹³\²{³õ¾Þ§@,2:¥u¤¹³\²{³õ¬d¬Ý)
-        bool GetSSComm(void);                                                   //±o¨ì»PSmartSensorªº³q°T
+        int GetcFace(void);                                                     //ï¿½oï¿½ï¿½Ø«eLCDï¿½Wï¿½Oï¿½ï¿½ï¿½Óµeï¿½ï¿½
+        int GetLastFace(void);                                                  //ï¿½oï¿½ï¿½Wï¿½ï¿½LCDï¿½Wï¿½Oï¿½ï¿½ï¿½Óµeï¿½ï¿½
+        int GetAddress(void);                                                   //ï¿½oï¿½ï¿½Ø«eï¿½ï¿½ï¿½fï¿½sï¿½ï¿½
+        int GetOperMode(void);                                                  //ï¿½oï¿½ï¿½Ø«eï¿½Þ§@ï¿½Ò¦ï¿½ 1:ï¿½ï¿½ï¿½Ý¾Þ§@ 0:ï¿½{ï¿½ï¿½ï¿½Þ§@
+        int GetSequence(void);                                                  //ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½yï¿½ï¿½ï¿½sï¿½ï¿½
+        bool GetKeypadReturn(void);                                             //ï¿½oï¿½ï¿½keypadï¿½Oï¿½_ï¿½ï¿½ï¿½^ï¿½Ç¤F
+        char * GetPassword(void);                                               //ï¿½oï¿½ì±±ï¿½î¾¹ï¿½Kï¿½X
+        int GetDbOperStat(void);                                                //ï¿½oï¿½ï¿½ï¿½Æ®wï¿½Þ§@ï¿½]ï¿½w(0:ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,1:ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,2:ï¿½uï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½dï¿½ï¿½)
+        bool GetSSComm(void);                                                   //ï¿½oï¿½ï¿½PSmartSensorï¿½ï¿½ï¿½qï¿½T
 
-        bool SetcFace(int);                                                     //³]©w¥Ø«eLCD¬O­þ­Óµe­±
-        bool SetLastFace(int);                                                  //³]©w¤W¦¸LCD¬O­þ­Óµe­±
-        bool SetAddress(int);                                                   //³]©w¥Ø«e¸ô¤f½s¸¹
-        bool SetOperMode(int);                                                  //³]©w¥Ø«e¾Þ§@¼Ò¦¡ 1:»·ºÝ¾Þ§@ 0:²{³õ¾Þ§@
-        bool SetKeypadReturn(bool);                                             //³]©wkeypad¬O§_¦³¦^¶Ç¤F
-        bool SetPassword(char,char,char,char,char,char);                        //³]©w±±¨î¾¹±K½X
-        bool SetDbOperStat(int);                                                //³]©w¸ê®Æ®w¾Þ§@³]©w(0:¤¹³\²{³õ¾Þ§@,1:¤£¤¹³\²{³õ¾Þ§@,2:¥u¤¹³\²{³õ¬d¬Ý)
-        bool SetSSComm(bool);                                                   //³]©w»PSmartSensorªº³q°T
+        bool SetcFace(int);                                                     //ï¿½]ï¿½wï¿½Ø«eLCDï¿½Oï¿½ï¿½ï¿½Óµeï¿½ï¿½
+        bool SetLastFace(int);                                                  //ï¿½]ï¿½wï¿½Wï¿½ï¿½LCDï¿½Oï¿½ï¿½ï¿½Óµeï¿½ï¿½
+        bool SetAddress(int);                                                   //ï¿½]ï¿½wï¿½Ø«eï¿½ï¿½ï¿½fï¿½sï¿½ï¿½
+        bool SetOperMode(int);                                                  //ï¿½]ï¿½wï¿½Ø«eï¿½Þ§@ï¿½Ò¦ï¿½ 1:ï¿½ï¿½ï¿½Ý¾Þ§@ 0:ï¿½{ï¿½ï¿½ï¿½Þ§@
+        bool SetKeypadReturn(bool);                                             //ï¿½]ï¿½wkeypadï¿½Oï¿½_ï¿½ï¿½ï¿½^ï¿½Ç¤F
+        bool SetPassword(char,char,char,char,char,char);                        //ï¿½]ï¿½wï¿½ï¿½ï¿½î¾¹ï¿½Kï¿½X
+        bool SetDbOperStat(int);                                                //ï¿½]ï¿½wï¿½ï¿½Æ®wï¿½Þ§@ï¿½]ï¿½w(0:ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,1:ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,2:ï¿½uï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½dï¿½ï¿½)
+        bool SetSSComm(bool);                                                   //ï¿½]ï¿½wï¿½PSmartSensorï¿½ï¿½ï¿½qï¿½T
 
-        bool SetWaitMsg(int,BYTE *,int);                                        //°O¿ý­nµ¥«Ý¦^À³ªºmsg
-        bool ClearWaitMsg(int);                                                 //®ø±¼µ¥­Ô¦^À³ªºmsg
+        bool SetWaitMsg(int,BYTE *,int);                                        //ï¿½Oï¿½ï¿½ï¿½nï¿½ï¿½ï¿½Ý¦^ï¿½ï¿½ï¿½ï¿½msg
+        bool ClearWaitMsg(int);                                                 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¦^ï¿½ï¿½ï¿½ï¿½msg
 
-        time_t GetLastKeypadTime(void);                                         //±o¨ì³Ì«á¤@¦¸«öÁä½Lªº®É¶¡
-        bool SetLastKeypadTime(void);                                           //³]©w³Ì«á¤@¦¸«öÁä½Lªº®É¶¡
+        time_t GetLastKeypadTime(void);                                         //ï¿½oï¿½ï¿½Ì«ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
+        bool SetLastKeypadTime(void);                                           //ï¿½]ï¿½wï¿½Ì«ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
 
-        time_t GetStartTime(void);                                              //±o¨ì¦¹µ{¦¡±Ò°Ê®É¶¡
+        time_t GetStartTime(void);                                              //ï¿½oï¿½ì¦¹ï¿½{ï¿½ï¿½ï¿½Ò°Ê®É¶ï¿½
         time_t GetCurrentTime(void) {return time(NULL);}
 
 
@@ -108,7 +108,7 @@ class SMEM
         unsigned char HWCycleCode;
 
 
-        unsigned char vGetHardwareStatus(int);                                 //¥u¦³vGet¨S¦³vSet¡A¬G·Nªº¡A¥ÑvGet¦Û¦æ§PÂ_
+        unsigned char vGetHardwareStatus(int);                                 //ï¿½uï¿½ï¿½vGetï¿½Sï¿½ï¿½vSetï¿½Aï¿½Gï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½vGetï¿½Û¦ï¿½Pï¿½_
 
 
         unsigned char ucCommandSet;                                             //for 0F should save
@@ -121,22 +121,22 @@ class SMEM
         DATA_Bit Get_DIOByte(void);
 
         SmartSensorINFO _SSInfoInShareMem;
-        bool vSyncSSInfo(SmartSensorINFO);                                      //§âSmartSensor¤§S0ªºInfo¬ö¿ý¨ìsmem
+        bool vSyncSSInfo(SmartSensorINFO);                                      //ï¿½ï¿½SmartSensorï¿½ï¿½S0ï¿½ï¿½Infoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½smem
 /*new add */
-        SmartSensorINFO vGetSSInfo(void);                                       //Åª¥XS0data
+        SmartSensorINFO vGetSSInfo(void);                                       //Åªï¿½XS0data
 
-        bool vSetLastResetTime(long);                                           //±NDOM¬ö¿ý¤§³Ì«á®É¶¡¼g¤Jsmem
-        YMDHMS vGetLastResetTime(void);                                         //±qsmemÅª¥X¤W¦¸Ãö¾÷¤§®É¶¡
+        bool vSetLastResetTime(long);                                           //ï¿½NDOMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì«ï¿½É¶ï¿½ï¿½gï¿½Jsmem
+        YMDHMS vGetLastResetTime(void);                                         //ï¿½qsmemÅªï¿½Xï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½
 
         int vGetConnectedSendIntervalTime(void);
 
-        bool vGetCenterConnectOldStatus(void);                                  //¤W¦¸³s½uª¬ºA
+        bool vGetCenterConnectOldStatus(void);                                  //ï¿½Wï¿½ï¿½ï¿½sï¿½uï¿½ï¿½ï¿½A
 
 
         bool vCheckConnectStatus(void);
 
-        bool bConnectWithCenter;                                                //¬ö¿ý»P¤ñ¸û¥Îªº old
-        bool bConnectWithCenterStatus;                                          //³s½u¤¤¤ßªºstatus
+        bool bConnectWithCenter;                                                //ï¿½ï¿½ï¿½ï¿½ï¿½Pï¿½ï¿½ï¿½ï¿½Îªï¿½ old
+        bool bConnectWithCenterStatus;                                          //ï¿½sï¿½uï¿½ï¿½ï¿½ßªï¿½status
         bool vLoadCenterConnectStatus(void);
         bool vSaveCenterConnectStatus(bool);
         bool vSetTimeInterVal(int, int);
@@ -163,7 +163,7 @@ class SMEM
         bool vWriteMsgToDOM(char *);
         bool vWriteReverseLog(char *);      //jacky20140507
 
-        bool vSaveLastAliveStatus();                                             //·íSSÂ_½u®É¡A¥Îinterval¨Ó¬ö¿ý®É¶¡toDOM
+        bool vSaveLastAliveStatus();                                             //ï¿½ï¿½SSï¿½_ï¿½uï¿½É¡Aï¿½ï¿½intervalï¿½Ó¬ï¿½ï¿½ï¿½ï¿½É¶ï¿½toDOM
         int vGetFirmwareInfo_0FC3(int);
 
         int vGetAdjudicateReturnAddressBCDorHEX(void);
@@ -351,30 +351,41 @@ class SMEM
        unsigned char setReq;
        bool SetRequestKeypad(unsigned char);
        unsigned char GetRequestKeypad(void);
-
+//-------------------Eason_Ver3.3--------------------------------------
+       bool vSendPedAndRedCountEverySec(void);
+       bool vSetRedCountRemainder(unsigned short int usiRedTime[]);
+       unsigned short redcount_remainder[8];                       
+       unsigned short int Pg_remainder[8];                                 
+       unsigned short int Pr_remainder[8];
+       bool FlashClear;
+       bool GreenmanManual(bool (*bCountIF)[5][8]);
+       bool vSetPrRemainder(unsigned short int *);
+       bool vSetPgRemainder(unsigned short int *);
+       bool CheckbCountIF[8][5][8];
+//---------------------------------------------------------------------
     private:
-        pthread_mutex_t mutexSmem;                                              //«OÅ@°O¾ÐÅé
+        pthread_mutex_t mutexSmem;                                              //ï¿½Oï¿½@ï¿½Oï¿½ï¿½ï¿½ï¿½
 
-        void InitialSMem(void);                                                 //ªì©l¤Æ°O¾ÐÅé©Î³q°T­«¸m
+        void InitialSMem(void);                                                 //ï¿½ï¿½lï¿½Æ°Oï¿½ï¿½ï¿½ï¿½Î³qï¿½Tï¿½ï¿½ï¿½m
 
-        int address;                                                            //¦¹³]³Æ¸ô¤f½s¸¹
-        int cFace;                                                              //¥Ø«eLCDµe­±¤Wªº­¶­±
-        int lastFace;                                                           //¤W¤@¦¸°±¯dªºµe­±
-        int operMode;                                                           //¾÷¾¹¾Þ§@¼Ò¦¡ 1:»·ºÝ¾Þ§@ 0:²{³õ¾Þ§@
-        int sequence;                                                           //¾÷¾¹¤W­n°e¥Xªº¬y¤ô½s¸¹
-        char password[6];                                                       //±±¨î¾¹±K½X
-        int dbOperStat;                                                         //¸ê®Æ®w¾Þ§@³]©w(0:¤¹³\²{³õ¾Þ§@,1:¤£¤¹³\²{³õ¾Þ§@,2:¥u¤¹³\²{³õ¬d¬Ý)
+        int address;                                                            //ï¿½ï¿½ï¿½]ï¿½Æ¸ï¿½ï¿½fï¿½sï¿½ï¿½
+        int cFace;                                                              //ï¿½Ø«eLCDï¿½eï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        int lastFace;                                                           //ï¿½Wï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½dï¿½ï¿½ï¿½eï¿½ï¿½
+        int operMode;                                                           //ï¿½ï¿½ï¿½ï¿½ï¿½Þ§@ï¿½Ò¦ï¿½ 1:ï¿½ï¿½ï¿½Ý¾Þ§@ 0:ï¿½{ï¿½ï¿½ï¿½Þ§@
+        int sequence;                                                           //ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½nï¿½eï¿½Xï¿½ï¿½ï¿½yï¿½ï¿½ï¿½sï¿½ï¿½
+        char password[6];                                                       //ï¿½ï¿½ï¿½î¾¹ï¿½Kï¿½X
+        int dbOperStat;                                                         //ï¿½ï¿½Æ®wï¿½Þ§@ï¿½]ï¿½w(0:ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,1:ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½Þ§@,2:ï¿½uï¿½ï¿½ï¿½\ï¿½{ï¿½ï¿½ï¿½dï¿½ï¿½)
 
-        bool ssComm;                                                            //»PSmartSensorªº³q°T
+        bool ssComm;                                                            //ï¿½PSmartSensorï¿½ï¿½ï¿½qï¿½T
         time_t ssCommTime;
 
         time_t startTime;
 
-        bool keypadReturn;                                                      //§Ú­Ì¥²¶·­É¥Ñkeypadªº¦^¶Ç­È¨Ó³]©w¸ô¤f½s¸¹(address)¤Î¾Þ§@¼Ò¦¡(operMode)
-        time_t lastKeypadTime;                                                  //³Ì«á¤@¦¸«öÁä½Lªº®É¶¡
+        bool keypadReturn;                                                      //ï¿½Ú­Ì¥ï¿½ï¿½ï¿½ï¿½É¥ï¿½keypadï¿½ï¿½ï¿½^ï¿½Ç­È¨Ó³]ï¿½wï¿½ï¿½ï¿½fï¿½sï¿½ï¿½(address)ï¿½Î¾Þ§@ï¿½Ò¦ï¿½(operMode)
+        time_t lastKeypadTime;                                                  //ï¿½Ì«ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
 
 
-        MESSAGEWAITREPONSE msgWaitResponse[MSGWAITREPONSECOUNT];                //­«¶Ç¾÷¨î
+        MESSAGEWAITREPONSE msgWaitResponse[MSGWAITREPONSECOUNT];                //ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½
 
 
         YMDHMS ResetTime;
@@ -417,9 +428,9 @@ class SMEM
         bool bSmem92TC_ChangePlanOneTime5F18_ChangeFlag;
         int iSmem92TC_ChangePlanOneTime5F18_PlanID;
 
-        int iSmemTC_RedCountVer;                                                //¬õ¿O­Ë¼Æª©¥»
+        int iSmemTC_RedCountVer;                                                //ï¿½ï¿½ï¿½Oï¿½Ë¼Æªï¿½ï¿½ï¿½
 
-        bool bSmemTC_PhaseAlive[255];                                           //§Ö³t§PÂ_Phase¬O§_¦s¦b
+        bool bSmemTC_PhaseAlive[255];                                           //ï¿½Ö³tï¿½Pï¿½_Phaseï¿½Oï¿½_ï¿½sï¿½b
         bool bSmemTC_PlanAlive[255];
         bool bSmemTC_SegTypeAlive[255];
 
@@ -429,11 +440,11 @@ class SMEM
 
         bool bTCSignalConflictError;
 
-        bool bSmem92TC_SubPhaseOfPhasePlanIncorrent;                            //·íPhase»PPlan©w¸qªºsubphase¤£¦P®É¡A¦¹flag¬°true
+        bool bSmem92TC_SubPhaseOfPhasePlanIncorrent;                            //ï¿½ï¿½Phaseï¿½PPlanï¿½wï¿½qï¿½ï¿½subphaseï¿½ï¿½ï¿½Pï¿½É¡Aï¿½ï¿½flagï¿½ï¿½true
 
 //OT Debug 0523
         bool bTC_ActuateTypeFunctionEnable;
-        bool bSmemTC_CCT_In_LongTanu_ActuateType_Switch;                        //Às¼æ¯S§OÄ²°Ê, 1 cycle change execplan
+        bool bSmemTC_CCT_In_LongTanu_ActuateType_Switch;                        //ï¿½sï¿½ï¿½Sï¿½OÄ²ï¿½ï¿½, 1 cycle change execplan
         unsigned short int usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID;                         //when actuating, change to this plan
         bool bActuateRunningFlag;
         unsigned char ucActuatePhaseExtend;                                     //trash
@@ -515,7 +526,7 @@ class SMEM
         bool b92VDUpdateDB_b1;
         bool b92VDUpdateDB_b2;
         bool b92VDUpdateDB_b3;
-        bool b92VDUpdateDB_Status;                                              //¦Û¤w¥[ªº¡AÅýInterval§PÂ_¤ñ¸û§Ö
+        bool b92VDUpdateDB_Status;                                              //ï¿½Û¤wï¿½[ï¿½ï¿½ï¿½Aï¿½ï¿½Intervalï¿½Pï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½
 
         bool bEnableSendStepToCCJ;
 

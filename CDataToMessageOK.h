@@ -21,7 +21,7 @@ class CDataToMessageOK
 
     //For 92VD------------------------------------------------------------
     /* HowToUse _MessageOfMake = vPackageINFOTo92Protocol(Info,  Length); */
-        MESSAGEOK vPackageINFOTo92Protocol(unsigned char *, int ,bool);                     /*§âInfo¥´¥]¦¨ AABBooxxINFOAADDchk */
+        MESSAGEOK vPackageINFOTo92Protocol(unsigned char *, int ,bool);                     /*ï¿½ï¿½Infoï¿½ï¿½ï¿½]ï¿½ï¿½ AABBooxxINFOAADDchk */
 
     //For Screen------------------------------------------------------------
 //        MESSAGEOK vSet92VDTimeGap_6F14ToMessageOK(int);
@@ -51,6 +51,22 @@ class CDataToMessageOK
                                               unsigned short int );
 
         MESSAGEOK vPackageINFOTo92ProtocolSetADDR(unsigned char *, int, unsigned char, unsigned short int);
+
+        MESSAGEOK vPackageINFOToredcountV3(unsigned short int phase0H,    //Eason_Ver3.3
+                                            unsigned short int phase0L,
+                                            unsigned short int phase1H,
+                                            unsigned short int phase1L,
+                                            unsigned short int phase2H,
+                                            unsigned short int phase2L,
+                                            unsigned short int phase3H,
+                                            unsigned short int phase3L, unsigned char group);
+        
+        MESSAGEOK vPackageINFOToGreenmanCount(unsigned short int ,       //Eason_Ver3.3
+                                              unsigned short int ,
+                                              unsigned short int phase1,
+                                              unsigned short int phase2,
+                                              unsigned short int phase3,
+                                              unsigned short int phase4, unsigned char group);
 
     private:
 
