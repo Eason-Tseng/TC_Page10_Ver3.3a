@@ -120,9 +120,14 @@ try {
     bTCSegmentTypeUpdate = false;
     ucCSTCControlStrategy = 10; //TOD
 
-    iFirmwareYear = 2017;
-    iFirmwareMonth = 03;
-    iFirmwareDay = 23;
+    // iFirmwareYear = 2017;
+    // iFirmwareMonth = 03;
+    // iFirmwareDay = 23;
+    iFirmwareFirstVersion = 3;  //韌體版本
+    iFirmwareSecondVersion = 3;
+    iFirmwareYear = 2020;  //年
+    iFirmwareMonth = 04;  //月
+    iFirmwareDay = 14;  //日
 
     //20140415, add dynamic seg for HsinChu dynamic control.
     //20140211, add special version for SIPA ped.
@@ -166,9 +171,9 @@ try {
     iFirmwareCompanyID = 0x00;
 
 //here select ICOP & ARBOR
-    iFirmwareFirstVersion = 3;
-//    iFirmwareFirstVersion = 6;
-    iFirmwareSecondVersion = ucMBType;
+//     iFirmwareFirstVersion = 3;
+// //    iFirmwareFirstVersion = 6;
+//     iFirmwareSecondVersion = ucMBType;
 
 /*
 enum ControlStrategy{
