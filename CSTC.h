@@ -148,7 +148,7 @@ class CSTC
   //for timers used in _stc_thread_light_control
   static timer_t _timer_plan, _timer_redcount, _timer_panelcount, _timer_reportcount, _timer_record_traffic, _timer_plan_WDT;
   static timer_t _timer_reversetime;
-  static struct itimerspec _itimer_plan, _itimer_redcount, _itimer_panelcount, _itimer_reportcount, _itimer_record_traffic, _itimer_plan_WDT;
+  static struct itimerspec _itimer_plan, _itimer_redcount, _itimer_panelcount, _itimer_reportcount, _itimer_record_traffic, _itimer_plan_WDT,_itimer_plan_test;
   static struct itimerspec _itimer_reversetime;
   static void TimersCreating(void);
   static void TimersSetting(void);

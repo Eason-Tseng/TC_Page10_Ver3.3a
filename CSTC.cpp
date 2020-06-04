@@ -67,6 +67,7 @@ struct itimerspec CSTC::_itimer_reportcount;
 struct itimerspec CSTC::_itimer_record_traffic;
 struct itimerspec CSTC::_itimer_reversetime;
 struct itimerspec CSTC::_itimer_plan_WDT;
+struct itimerspec CSTC::_itimer_plan_test;
 
 #define LCN_NON_INITIALIZED_VALUE        9999
 #define PHASEORDER_NON_INITIALIZED_VALUE 9999
@@ -1571,12 +1572,16 @@ try {
 
 //==            printf( "TIMER: PLAN\n" );
           string mn="_stc_thread_light_control_func's RTSIGNAL_WDT_PLAN";
-          ReSetStep(true,mn);
+          // ReSetStep(true,mn);
+          ReSetStep(false,mn);
           ReSetExtendTimer();
           SetLightAfterExtendTimerReSet();
           if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) {
             vCheckPhaseForTFDActuateExtendTime_5FCF();
           }
+          char msg[256];
+          sprintf(msg,"in Plan WDT PlanID:%d ,Phase:%d ,Step:%d ,Plan_sec %d ,Plan_test_sec %d ,WDT_sec %d",_exec_plan._planid,stc.vGetUSIData(CSTC_exec_phase_current_subphase),stc.vGetUSIData(CSTC_exec_phase_current_subphase_step),_itimer_plan.it_value.tv_sec,_itimer_plan_test.it_value.tv_sec,_itimer_plan_WDT.it_value.tv_sec);
+          smem.vWriteMsgToDOM(msg);  
         } else {
           _itimer_plan_WDT.it_value.tv_sec = 0;                                 //default every 5 sec trigger.
           _itimer_plan_WDT.it_interval.tv_sec = 0;                                 //default every 5 sec trigger.
@@ -1964,6 +1969,7 @@ try {
                                                                , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._green
                                                                , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._green_compensation );
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_green(_exec_plan._shorten_cycle);
+          _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_green(_exec_plan._shorten_cycle);
           break;
 
         case(1):
@@ -1972,6 +1978,7 @@ try {
                                                              , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._pedgreen_flash_compensation );
 
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_pedgreen_flash(_exec_plan._shorten_cycle);
+          _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_pedgreen_flash(_exec_plan._shorten_cycle);
           break;
 
         case(2):
@@ -1980,6 +1987,7 @@ try {
                                                              , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._pedred_compensation );
 
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_pedred(_exec_plan._shorten_cycle);
+          _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_pedred(_exec_plan._shorten_cycle);
           break;
 
         case(3):
@@ -1988,6 +1996,7 @@ try {
                                                              , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._yellow_compensation );
 
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_yellow(_exec_plan._shorten_cycle);
+          _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_yellow(_exec_plan._shorten_cycle);
           break;
 
         case(4):
@@ -1996,9 +2005,10 @@ try {
                                                              , _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._allred_compensation );
 
           _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_allred(_exec_plan._shorten_cycle);
+          _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase].compensated_allred(_exec_plan._shorten_cycle);
           break;
       }
-      if( _exec_phase_current_subphase_step==0 ) //Eason_Ver3.4 fix redcountdown sec not compen
+      if( _exec_phase_current_subphase_step==0 ) //Eason_Ver3.3 fix redcountdown sec not compen
         {
         CalculatePgCount();
         CalculatePrCount();
@@ -2012,6 +2022,7 @@ try {
         case(0):
           if(_exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._min_green > 0) {
             _itimer_plan.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._min_green;
+            _itimer_plan_test.it_value.tv_sec = _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._min_green;
           }
           printf(" %d green_min_time=%3d\n", _exec_plan._ptr_subplaninfo[_exec_phase_current_subphase]._min_green);
 
@@ -2077,6 +2088,12 @@ try {
     _itimer_plan.it_interval.tv_sec = 0;
     _itimer_plan.it_interval.tv_nsec = 0;
 
+    _itimer_plan_test.it_value.tv_nsec = 0;
+    _itimer_plan_test.it_interval.tv_sec = 0;
+    _itimer_plan_test.it_interval.tv_nsec = 0;
+
+    _itimer_plan_WDT = _itimer_plan_test; /*OT_PLAN_WDT*/
+    _itimer_plan_WDT.it_value.tv_sec += 2;
     _itimer_plan_WDT.it_value.tv_nsec = 0;
     _itimer_plan_WDT.it_interval.tv_sec = 0;
     _itimer_plan_WDT.it_interval.tv_nsec = 0;
@@ -2084,16 +2101,19 @@ try {
 
     if(RESET_TIMER_BEFORE_SET_LIGHT)
     {
+      // char msg[256];
+      // sprintf(msg,"in ReSetExtendTimer Current PlanID:%d ,Phase:%d ,Step:%d ,Plan_sec %d ,Plan_test_sec %d ,WDT_sec %d",_exec_plan._planid,stc.vGetUSIData(CSTC_exec_phase_current_subphase),stc.vGetUSIData(CSTC_exec_phase_current_subphase_step),_itimer_plan.it_value.tv_sec,_itimer_plan_test.it_value.tv_sec,_itimer_plan_WDT.it_value.tv_sec);
+      // smem.vWriteMsgToDOM(msg);
      for(int ii = 0; ii < 4; ii++) {
 
-      if ( timer_settime( _timer_plan, 0, & _itimer_plan, NULL ) )
+      if ( timer_settime( _timer_plan, 0, & _itimer_plan_test, NULL ) )
       {
         printf("Settime Error!.\n");
         exit( 1 );
       }
 
-      _itimer_plan_WDT = _itimer_plan; /*OT_PLAN_WDT*/
-      _itimer_plan_WDT.it_value.tv_sec += 2;
+      // _itimer_plan_WDT = _itimer_plan; /*OT_PLAN_WDT*/
+      // _itimer_plan_WDT.it_value.tv_sec += 2;
       if(timer_settime( _timer_plan_WDT, 0, &_itimer_plan_WDT, NULL )) {
         printf("PlanWDT Settime Error!.\n");
         exit( 1 );
@@ -2101,7 +2121,8 @@ try {
       timer_settime( _timer_redcount, 0, & _itimer_redcount, NULL );
 
      }
-
+      // sprintf(msg,"in ReSetExtendTimer Current PlanID:%d ,Phase:%d ,Step:%d ,Plan_sec %d ,Plan_test_sec %d ,WDT_sec %d",_exec_plan._planid,stc.vGetUSIData(CSTC_exec_phase_current_subphase),stc.vGetUSIData(CSTC_exec_phase_current_subphase_step),_itimer_plan.it_value.tv_sec,_itimer_plan_test.it_value.tv_sec,_itimer_plan_WDT.it_value.tv_sec);
+      //   smem.vWriteMsgToDOM(msg);
     }
 
     printf("ReSetStep: phase:(%d/%d) step:(%d/%d)"

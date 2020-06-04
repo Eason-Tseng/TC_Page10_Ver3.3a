@@ -603,7 +603,7 @@ try {
                 statusUdp=smem.amegidsSocket.UdpSend(packet,length,"amegidsSocket");
                 statusUdp=true;
             }
-            case DEVICEREDCOUNTVERV3:
+            case DEVICEREDCOUNTVERV3:  //Eason_Ver3.3
               if(smem.redCountPort.GetPortAlreadyOpen()) {
                 statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCountV3");
             }

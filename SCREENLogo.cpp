@@ -18,7 +18,7 @@ SCREENLogo::~SCREENLogo(void)
 {
 }
 //---------------------------------------------------------------------------
-void SCREENLogo::DoKeyWork(BYTE key)              //¤w¹LÂo,¶i¨Óªº¬O0x80~0x98¤§¶¡,5X5«öÁä
+void SCREENLogo::DoKeyWork(BYTE key)              //ï¿½wï¿½Lï¿½o,ï¿½iï¿½Óªï¿½ï¿½O0x80~0x98ï¿½ï¿½ï¿½ï¿½,5X5ï¿½ï¿½ï¿½ï¿½
 {
 try {
     switch (key) {
