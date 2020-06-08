@@ -1355,12 +1355,13 @@ try {
 
               if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
               {
+                ReSetExtendTimer();
                 AllRed5Seconds();
                 _current_strategy = STRATEGY_TOD;
                 _exec_phase._phase_order = 0xB0;
-                _exec_phase_current_subphase = 0;
-                _exec_phase_current_subphase_step = 0;
-                // ReSetStep(true);
+                // _exec_phase_current_subphase = 0;
+                // _exec_phase_current_subphase_step = 0;
+                ReSetStep(false);
                 SendRequestToKeypad();
                 ReSetExtendTimer();
                 SetLightAfterExtendTimerReSet();
@@ -1372,10 +1373,12 @@ try {
                 if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
                 {
                   // printf("\n\n\n\n\n\nnow is add ALLRED 3sec test!!!\n\n\n\n\n");
+                  ReSetExtendTimer();
                   AllRed5Seconds();
                   _current_strategy = STRATEGY_TOD;
-                  _exec_phase_current_subphase = 0;
-                  _exec_phase_current_subphase_step = 0;
+                  // _exec_phase_current_subphase = 0;
+                  // _exec_phase_current_subphase_step = 0;
+                  ReSetStep(false);
                   SendRequestToKeypad();
                   ReSetExtendTimer();
                   SetLightAfterExtendTimerReSet();
@@ -1940,6 +1943,9 @@ try {
   if( _current_strategy==STRATEGY_CADC || _current_strategy==STRATEGY_AUTO_CADC || _current_strategy==STRATEGY_TOD ){
     if( _exec_plan._phase_order==FLASH_PHASEORDER||_exec_plan._phase_order==ALLRED_PHASEORDER ){
       _itimer_plan.it_value.tv_sec=10;
+      _itimer_plan_test.it_value.tv_sec=10;
+      _itimer_plan_WDT.it_value.tv_sec=12;
+      smem.vWriteMsgToDOM("in ReSetExtendTimer ALLRED or FLASH");
     }
 
     else {
