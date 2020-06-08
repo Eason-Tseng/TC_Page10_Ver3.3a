@@ -1945,7 +1945,6 @@ try {
       _itimer_plan.it_value.tv_sec=10;
       _itimer_plan_test.it_value.tv_sec=10;
       _itimer_plan_WDT.it_value.tv_sec=12;
-      smem.vWriteMsgToDOM("in ReSetExtendTimer ALLRED or FLASH");
     }
 
     else {
