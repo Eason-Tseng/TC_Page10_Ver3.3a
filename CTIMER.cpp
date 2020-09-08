@@ -368,6 +368,11 @@ try {
                       switch (VDrid) {
                               case( 10 ):
                               //WatchDog
+
+                                  // char meg[254];
+                                  // sprintf(meg,"%d",stc.vGetStepTime());
+                                  // smem.vWriteMsgToDOM(meg);
+                                  
                                   smem.vSendPedAndRedCountEverySec();   //Eason_Ver3.3
                                   //OT20110526
                                   currentTime = time(NULL);
