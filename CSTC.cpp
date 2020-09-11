@@ -1350,59 +1350,57 @@ try {
             pthread_mutex_lock(&CSTC::_stc_mutex);
             if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC) //Eason_Ver3.3
             {
-              // char msg[254];
-              // unsigned short planorderTem;
-              // planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
-              // sprintf(msg,"planorderTem == %02X",planorderTem);
-              // smem.vWriteMsgToDOM(msg);
-              // if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
-              // {
-              //   ReSetExtendTimer();
-              //   AllRed5Seconds();
-              //   _current_strategy = STRATEGY_TOD;
-              //   _exec_phase._phase_order = 0xB0;
-              //   // _exec_phase_current_subphase = 0;
-              //   // _exec_phase_current_subphase_step = 0;
-              //   ReSetStep(false);
-              //   SendRequestToKeypad();
-              //   ReSetExtendTimer();
-              //   SetLightAfterExtendTimerReSet();
-              //   if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();         
-              // }
-              // else if(planorderTem == 0x80 || planorderTem == 0xB0)//舊Plan order == 閃光
-              // {
-              //   smem.vWriteMsgToDOM("1111");
-              //   ReSetStep(true);
-              //   if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
-              //   {
-              //     smem.vWriteMsgToDOM("!!!!!!!!");
-              //     // printf("\n\n\n\n\n\nnow is add ALLRED 3sec test!!!\n\n\n\n\n");
-              //     ReSetExtendTimer();
-              //     AllRed5Seconds();
-              //     _current_strategy = STRATEGY_TOD;
-              //     // _exec_phase_current_subphase = 0;
-              //     // _exec_phase_current_subphase_step = 0;
-              //     ReSetStep(false);
-              //     SendRequestToKeypad();
-              //     ReSetExtendTimer();
-              //     SetLightAfterExtendTimerReSet();
-              //     if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();                                
-              //   }
-              //   else//新舊Plan order == 閃光
-              //   {
-              //     smem.vWriteMsgToDOM("00000000000");
-              //     ReSetExtendTimer();
-              //     SetLightAfterExtendTimerReSet();
-              //     if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();
-              //   }
-              // }
-              // else
-              // {
+              char msg[254];
+              unsigned short planorderTem;
+              planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
+              sprintf(msg,"planorderTem == %02X",planorderTem);
+              smem.vWriteMsgToDOM(msg);
+              if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
+              {
+                ReSetExtendTimer();
+                AllRed5Seconds();
+                _current_strategy = STRATEGY_TOD;
+                _exec_phase._phase_order = 0xB0;
+                // _exec_phase_current_subphase = 0;
+                // _exec_phase_current_subphase_step = 0;
+                ReSetStep(false);
+                SendRequestToKeypad();
+                ReSetExtendTimer();
+                SetLightAfterExtendTimerReSet();
+                if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();         
+              }
+              else if(planorderTem == 0x80 || planorderTem == 0xB0)//舊Plan order == 閃光
+              {
+                smem.vWriteMsgToDOM("1111");
+                ReSetStep(true);
+                if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
+                {
+                  // printf("\n\n\n\n\n\nnow is add ALLRED 3sec test!!!\n\n\n\n\n");
+                  ReSetExtendTimer();
+                  AllRed5Seconds();
+                  _current_strategy = STRATEGY_TOD;
+                  // _exec_phase_current_subphase = 0;
+                  // _exec_phase_current_subphase_step = 0;
+                  ReSetStep(false);
+                  SendRequestToKeypad();
+                  ReSetExtendTimer();
+                  SetLightAfterExtendTimerReSet();
+                  if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();                                
+                }
+                else//新舊Plan order == 閃光
+                {
+                  ReSetExtendTimer();
+                  SetLightAfterExtendTimerReSet();
+                  if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();
+                }
+              }
+              else
+              {
                 ReSetStep(true);
                 ReSetExtendTimer();
                 SetLightAfterExtendTimerReSet();
                 if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();     
-              // }
+              }
             }
             /******** unlock mutex ********/
             pthread_mutex_unlock(&CSTC::_stc_mutex);
@@ -3621,7 +3619,7 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
           smem.vSetThisCycleRunCCJPlan5F18(true);
           smem.vSetBOOLData(TC92_PlanOneTime5F18_Change, false);
           int iRunPlanID = smem.vGetINTData(TC92_PlanOneTime5F18_PlanID);
-          if(iRunPlanID <= 48) {
+          if(iRunPlanID <= 48 && smem.vGetTCPhasePlanSegTypeData(TC_Plan,iRunPlanID)) {
             _exec_segment._ptr_seg_exec_time[i]._planid = iRunPlanID;
             _exec_plan = plan[_exec_segment._ptr_seg_exec_time[i]._planid];
             PlanUpdate = true;
@@ -3633,13 +3631,25 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
             smem.vSetUSIData(TOD_PLAN_ID, NEW_TOD_PLAN_ID);
 
             printf("in 5F18 cycle, runPlanID:%d\n", iRunPlanID);
-          }
+          }else {
+            _exec_segment._ptr_seg_exec_time[i]._planid = 48;
+            _exec_plan = plan[_exec_segment._ptr_seg_exec_time[i]._planid];
+            PlanUpdate = true;
+            SegmentTypeUpdate = true;
+
+//OT20110609
+            OLD_TOD_PLAN_ID = NEW_TOD_PLAN_ID;
+            NEW_TOD_PLAN_ID = iRunPlanID;
+            smem.vSetUSIData(TOD_PLAN_ID, NEW_TOD_PLAN_ID);
+            printf("in 5F18 cycle, runPlanID:%d\n", iRunPlanID);
+            smem.vSetThisCycleRunCCJPlan5F18(false);
+          }  //else change PlanID = 48
         }
 
 //OT1000218
         if(smem.vGet5F18EffectTime() > 0) {  //this cycle run 5F18Plan
           int iRunPlanID = smem.vGetINTData(TC92_PlanOneTime5F18_PlanID);
-          if(iRunPlanID <= 48) {
+          if(iRunPlanID <= 48 && smem.vGetTCPhasePlanSegTypeData(TC_Plan,iRunPlanID)) {
             _exec_segment._ptr_seg_exec_time[i]._planid = iRunPlanID;
             _exec_plan = plan[_exec_segment._ptr_seg_exec_time[i]._planid];
 
@@ -3845,7 +3855,6 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
         if(phase[_exec_plan._phase_order]._ptr_subphase_step_count)
           {
               //todo author:GordonYang date:20190802 reason:when last phase was flash ,the next step would be the all red.
-              last_exec_phase=_exec_phase;
               _exec_phase = phase[_exec_plan._phase_order];
                                }
         else _exec_phase = phase[_default_phaseorder];
@@ -3853,33 +3862,6 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
       smem.vSetINTData(TC92_iUpdatePhaseData, 0);
       /******** unlock mutex ********/
       pthread_mutex_unlock(&CPhaseInfo::_phase_mutex);
-
-         if(((last_exec_phase._phase_order==0x80)&&
-            (last_exec_phase._phase_order!=_exec_phase._phase_order))
-            &&((_current_strategy== STRATEGY_TOD)||(_current_strategy==STRATEGY_CADC)))
-                {
-                    printf("\n");
-                    printf("*************************************\n");
-                    printf("******last phase is  %x********next phase is %x***********\n",last_exec_phase._phase_order,_exec_phase._phase_order);
-                    printf("*********TOD FLASH TRANSFER*****\n");
-                    printf("*************************************\n");
-                    printf("\n");
-
-  stc.Lock_to_Set_Control_Strategy(STRATEGY_ALLRED);
-  AllRed5Seconds();
-  Lock_to_Set_Control_Strategy(STRATEGY_TOD);
-//  TimersSetting();
-  usleep(1000);                                                                  //sleep, wait for keypad return strategy.
-  ReSetStep(false);
-  ReSetExtendTimer();
-  SetLightAfterExtendTimerReSet();
-
-              printf("\n");
-              printf("***********All red over******************\n");
-              printf("*********TOD FLASH TRANSFER*****\n");
-                    printf("*************************************\n");
-                    printf("\n");
-               }
 
     }
     /*otaru0514++*/
