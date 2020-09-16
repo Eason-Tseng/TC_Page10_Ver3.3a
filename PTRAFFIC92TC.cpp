@@ -110,6 +110,30 @@ try {
           vQueryRunPlan5F48(message);
           break;
 
+        case 0x19:
+          vSetActuatedType_5F19(message);
+          break;
+
+        case 0x49:
+          vQueryActuatedType_5F49(message);
+          break;
+
+        // case 0x1A:
+        //   vSetActuatedSegment_5F1A(message);
+        //   break;
+
+        // case 0x4A:
+        //   vQueryActuatedSegment_5F4A(message);
+        //   break;
+
+        // case 0x1B:
+        //   vSetActuatedHolidaySegment_5F1B(message);
+        //   break;
+
+        // case 0x4B:
+        //   vQueryActuatedHolidaySegment_5F4B(message);
+        //   break;
+
         case 0x2F:
           vWritePhaseByStep5F2F(message);
           break;
@@ -136,7 +160,7 @@ try {
           vQueryPhaseStepControl_5F4C(message);
           break;
 
-//¥D°Ê¦^³ø
+//ï¿½Dï¿½Ê¦^ï¿½ï¿½
         case 0x00:
         case 0x03:
         case 0x0C:
@@ -148,15 +172,15 @@ try {
         break;
 
         //OT20140415
-        case 0x1A:
-          vSetDynSegParameter(message);
-        break;
-        case 0x4A:
-          vQueryDynSegParameter(message);
-        break;
-        case 0x1B:
-          vSetDynSegSwitch(message);
-        break;
+        // case 0x1A:
+        //   vSetDynSegParameter(message);
+        // break;
+        // case 0x4A:
+        //   vQueryDynSegParameter(message);
+        // break;
+        // case 0x1B:
+        //   vSetDynSegSwitch(message);
+        // break;
 
         default:
           vReturnToCenterNACK(message.packet[7], message.packet[8], 0x0, 0x0);
@@ -878,15 +902,15 @@ try{
     stc._for_center_phase._signal_map=_SignalMap.DBit;
     stc._for_center_phase._signal_count=iSignalCount;
     stc._for_center_phase._subphase_count=iSubPhaseCount;
-    stc._for_center_phase._total_step_count = iSubPhaseCount * 5;  //¤­­Ó¨B¶¥
+    stc._for_center_phase._total_step_count = iSubPhaseCount * 5;  //ï¿½ï¿½ï¿½Ó¨Bï¿½ï¿½
 
     for(int j = 0; j < iSubPhaseCount; j++) {
 
       for(int qq=0; qq<iSignalCount; qq++) {
-        ucStepSignal[qq] = DataMessageIn.packet[iSignalCount*j+13+qq];   //¥ı§â¦P¤@®É¬Û¤§¿O¸¹©ñ¨ìarray
+        ucStepSignal[qq] = DataMessageIn.packet[iSignalCount*j+13+qq];   //ï¿½ï¿½ï¿½ï¿½Pï¿½@ï¿½É¬Û¤ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½array
       }
 
-      for( int k=0; k< stc._for_center_phase._ptr_subphase_step_count[j]; k++ ) {  //¥ı§â©Ò¦³¨B¶¥³£¶ñ¥ş¬õ
+      for( int k=0; k< stc._for_center_phase._ptr_subphase_step_count[j]; k++ ) {  //ï¿½ï¿½ï¿½ï¿½Ò¦ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for(int l=0; l<stc._for_center_phase._signal_count; l++) {
           stc._for_center_phase._ptr_subphase_step_signal_status[j][k][l] = 0x3003;
         }
@@ -929,7 +953,7 @@ try{
 
   smem.vWriteMsgToDOM("WritePhaseBy5F13");
 
-  stc.Lock_to_Save_Phase_from_Center();             //Àx¦s¦^¥h
+  stc.Lock_to_Save_Phase_from_Center();             //ï¿½xï¿½sï¿½^ï¿½h
   smem.vSetINTData(TC92_iUpdatePhaseData, 1);
   smem.vSetTCPhasePlanSegTypeData(TC_Phase, iPhaseOrder, true);
   //OTMARKPRINTF  printf("[OT] Save Ok.\n");
@@ -1119,22 +1143,22 @@ try{
     screenLast92TCPlanSegmentUpdate.DisplayPlanUpdate();
 
 /*
-PlanID(®É¨î­p¹º):[9]
-SubPhaseCount(¤À¬Û¼Æ):[10]
+PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[9]
+SubPhaseCount(ï¿½ï¿½ï¿½Û¼ï¿½):[10]
 
-MinGreen(µuºñ):[11]
-MaxGreen(ªøºñ):[12],[13]
-Yellow(¶À):[14]
-AllRed(¥ş¬õ):[15]
-PedGreenFlash(¦æ¤Hºñ°{):[16]
-PedRed(¦æ¤H¬õ):[17]
+MinGreen(ï¿½uï¿½ï¿½):[11]
+MaxGreen(ï¿½ï¿½ï¿½ï¿½):[12],[13]
+Yellow(ï¿½ï¿½):[14]
+AllRed(ï¿½ï¿½ï¿½ï¿½):[15]
+PedGreenFlash(ï¿½ï¿½Hï¿½ï¿½{):[16]
+PedRed(ï¿½ï¿½Hï¿½ï¿½):[17]
 */
 
   int i=0;
   bool bMollacOK=false;
 
 //OT Debug 0523
-  if (DataMessageIn.packet[10]==0)                    //°{¥ú®É¬Û
+  if (DataMessageIn.packet[10]==0)                    //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
     bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],1);
   else  bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
 
@@ -1145,8 +1169,8 @@ PedRed(¦æ¤H¬õ):[17]
 
   //OTMARKPRINTF  printf("Plan:%d, PhaseCount:%d\n",stc._for_center_plan._planid,stc._for_center_plan._subphase_count);
 
-    if (stc._for_center_plan._subphase_count==0) {   //°{¥ú®É¬Û
-        stc._for_center_plan._subphase_count=1;      //µêÀÀ¤@­ÓPhase
+    if (stc._for_center_plan._subphase_count==0) {   //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
+        stc._for_center_plan._subphase_count=1;      //ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½Phase
 
         stc._for_center_plan._ptr_subplaninfo[0]._min_green=0;
         stc._for_center_plan._ptr_subplaninfo[0]._max_green=0;
@@ -1175,7 +1199,7 @@ PedRed(¦æ¤H¬õ):[17]
         }
     }
 
-    stc.Lock_to_Save_Plan_from_Center();             //Àx¦s¦^¥h
+    stc.Lock_to_Save_Plan_from_Center();             //ï¿½xï¿½sï¿½^ï¿½h
 
   //OTMARKPRINTF  printf("SAVE Plan:%d OK!!\n",DataMessageIn.packet[9]);
 
@@ -1259,14 +1283,14 @@ try{
 //  vReturnToCenterACK(0x5F, 0x15);
 
   /*
-  PlanID(®É¨î­p¹º):[9]
-  Direct(°ò·Ç¤è¦V):[10]
-  PhaseOrder(®É¬Û½s¸¹):[11]
-  SubPhaseCount(¤À¬Û¼Æ):[12]
+  PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[9]
+  Direct(ï¿½ï¿½Ç¤ï¿½V):[10]
+  PhaseOrder(ï¿½É¬Û½sï¿½ï¿½):[11]
+  SubPhaseCount(ï¿½ï¿½ï¿½Û¼ï¿½):[12]
 
-  Green(ºñ¿O®É¶¡):[13][14],[15][16],[17][18]
-  CycleTime(¶g´Á):[19][20]
-  Offset(®É®t):[21][22]
+  Green(ï¿½ï¿½Oï¿½É¶ï¿½):[13][14],[15][16],[17][18]
+  CycleTime(ï¿½gï¿½ï¿½):[19][20]
+  Offset(ï¿½É®t):[21][22]
   */
 
   int i=0;
@@ -1275,7 +1299,7 @@ try{
   //OT Debug 0523
   bool bRet;
 
-  if (iSubphaseCount == 0) {    //°{¥ú®É¬Û
+  if (iSubphaseCount == 0) {    //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
     bMollacOK = stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],1);
   }
   else {
@@ -1317,15 +1341,15 @@ try{
       stc._for_center_plan._offset=DataMessageIn.packet[15+2*i]*256+DataMessageIn.packet[16+2*i];
       printf("offset:%d\n",stc._for_center_plan._offset);
 
-      if (stc._for_center_plan._subphase_count==0) {            //°{¥ú®É¬Û
-          stc._for_center_plan._subphase_count=1;               //µêÀÀ¤@­ÓPhase
+      if (stc._for_center_plan._subphase_count==0) {            //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
+          stc._for_center_plan._subphase_count=1;               //ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½Phase
 
           //OT Debug 0523
           stc._for_center_plan._ptr_subplaninfo[i]._green=10;
       }
 
 //OT Debug 0523
-      bRet = stc.Lock_to_Save_Plan_from_Center();                      //Àx¦s¦^¥h
+      bRet = stc.Lock_to_Save_Plan_from_Center();                      //ï¿½xï¿½sï¿½^ï¿½h
       if(bRet) smem.vSetTCPhasePlanSegTypeData(TC_Plan, DataMessageIn.packet[9], true);
       else {
           vReturnToCenterNACK(0x5F, 0x15, 0x04, 0x05); return false;
@@ -1408,15 +1432,15 @@ bool PTRAFFIC92TC::vWriteSegment5F16(MESSAGEOK DataMessageIn)
 try{
 
 /*
-SegmentType(®É¬q«¬ºA):[9]
-SegmentCount(®É¬q¤À¬Û¼Æ):[10]
+SegmentType(ï¿½É¬qï¿½ï¿½ï¿½A):[9]
+SegmentCount(ï¿½É¬qï¿½ï¿½ï¿½Û¼ï¿½):[10]
 
-Hour(°_©l®É):[11][14]
-Min(°_©l¤À):[12][15]
-PlanID(®É¨î­p¹º):[13][16]
+Hour(ï¿½_ï¿½lï¿½ï¿½):[11][14]
+Min(ï¿½_ï¿½lï¿½ï¿½):[12][15]
+PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[13][16]
 
-NumWeekDay(¦³´X¤Ñ­n·Ó³oSegtype):[]
-WeekDay(­ş´X¤Ñ?):[][][][]
+NumWeekDay(ï¿½ï¿½ï¿½Xï¿½Ñ­nï¿½Ó³oSegtype):[]
+WeekDay(ï¿½ï¿½ï¿½Xï¿½ï¿½?):[][][][]
 */
 
   int i=0;
@@ -1602,7 +1626,7 @@ try{
     data[iDataPtr] = 0x17; iNumWeekDay++; iDataPtr++;
   }
 
-  data[iNumWeekDayPrt] = iNumWeekDay;                                           //³Ì«á¸É¤WNumWeekDay¤§­È
+  data[iNumWeekDayPrt] = iNumWeekDay;                                           //ï¿½Ì«ï¿½É¤WNumWeekDayï¿½ï¿½ï¿½ï¿½
 
   MESSAGEOK _MsgOK;
   _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, iDataPtr, true);
@@ -1625,12 +1649,12 @@ try{
   vReturnToCenterACK(0x5F, 0x17);
 
 /*
-SegmentType(®É¬q«¬ºA):[9]
-SegmentCount(®É¬q¤À¬Û¼Æ):[10]
+SegmentType(ï¿½É¬qï¿½ï¿½ï¿½A):[9]
+SegmentCount(ï¿½É¬qï¿½ï¿½ï¿½Û¼ï¿½):[10]
 
-Hour(°_©l®É):[11]
-Min(°_©l¤À):[12]
-PlanID(®É¨î­p¹º):[13]
+Hour(ï¿½_ï¿½lï¿½ï¿½):[11]
+Min(ï¿½_ï¿½lï¿½ï¿½):[12]
+PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[13]
 
 Year():[][]
 Month():[][]
@@ -1808,42 +1832,42 @@ try{
     for(int j = 0; j < 8; j++)                                                  //Init
       iGSignalMap[j] = 0;
 
-    if(_SignalMap.switchBit.b1 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b1 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[0] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b2 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b2 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[1] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b3 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b3 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[2] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b4 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b4 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[3] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b5 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b5 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[4] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b6 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b6 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[5] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b7 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b7 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[6] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
     }
-    if(_SignalMap.switchBit.b8 == true) {                                         //±qSignalMap¹ïÀ³CCTªº¿OÂI
+    if(_SignalMap.switchBit.b8 == true) {                                         //ï¿½qSignalMapï¿½ï¿½ï¿½ï¿½CCTï¿½ï¿½ï¿½Oï¿½I
       usiSignalStatus = stc._for_center_phase._ptr_subphase_step_signal_status[i][0][iSignalMapWayCount];
       iGSignalMap[7] = oTools.vCCTLightToVer30SignalMapLight_5F0F(0, usiSignalStatus);
       iSignalMapWayCount++;
@@ -2091,11 +2115,11 @@ try{
     stc._for_center_phase._signal_map=_SignalMap.DBit;
     stc._for_center_phase._signal_count=iSignalCount;
     stc._for_center_phase._subphase_count=iSubPhaseCount;
-    stc._for_center_phase._total_step_count = iSubPhaseCount * 5;  //¤­­Ó¨B¶¥
+    stc._for_center_phase._total_step_count = iSubPhaseCount * 5;  //ï¿½ï¿½ï¿½Ó¨Bï¿½ï¿½
 
 /*
     for(int j = 0; j < iSubPhaseCount; j++) {
-      for( int k=0; k< stc._for_center_phase._ptr_subphase_step_count[j]; k++ ) {  //¥ı§â©Ò¦³¨B¶¥³£¶ñ¥ş¬õ
+      for( int k=0; k< stc._for_center_phase._ptr_subphase_step_count[j]; k++ ) {  //ï¿½ï¿½ï¿½ï¿½Ò¦ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for(int l=0; l<stc._for_center_phase._signal_count; l++) {
           stc._for_center_phase._ptr_subphase_step_signal_status[j][k][l] = 0x3003;
         //OTMARKPRINTF  printf("[OT] stc._for_center_phase._ptr_subphase_step_signal_status[%d][%d][%d] = %x\n",j,k,l, stc._for_center_phase._ptr_subphase_step_signal_status[j][k][l]);
@@ -2112,7 +2136,7 @@ try{
       for( int k=0; k< iSubPhaseStepCount; k++ ) {
 
         for(int qq=0; qq<iSignalCount; qq++) {
-          ucStepSignal[qq] = DataMessageIn.packet[iDataPtr];   //¥ı§â¦P¤@®É¬Û¤§¿O¸¹©ñ¨ìarray
+          ucStepSignal[qq] = DataMessageIn.packet[iDataPtr];   //ï¿½ï¿½ï¿½ï¿½Pï¿½@ï¿½É¬Û¤ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½array
           iDataPtr++;
         }
 
@@ -2138,7 +2162,7 @@ try{
 
   smem.vWriteMsgToDOM("WritePhaseBy5F2F");
 
-  stc.Lock_to_Save_Phase_from_Center();             //Àx¦s¦^¥h
+  stc.Lock_to_Save_Phase_from_Center();             //ï¿½xï¿½sï¿½^ï¿½h
   smem.vSetINTData(TC92_iUpdatePhaseData, 1);
   smem.vSetTCPhasePlanSegTypeData(TC_Phase, iPhaseOrder, true);
 
@@ -2474,10 +2498,10 @@ try {
     printf("printfMsg after ACK.\n");
 
     if(TT == 1) {
-       smem.vSetINTData(TC92SignalLightStatus_5F0F_IntervalTime, TC);                            //±N¬ö¿ı¶¡¹j³]¨ìsmem¸Ì
+       smem.vSetINTData(TC92SignalLightStatus_5F0F_IntervalTime, TC);                            //ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½]ï¿½ï¿½smemï¿½ï¿½
     }
     if(TT == 2) {
-       smem.vSetINTData(TC92SignalStepStatus_5F03_IntervalTime, TC);                            //±N¬ö¿ı¶¡¹j³]¨ìsmem¸Ì
+       smem.vSetINTData(TC92SignalStepStatus_5F03_IntervalTime, TC);                            //ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½]ï¿½ï¿½smemï¿½ï¿½
     }
 
     return true;
@@ -2501,7 +2525,7 @@ try {
     if(TT == 2)
       TC = smem.vGetINTData(TC92SignalStepStatus_5F03_IntervalTime);
 
-    if(TC == 0)         //¨t²Î¬°¶Ç°eÅÜ¤Æ
+    if(TC == 0)         //ï¿½tï¿½Î¬ï¿½ï¿½Ç°eï¿½Ü¤ï¿½
        TC = 0;
     else if(TC == 1)
        TC = 1;
@@ -2513,7 +2537,7 @@ try {
        TC = 4;
     else if(TC == 300)
        TC = 5;
-    else if(TC == 0xFF)    //¨t²Îªº¶Ç°e¶g´Á¬° 0 (¤£¶Ç°e)
+    else if(TC == 0xFF)    //ï¿½tï¿½Îªï¿½ï¿½Ç°eï¿½gï¿½ï¿½ï¿½ï¿½ 0 (ï¿½ï¿½ï¿½Ç°e)
        TC = 0xFF;
 
     unsigned char data[6];
@@ -2623,7 +2647,7 @@ try {
       return true;
     }
 
-    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //¿ù»~§PÂ_
+    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //ï¿½ï¿½ï¿½~ï¿½Pï¿½_
     if(siStepID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x02); return false; }
 
     unsigned short int usiCSTC_RunningPhaseCurrentPhase = stc.vGetUSIData(CSTC_exec_plan_phase_order);  //Should +1
@@ -2701,7 +2725,7 @@ try {
       return true;
     }
 
-    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //¿ù»~§PÂ_
+    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //ï¿½ï¿½ï¿½~ï¿½Pï¿½_
     if(siStepID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x02); return false; }
 
     unsigned short int usiCSTC_RunningPhaseCurrentPhase = stc.vGetUSIData(CSTC_exec_plan_phase_order);  //Should +1
@@ -2780,7 +2804,7 @@ try {
       return true;
     }
 
-    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //¿ù»~§PÂ_
+    if(siSubPhaseID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x01); return false; }  //ï¿½ï¿½ï¿½~ï¿½Pï¿½_
     if(siStepID == 0) { vReturnToCenterNACK(0x5F, 0x1C, 0x04, 0x02); return false; }
 
     unsigned short int usiCSTC_RunningPhaseCurrentPhase = stc.vGetUSIData(CSTC_exec_plan_phase_order);  //Should +1
@@ -2959,3 +2983,144 @@ try{
     return 0;
   } catch (...) {}
 }
+//---------------------------------------------------------------------------
+bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+{
+  try
+  {
+
+	  unsigned short int SubPhaseId = DataMessageIn.packet[9];
+	  DATA_Bit ActuateType;//è§¸å‹•é¡å‹
+    ActuateType.DBit = DataMessageIn.packet[10];
+    unsigned short int TimeExtend = DataMessageIn.packet[11];
+	  unsigned short int tmpActPlan = DataMessageIn.packet[12];// ActuateData1 è§¸å‹•ç™¼ç”Ÿæ‰€è¦åŸ·è¡Œä¹‹è¨ˆç•«ç·¨è™Ÿ
+
+    if(DataMessageIn.packetLength < 17) { vReturnToCenterNACK(0x5F, 0x19, 0x08, 0x00); return false; }
+    else if(DataMessageIn.packetLength > 17) { vReturnToCenterNACK(0x5F, 0x19, 0x08, DataMessageIn.packetLength - 17); return false; }
+    if(tmpActPlan > 48) { vReturnToCenterNACK(0x5F, 0x19, 0x04, 0x13); return false; }
+    if(SubPhaseId > 8) { vReturnToCenterNACK(0x5F, 0x19, 0x04, 0x10); return false; }
+
+    smem.vSetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch,tmpActPlan);
+    smem.vSetActuatePhaseExtend(SubPhaseId);
+    smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable,ActuateType.switchBit.b5);
+
+    return true;
+  }
+  catch(...) { return false; }
+}
+//---------------------------------------------------------------------------
+bool PTRAFFIC92TC::vQueryActuatedType_5F49(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+{
+  try
+  {
+    DATA_Bit ActuateType;
+    ActuateType.DBit = DataMessageIn.packet[9];
+
+    if(DataMessageIn.packetLength > 13) { vReturnToCenterNACK(0x5F, 0x49, 0x08, 0x00); return false; }
+    else if(DataMessageIn.packetLength < 13) { vReturnToCenterNACK(0x5F, 0x49, 0x08, DataMessageIn.packetLength - 13); return false; }
+    if(ActuateType.switchBit.b5 = 0) return false;
+
+	  BYTE data[32] = { 0x00 };
+	  // unsigned short int data_length = 0;
+	  data[0] = 0x5F; 
+	  data[1] = 0xC9; 
+    data[2] = smem.vGetActuatePhaseExtend(); //SubPhaseId
+    data[3] = DataMessageIn.packet[9]; //ActuateType
+    data[4] = 0x00; //TimeExtend
+    data[5] = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch); // ActuateData1 è§¸å‹•ç™¼ç”Ÿæ‰€è¦åŸ·è¡Œä¹‹è¨ˆç•«ç·¨è™Ÿ
+    data[6] = 0x00; //ActuateData2 æœªå®šç¾©
+
+	  vReturnToCenterACK(0x5F,0x49);
+	  MESSAGEOK _MsgOK;
+	  _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 7, true);
+	  _MsgOK.InnerOrOutWard = cOutWard;
+	  writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
+    return true;
+  }
+  catch(...) { return false; }
+}
+//---------------------------------------------------------------------------
+// bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+// {
+//   try
+//   {
+//     /*
+//     packet[9]      SegmentType
+//     packet[10]     SegmentCount
+//     packet[11~13]  Hour+Min+ActuateType 
+//     */
+//     int i=0;
+// 	  unsigned short int plan[32]={0};
+// 	  if (stc.Lock_to_Load_Segment_for_Center(DataMessageIn.packet[9]))
+//     {
+// 	    for (int i=0;i<stc._for_center_segment._segment_count;i++) 
+//       {
+// 	      plan[i]=stc._for_center_segment._ptr_seg_exec_time[i]._planid;
+// 	    }
+// 	  }
+
+// 	  stc.Lock_to_Load_WeekDaySegment_for_Center();
+
+// 	  if(stc._for_center_segment._segment_type != DataMessageIn.packet[9]) return false; //æœ‰è©²æ™‚æ®µå‹æ…‹æ‰åŸ·è¡Œ
+// 	  if(stc._for_center_segment._segment_count != DataMessageIn.packet[10]) return false; //æ™‚æ®µåˆ†æ®µæ•¸ä¸€æ¨£æ‰åŸ·è¡Œ
+	  
+// 	  for (i=0;i<stc._for_center_segment._segment_count;i++) 
+//     {
+// 		  if(stc._for_center_segment._ptr_seg_exec_time[i]._hour!=DataMessageIn.packet[11+3*i])
+//       {
+// 		    printf("hour is error\n");
+// 		    return false;
+// 		  }
+// 		  if(stc._for_center_segment._ptr_seg_exec_time[i]._minute!=DataMessageIn.packet[12+3*i])
+//       {
+//         printf("min is error\n");
+// 		    return false;
+// 		  }
+// 	    stc._for_center_segment._ptr_seg_exec_time[i]._actMode=DataMessageIn.packet[13+3*i];
+// 	    printf("hour: %d minute: %d planid:%d actMode:%d\n",stc._for_center_segment._ptr_seg_exec_time[i]._hour,stc._for_center_segment._ptr_seg_exec_time[i]._minute,stc._for_center_segment._ptr_seg_exec_time[i]._planid,stc._for_center_segment._ptr_seg_exec_time[i]._actMode);
+// 	  }
+// 	  int numWeekDay=DataMessageIn.packet[11+3*i];
+
+// 	  if( DataMessageIn.packetLength < 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, 0x00); return false; }
+// 	  else if( DataMessageIn.packetLength > 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, DataMessageIn.packetLength - 12); return false; }
+// 	  vReturnToCenterACK(0x5F, 0x1A);
+
+
+// 	  stc.Lock_to_Save_Segment_from_Center();
+// 	  // smem.vSetTCPhasePlanSegTypeData(TC_SegType, DataMessageIn.packet[9], true);
+// 	  screenLast92TCPlanSegmentUpdate.DisplaySegmentUpdate();
+//     return true;
+//   }
+//   catch(...){ return false; }
+// }
+//---------------------------------------------------------------------------
+bool PTRAFFIC92TC::vQueryActuatedSegment_5F4A(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+{
+  try
+  {
+
+    return true;
+  }
+  catch(...){ return false; }
+}
+//---------------------------------------------------------------------------
+bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+{
+  try
+  {
+
+    return true;
+  }
+  catch(...){ return false; }
+}
+//---------------------------------------------------------------------------
+bool PTRAFFIC92TC::vQueryActuatedHolidaySegment_5F4B(MESSAGEOK DataMessageIn) //202009é‡å°ç«¹ç¸£ç›²äººè™ŸèªŒé–‹ç™¼,åªå¯¦ä½œè¡Œäººè§¸å‹•éƒ¨ä»½ by Eason
+{
+  try
+  {
+
+    return true;
+  }
+  catch(...){ return false; }
+}
+//---------------------------------------------------------------------------

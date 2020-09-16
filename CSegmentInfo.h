@@ -33,6 +33,7 @@ struct SSegExecTime
   unsigned short int _minute;  //amount according to _segment_count
   unsigned short int _planid;  //amount according to _segment_count
   unsigned short int _cadc_seg;
+  // unsigned short int _actMode;
   SSegExecTime(void):_cadc_seg(0){}
 };
 //----------------------------------------------------------

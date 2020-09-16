@@ -125,6 +125,7 @@ try {
     // iFirmwareDay = 23;
     iFirmwareFirstVersion = 3;  //韌體版本
     iFirmwareSecondVersion = 3;
+    iFirmwareSecond2Version = 0x10; //0x0a = A, 0x0b = B, .... ,0x10 = a, 0x11 = b .... ,0x16 = f;
     iFirmwareYear = 2020;  //年
     iFirmwareMonth = 9;  //月
     iFirmwareDay = 11;  //日
@@ -2775,6 +2776,9 @@ try {
       break;
     case(5):
       iTmp = iFirmwareSecondVersion;
+      break;
+    case(6):
+      iTmp = iFirmwareSecond2Version;
       break;
   }
   pthread_mutex_unlock(&mutexSmem);

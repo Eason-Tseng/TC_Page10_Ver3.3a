@@ -20,7 +20,7 @@ SCREENFWVerDT::~SCREENFWVerDT(void)
 {
 }
 //---------------------------------------------------------------------------
-void SCREENFWVerDT::DoKeyWork(BYTE key)              //¤w¹LÂo,¶i¨Óªº¬O0x80~0x98¤§¶¡,5X5«öÁä
+void SCREENFWVerDT::DoKeyWork(BYTE key)              //ï¿½wï¿½Lï¿½o,ï¿½iï¿½Óªï¿½ï¿½O0x80~0x98ï¿½ï¿½ï¿½ï¿½,5X5ï¿½ï¿½ï¿½ï¿½
 {
 try {
     switch (key) {
@@ -67,10 +67,11 @@ try {
     lcd240x128.DISPLAY_GRAPHIC(0,fwVerDTBitmap,128,30);
 
 
-    unsigned short verHi=smem.vGetFirmwareInfo_0FC3(4),verLo=smem.vGetFirmwareInfo_0FC3(5);
+    unsigned short verHi=smem.vGetFirmwareInfo_0FC3(4),verLo=smem.vGetFirmwareInfo_0FC3(5),verLo2=smem.vGetFirmwareInfo_0FC3(6);
     if ( (verHi<=9) && (verLo<=9) ) {
         lcd240x128.DISPLAY_GRAPHIC_XY(version[0].X,version[0].Y,word8x16[verHi],version[0].height,version[0].width/8);
         lcd240x128.DISPLAY_GRAPHIC_XY(version[1].X,version[1].Y,word8x16[verLo],version[1].height,version[1].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(version[2].X,version[2].Y,word8x16[verLo2],version[2].height,version[2].width/8);
     }
 
     unsigned short cYear=smem.vGetFirmwareInfo_0FC3(0),cMonth=smem.vGetFirmwareInfo_0FC3(1),cDay=smem.vGetFirmwareInfo_0FC3(2);
@@ -114,6 +115,10 @@ void SCREENFWVerDT::InitDispWord(void)
     version[1].Y=36;
     version[1].width=8;
     version[1].height=16;
+    version[2].X=136;
+    version[2].Y=36;
+    version[2].width=8;
+    version[2].height=16;
 
     for (int i=0;i<8;i++) {
          if (i>=0 && i<=3) fwDate[i].X=104+i*8;
@@ -144,9 +149,9 @@ void SCREENFWVerDT::DoKeyF2Work(void)
 {
 try {
     system("sync");
-    system("rm -f /cct/Data/SETTING/*.txt");                 //²M°£change log
+    system("rm -f /cct/Data/SETTING/*.txt");                 //ï¿½Mï¿½ï¿½change log
     system("sync");
-    system("/cct/update.sh");                                //§ó´«µ{¦¡
+    system("/cct/update.sh");                                //ï¿½ó´«µ{ï¿½ï¿½
     screenCtlSetup.DisplayCtlSetup();
   } catch (...) {}
 }

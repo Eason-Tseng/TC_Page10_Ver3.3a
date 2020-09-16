@@ -1,0 +1,43 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"memory": "cpp",
+			"new": "cpp",
+			"streambuf": "cpp",
+			"typeinfo": "cpp",
+			"algorithm": "cpp",
+			"*.tcc": "cpp",
+			"cassert": "cpp",
+			"cctype": "cpp",
+			"climits": "cpp",
+			"clocale": "cpp",
+			"cstddef": "cpp",
+			"cstdio": "cpp",
+			"cstdlib": "cpp",
+			"cstring": "cpp",
+			"ctime": "cpp",
+			"cwchar": "cpp",
+			"cwctype": "cpp",
+			"map": "cpp",
+			"string": "cpp",
+			"exception": "cpp",
+			"functional": "cpp",
+			"fstream": "cpp",
+			"iomanip": "cpp",
+			"ios": "cpp",
+			"iosfwd": "cpp",
+			"iostream": "cpp",
+			"istream": "cpp",
+			"limits": "cpp",
+			"locale": "cpp",
+			"ostream": "cpp",
+			"sstream": "cpp",
+			"utility": "cpp"
+		}
+	}
+}

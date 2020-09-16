@@ -1301,16 +1301,52 @@ try {
               */
 
               //OT980406
-              if(_exec_phase._phase_order == 0xB0 || _exec_phase._phase_order == 0x80) {
-                  mn="_stc_thread_light_control_func's STRATEGY_MANUAL";
-                ReSetStep(true,mn);
-              } else {
-                ReSetStep(false,mn);
-              }
+              // if(_exec_phase._phase_order == 0xB0 || _exec_phase._phase_order == 0x80) {
+              //     mn="_stc_thread_light_control_func's STRATEGY_MANUAL";
+              //   ReSetStep(true,mn);
+              // } else {
+              //   ReSetStep(false,mn);
+              // }
 
 
+              //     ReSetExtendTimer();
+              //     SetLightAfterExtendTimerReSet();
+              char msg[254];
+                unsigned short planorderTem;
+                planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
+                if(planorderTem == 0x80 || planorderTem == 0xB0)//舊Plan order == 閃光
+                {
+                  ReSetStep(true);
+                  if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
+                  {
+                    // printf("\n\n\n\n\n\nnow is add ALLRED 3sec test!!!\n\n\n\n\n");
+                    ReSetExtendTimer();
+                    AllRed5Seconds();
+                    _current_strategy = STRATEGY_TOD;
+                    // _exec_phase_current_subphase = 0;
+                    // _exec_phase_current_subphase_step = 0;
+                    ReSetStep(false);
+                    _current_strategy = STRATEGY_MANUAL;
+                    ReSetStep(false);
+                    SendRequestToKeypad();
+                    ReSetExtendTimer();
+                    SetLightAfterExtendTimerReSet();
+                    if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();                                
+                  }
+                  else//新舊Plan order == 閃光
+                  {
+                    ReSetExtendTimer();
+                    SetLightAfterExtendTimerReSet();
+                    if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();
+                  }
+                }
+                else
+                {
+                  ReSetStep(true);
                   ReSetExtendTimer();
                   SetLightAfterExtendTimerReSet();
+                  if (smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true) vCheckPhaseForTFDActuateExtendTime_5FCF();     
+                }
           break;
         }
         break;
@@ -1353,10 +1389,18 @@ try {
               char msg[254];
               unsigned short planorderTem;
               planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
-              sprintf(msg,"planorderTem == %02X",planorderTem);
-              smem.vWriteMsgToDOM(msg);
               if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
               {
+                BYTE data[32] = { 0x00 };
+                data[0] = 0x5F; 
+	              data[1] = 0x09; 
+                data[2] = 0x10; //行人觸動
+                data[3] = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch); // ActuateData1 觸動發生所要執行之計畫編號
+	              MESSAGEOK _MsgOK;
+	              _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 4, true);
+	              _MsgOK.InnerOrOutWard = cOutWard;
+	              writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
+
                 ReSetExtendTimer();
                 AllRed5Seconds();
                 _current_strategy = STRATEGY_TOD;
@@ -1371,7 +1415,6 @@ try {
               }
               else if(planorderTem == 0x80 || planorderTem == 0xB0)//舊Plan order == 閃光
               {
-                smem.vWriteMsgToDOM("1111");
                 ReSetStep(true);
                 if(planorderTem != stc.vGetUSIData(CSTC_exec_plan_phase_order))//新Plan order != 閃光
                 {
@@ -3646,6 +3689,12 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
           }  //else change PlanID = 48
         }
 
+        //     if(smem.vGetUCData(actuateSwitchChange_for_Arwen) >= 1){//arwen ++ 1000711
+        //    // printf("16\n");
+        //     m_segment_lastActMode=99;
+        //     smem.vSetUCData(actuateSwitchChange_for_Arwen,0);
+        // }
+
 //OT1000218
         if(smem.vGet5F18EffectTime() > 0) {  //this cycle run 5F18Plan
           int iRunPlanID = smem.vGetINTData(TC92_PlanOneTime5F18_PlanID);
@@ -3673,7 +3722,8 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
 
 
 //For Normol Actuate
-        if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 && _exec_phase._phase_order == 0xB0) {                    //When actuate, change to special plan
+        // if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 && _exec_phase._phase_order == 0xB0) {                    //When actuate, change to special plan
+        if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 || smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1) {
           printf("TC_CCT_ActuateType_By_TOD is 0, When actuate, change to special plan\n");
           if( smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch)) {       //Actuate By WalkManButton
               printf("TC_CCT_In_LongTanu_ActuateType_Switch is true, actuate By WalkManButton\n");
@@ -3689,24 +3739,25 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
                 smem.vSetBOOLData(TC_CCTActuate_TOD_Running, true);
               }
           }
-        } else if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1 && _exec_phase._phase_order == 0xB0) {
-
-              printf("smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1\n");
-
-              if(smem.vGetBOOLData(TC_Actuate_By_TFD) == 1 && _exec_segment._ptr_seg_exec_time[i]._cadc_seg == 0xEEEE) {
-                PlanUpdate = true;
-                smem.vSetBOOLData(TC_CCTActuate_TOD_Running, true);
-              } else if(smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch) == 1) {
-                PlanUpdate = true;
-                smem.vSetBOOLData(TC_CCTActuate_TOD_Running, true);
-              } else if(smem.vGetThisCycleRunCCJPlan5F18() == true) {
-              } else if(smem.vGetPlanForceTOD(_exec_segment._ptr_seg_exec_time[i]._planid) == true) {  //OT20140211           //check plan is force runable
-              } else {
-                printf("_exec_segment._ptr_seg_exec_time[i]._planid = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch)\n");
-                _exec_segment._ptr_seg_exec_time[i]._planid = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch);
-                PlanUpdate = true;
-              }
         }
+        // } else if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1 && _exec_phase._phase_order == 0xB0) {
+
+        //       printf("smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1\n");
+
+        //       if(smem.vGetBOOLData(TC_Actuate_By_TFD) == 1 && _exec_segment._ptr_seg_exec_time[i]._cadc_seg == 0xEEEE) {
+        //         PlanUpdate = true;
+        //         smem.vSetBOOLData(TC_CCTActuate_TOD_Running, true);
+        //       } else if(smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch) == 1) {
+        //         PlanUpdate = true;
+        //         smem.vSetBOOLData(TC_CCTActuate_TOD_Running, true);
+        //       } else if(smem.vGetThisCycleRunCCJPlan5F18() == true) {
+        //       } else if(smem.vGetPlanForceTOD(_exec_segment._ptr_seg_exec_time[i]._planid) == true) {  //OT20140211           //check plan is force runable
+        //       } else {
+        //         printf("_exec_segment._ptr_seg_exec_time[i]._planid = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch)\n");
+        //         _exec_segment._ptr_seg_exec_time[i]._planid = smem.vGetUSIData(TC_CCT_In_LongTanu_ActuateType_Switch);
+        //         PlanUpdate = true;
+        //       }
+        // }
 
 //        }
 

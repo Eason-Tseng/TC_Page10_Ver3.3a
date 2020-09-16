@@ -151,6 +151,7 @@ void SendRequestToKeypad(void);                                                 
 #define TCDynSegAdjustType  343
 #define TCDynSegAdjustSec   344
 #define TCDynSegRemainSec   345
+#define actuateSwitchChange_for_Arwen 346
 
 //OT Debug 0523
 #define TC_CCT_In_LongTanu_ActuateType_Switch 18

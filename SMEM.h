@@ -409,6 +409,7 @@ class SMEM
         int iFirmwareCompanyID;
         int iFirmwareFirstVersion;
         int iFirmwareSecondVersion;
+        int iFirmwareSecond2Version;
 
         int iAdjudicateReturnAddressBCDorHEX;
 

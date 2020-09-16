@@ -211,7 +211,7 @@ try{
 
   //then save!?
 
-/* ±±¨îµ¦²¤¤£³Q§ïÅÜ
+/* ï¿½ï¿½ï¿½îµ¦ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½ï¿½ï¿½ï¿½
   if(_ControlStrategy.switchBit.b2 == true) {
     stc.Lock_to_Set_Control_Strategy(STRATEGY_CADC);
     return true;
@@ -1132,22 +1132,22 @@ try{
     screenLast92TCPlanSegmentUpdate.DisplayPlanUpdate();
 
 /*
-PlanID(®É¨î­p¹º):[9]
-SubPhaseCount(¤À¬Û¼Æ):[10]
+PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[9]
+SubPhaseCount(ï¿½ï¿½ï¿½Û¼ï¿½):[10]
 
-MinGreen(µuºñ):[11]
-MaxGreen(ªøºñ):[12],[13]
-Yellow(¶À):[14]
-AllRed(¥þ¬õ):[15]
-PedGreenFlash(¦æ¤Hºñ°{):[16]
-PedRed(¦æ¤H¬õ):[17]
+MinGreen(ï¿½uï¿½ï¿½):[11]
+MaxGreen(ï¿½ï¿½ï¿½ï¿½):[12],[13]
+Yellow(ï¿½ï¿½):[14]
+AllRed(ï¿½ï¿½ï¿½ï¿½):[15]
+PedGreenFlash(ï¿½ï¿½Hï¿½ï¿½{):[16]
+PedRed(ï¿½ï¿½Hï¿½ï¿½):[17]
 */
 
   int i=0;
   bool bMollacOK=false;
 
 //OT Debug 0523
-  if (DataMessageIn.packet[10]==0)                    //°{¥ú®É¬Û
+  if (DataMessageIn.packet[10]==0)                    //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
     bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],1);
   else  bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
 
@@ -1158,8 +1158,8 @@ PedRed(¦æ¤H¬õ):[17]
 
   //OTMARKPRINTF  printf("Plan:%d, PhaseCount:%d\n",stc._for_center_plan._planid,stc._for_center_plan._subphase_count);
 
-    if (stc._for_center_plan._subphase_count==0) {   //°{¥ú®É¬Û
-        stc._for_center_plan._subphase_count=1;      //µêÀÀ¤@­ÓPhase
+    if (stc._for_center_plan._subphase_count==0) {   //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
+        stc._for_center_plan._subphase_count=1;      //ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½Phase
 
         stc._for_center_plan._ptr_subplaninfo[0]._min_green=0;
         stc._for_center_plan._ptr_subplaninfo[0]._max_green=0;
@@ -1188,7 +1188,7 @@ PedRed(¦æ¤H¬õ):[17]
         }
     }
 
-    stc.Lock_to_Save_Plan_from_Center();             //Àx¦s¦^¥h
+    stc.Lock_to_Save_Plan_from_Center();             //ï¿½xï¿½sï¿½^ï¿½h
 
   //OTMARKPRINTF  printf("SAVE Plan:%d OK!!\n",DataMessageIn.packet[9]);
 
@@ -1273,14 +1273,14 @@ try{
 //  vReturnToCenterACK(0x5F, 0x15);
 
   /*
-  PlanID(®É¨î­p¹º):[9]
-  Direct(°ò·Ç¤è¦V):[10]
-  PhaseOrder(®É¬Û½s¸¹):[11]
-  SubPhaseCount(¤À¬Û¼Æ):[12]
+  PlanID(ï¿½É¨ï¿½pï¿½ï¿½):[9]
+  Direct(ï¿½ï¿½Ç¤ï¿½V):[10]
+  PhaseOrder(ï¿½É¬Û½sï¿½ï¿½):[11]
+  SubPhaseCount(ï¿½ï¿½ï¿½Û¼ï¿½):[12]
 
-  Green(ºñ¿O®É¶¡):[13][14],[15][16],[17][18]
-  CycleTime(¶g´Á):[19][20]
-  Offset(®É®t):[21][22]
+  Green(ï¿½ï¿½Oï¿½É¶ï¿½):[13][14],[15][16],[17][18]
+  CycleTime(ï¿½gï¿½ï¿½):[19][20]
+  Offset(ï¿½É®t):[21][22]
   */
 
   int i=0;
@@ -1289,7 +1289,7 @@ try{
   //OT Debug 0523
   bool bRet;
 
-  if (iSubphaseCount == 0)    //°{¥ú®É¬Û
+  if (iSubphaseCount == 0)    //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
       bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9],1);
   else  bMollacOK=stc.Lock_to_Reset_Plan_for_Center(DataMessageIn.packet[9], iSubphaseCount);
 
@@ -1324,15 +1324,15 @@ try{
       stc._for_center_plan._offset=DataMessageIn.packet[15+2*i]*256+DataMessageIn.packet[16+2*i];
     //OTMARKPRINTF  printf("offset:%d\n",stc._for_center_plan._offset);
 
-      if (stc._for_center_plan._subphase_count==0) {            //°{¥ú®É¬Û
-          stc._for_center_plan._subphase_count=1;               //µêÀÀ¤@­ÓPhase
+      if (stc._for_center_plan._subphase_count==0) {            //ï¿½{ï¿½ï¿½ï¿½É¬ï¿½
+          stc._for_center_plan._subphase_count=1;               //ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½Phase
 
           //OT Debug 0523
           stc._for_center_plan._ptr_subplaninfo[i]._green=10;
       }
 
 //OT Debug 0523
-      bRet = stc.Lock_to_Save_Plan_from_Center();                      //Àx¦s¦^¥h
+      bRet = stc.Lock_to_Save_Plan_from_Center();                      //ï¿½xï¿½sï¿½^ï¿½h
       if(bRet) smem.vSetTCPhasePlanSegTypeData(TC_Plan, DataMessageIn.packet[9], true);
       else {
           vReturnToCenterNACK(0x5F, 0x15, 0x04, 0x05); return false;

@@ -60,31 +60,31 @@ void ScreenActuateEdit::initDispWord(void)
 {
 try {
     cActuateSwitch.X = 88;
-    cActuateSwitch.Y = 32;
+    cActuateSwitch.Y = 30;
     cActuateSwitch.width = 8;
     cActuateSwitch.height = 16;
 
   for (int i = 0; i < 2; i++) {
-    cActuatePlan[i].X = 144 + i*8;
-    cActuatePlan[i].Y = 57;
+    cActuatePlan[i].X = 136 + i*8;
+    cActuatePlan[i].Y = 48;
     cActuatePlan[i].width = 8;
     cActuatePlan[i].height = 16;
   }
 
-  cActuatePhaseID.X = 80;
-  cActuatePhaseID.Y = 80;
+  cActuatePhaseID.X = 72;
+  cActuatePhaseID.Y = 68;
   cActuatePhaseID.width = 8;
   cActuatePhaseID.height = 16;
 
   for (int i = 0; i < 5; i++) {
-    cActuateVDID[i].X = 104 + i*8;
-    cActuateVDID[i].Y = 80;
+    cActuateVDID[i].X = 136 + i*8;
+    cActuateVDID[i].Y = 68;
     cActuateVDID[i].width = 8;
     cActuateVDID[i].height = 16;
   }
 
-  cActuateType_By_TOD.X = 80;
-  cActuateType_By_TOD.Y = 106;
+  cActuateType_By_TOD.X = 72;
+  cActuateType_By_TOD.Y = 88;
   cActuateType_By_TOD.width = 8;
   cActuateType_By_TOD.height = 16;
 

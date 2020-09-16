@@ -12,7 +12,7 @@ class PTRAFFIC92TC
 
         PTRAFFIC92TC(void);
         ~PTRAFFIC92TC(void);
-        bool DoWorkViaPTraffic92(MESSAGEOK);                                    //®Ú¾ÚPTraffic92¨Óªº°T®§§@¨Æ±¡
+        bool DoWorkViaPTraffic92(MESSAGEOK);                                    //ï¿½Ú¾ï¿½PTraffic92ï¿½Óªï¿½ï¿½Tï¿½ï¿½ï¿½@ï¿½Æ±ï¿½
 
         bool vWriteControlStrategy5F10(MESSAGEOK);
         bool vQurryControlStrategy5F40(MESSAGEOK);  //with 5FC0
@@ -54,6 +54,13 @@ class PTRAFFIC92TC
         bool vSetDynSegParameter(MESSAGEOK);
         bool vQueryDynSegParameter(MESSAGEOK);
         bool vSetDynSegSwitch(MESSAGEOK);
+
+        bool vSetActuatedType_5F19(MESSAGEOK);
+        bool vQueryActuatedType_5F49(MESSAGEOK);
+        bool vSetActuatedSegment_5F1A(MESSAGEOK);
+        bool vQueryActuatedSegment_5F4A(MESSAGEOK);
+        bool vSetActuatedHolidaySegment_5F1B(MESSAGEOK);
+        bool vQueryActuatedHolidaySegment_5F4B(MESSAGEOK);
 
 
 
