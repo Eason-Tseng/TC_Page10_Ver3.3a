@@ -362,15 +362,15 @@ printf("Lock_to_Set_Control_Strategy by KEYPAD2!!!\n");
                        writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECCJDYNCTL);
                    } else if(smem.vGetUCData(TC92_ucControlStrategy) == 0x01) {
                        printf("smem.vGetUCData(TC92_ucControlStrategy):%d.\n", smem.vGetUCData(TC92_ucControlStrategy));
-                       if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == false) {
+                      //  if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == false) {
                          smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
                          stc.vChangeTODCurrentStepSec(2, 0);
-                       } else {
-                         usiTmp = stc.vGetUSIData(CSTC_exec_phase_current_subphase);
-                         if(usiTmp != 0) {                                        //Not First Subphase, can re-trigger
-                           smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
-                         }
-                       }
+                      //  } else {
+                        //  usiTmp = stc.vGetUSIData(CSTC_exec_phase_current_subphase);
+                        //  if(usiTmp != 0) {                                        //Not First Subphase, can re-trigger
+                          //  smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
+                        //  }
+                      //  }
                    }
 
 /*
@@ -416,15 +416,15 @@ printf("Lock_to_Set_Control_Strategy by KEYPAD2!!!\n");
                        writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECCJDYNCTL);
                      } else {
 
-                       if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == false) {
+                      //  if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == false) {
                          smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
                          stc.vChangeTODCurrentStepSec(2, 0);
-                       } else {
-                         usiTmp = stc.vGetUSIData(CSTC_exec_phase_current_subphase);
-                         if(usiTmp != 0) {                                        //Not First Subphase, can re-trigger
-                           smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
-                         }
-                       }
+                      //  } else {
+                        //  usiTmp = stc.vGetUSIData(CSTC_exec_phase_current_subphase);
+                        //  if(usiTmp != 0) {                                        //Not First Subphase, can re-trigger
+                          //  smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch, true);
+                        //  }
+                      //  }
 
                      }
                    }

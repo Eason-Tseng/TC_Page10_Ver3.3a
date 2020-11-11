@@ -2984,7 +2984,7 @@ try{
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason_Ver3.3a
 {
   try
   {
@@ -3009,7 +3009,7 @@ bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009針對
   catch(...) { return false; }
 }
 //---------------------------------------------------------------------------
-bool PTRAFFIC92TC::vQueryActuatedType_5F49(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+bool PTRAFFIC92TC::vQueryActuatedType_5F49(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason_Ver3.3a
 {
   try
   {

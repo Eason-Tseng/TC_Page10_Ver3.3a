@@ -1311,6 +1311,7 @@ try {
 
               //     ReSetExtendTimer();
               //     SetLightAfterExtendTimerReSet();
+              // Eason_Ver3.3a
               char msg[254];
                 unsigned short planorderTem;
                 planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
@@ -1391,7 +1392,7 @@ try {
               planorderTem = stc.vGetUSIData(CSTC_exec_plan_phase_order);//紀錄舊Plan order
               if((planorderTem == 0x80 || planorderTem == 0xB0) && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch))//舊Plan order == 閃光 && 行人觸動
               {
-                BYTE data[32] = { 0x00 };
+                BYTE data[32] = { 0x00 }; //Eason_Ver3.3a
                 data[0] = 0x5F; 
 	              data[1] = 0x09; 
                 data[2] = 0x10; //行人觸動
@@ -3723,7 +3724,7 @@ void CSTC::Lock_to_Determine_SegmentPlanPhase(void)
 
 //For Normol Actuate
         // if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 && _exec_phase._phase_order == 0xB0) {                    //When actuate, change to special plan
-        if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 || smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1) {
+        if(smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 0 || smem.vGetUCData(TC_CCT_ActuateType_By_TOD) == 1) {  //Eason_Ver3.3a 盲人觸動新增三色觸動
           printf("TC_CCT_ActuateType_By_TOD is 0, When actuate, change to special plan\n");
           if( smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch)) {       //Actuate By WalkManButton
               printf("TC_CCT_In_LongTanu_ActuateType_Switch is true, actuate By WalkManButton\n");
