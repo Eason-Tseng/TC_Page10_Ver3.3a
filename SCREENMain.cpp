@@ -44,7 +44,7 @@ SCREENMain::~SCREENMain(void)
 {
 }
 //---------------------------------------------------------------------------
-void SCREENMain::DoKeyWork(BYTE key)                                            //¤w¹LÂo,¶i¨Óªº¬O0x80~0x98¤§¶¡
+void SCREENMain::DoKeyWork(BYTE key)                                            //ï¿½wï¿½Lï¿½o,ï¿½iï¿½Óªï¿½ï¿½O0x80~0x98ï¿½ï¿½ï¿½ï¿½
 {
 try {
     switch (key) {
@@ -142,9 +142,9 @@ void SCREENMain::InitDispWord(void)
 {
 try {
     for (int i=0;i<8;i++) {
-         if (i>=0 && i<=3) dateWord[i].X=128+i*8;                               //xxxx¦~
-         else if (i>=4 && i<=5) dateWord[i].X=176+(i-4)*8;                      //xx¤ë
-         else if (i>=6 && i<=7) dateWord[i].X=208+(i-6)*8;                      //xx¤é
+         if (i>=0 && i<=3) dateWord[i].X=128+i*8;                               //xxxxï¿½~
+         else if (i>=4 && i<=5) dateWord[i].X=176+(i-4)*8;                      //xxï¿½ï¿½
+         else if (i>=6 && i<=7) dateWord[i].X=208+(i-6)*8;                      //xxï¿½ï¿½
          dateWord[i].Y=0;
          dateWord[i].width=8;
          dateWord[i].height=16;
@@ -262,7 +262,7 @@ void SCREENMain::DoKey8Work(void)
 //---------------------------------------------------------------------------
 void SCREENMain::DoKey9Work(void)
 {
-      screenActuateEdit.DisplayActuateEdit();
+      screenActuateEdit.DisplayActuateEdit(cMAIN);
 }
 
 //---------------------------------------------------------------------------

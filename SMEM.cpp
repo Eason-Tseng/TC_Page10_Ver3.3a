@@ -2834,6 +2834,10 @@ try {
       bSmemTC_SegTypeAlive[iNumber] = bStat;
       break;
 
+    case(TC_Act_SegType):
+      bActSmemTC_ActSegTypeAlive[iNumber] = bStat;
+      break;
+
     default:
       break;
     }

@@ -3040,61 +3040,92 @@ bool PTRAFFIC92TC::vQueryActuatedType_5F49(MESSAGEOK DataMessageIn) //202009針�
   catch(...) { return false; }
 }
 //---------------------------------------------------------------------------
-// bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
-// {
-//   try
-//   {
-//     /*
-//     packet[9]      SegmentType
-//     packet[10]     SegmentCount
-//     packet[11~13]  Hour+Min+ActuateType 
-//     */
-//     int i=0;
-// 	  unsigned short int plan[32]={0};
-// 	  if (stc.Lock_to_Load_Segment_for_Center(DataMessageIn.packet[9]))
-//     {
-// 	    for (int i=0;i<stc._for_center_segment._segment_count;i++) 
-//       {
-// 	      plan[i]=stc._for_center_segment._ptr_seg_exec_time[i]._planid;
-// 	    }
-// 	  }
+bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202103針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+{
+  try
+  {
+    /*
+    packet[9]      SegmentType           時段型態編號
+    packet[10]     SegmentCount          時段型態分段數
+    packet[11~13]  Hour+Min+ActuateType  時段（小時：分）+觸動編號
+    */
+    int i=0;
+    stc.Lock_to_Reset_Actuate_Segment_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
+    stc.Lock_to_Load_Actuate_WeekDaySegment_for_Center();
+    stc._for_center_segment._segment_type=DataMessageIn.packet[9];
+    stc._for_center_segment._segment_count=DataMessageIn.packet[10];
 
-// 	  stc.Lock_to_Load_WeekDaySegment_for_Center();
+    for (i=0;i<stc._for_center_segment._segment_count;i++) 
+    {
+      stc._for_center_segment._ptr_seg_exec_time[i]._hour=DataMessageIn.packet[11+3*i];
+      stc._for_center_segment._ptr_seg_exec_time[i]._minute=DataMessageIn.packet[12+3*i];
+      stc._for_center_segment._ptr_seg_exec_time[i]._planid=DataMessageIn.packet[13+3*i];
+    }
 
-// 	  if(stc._for_center_segment._segment_type != DataMessageIn.packet[9]) return false; //有該時段型態才執行
-// 	  if(stc._for_center_segment._segment_count != DataMessageIn.packet[10]) return false; //時段分段數一樣才執行
-	  
-// 	  for (i=0;i<stc._for_center_segment._segment_count;i++) 
-//     {
-// 		  if(stc._for_center_segment._ptr_seg_exec_time[i]._hour!=DataMessageIn.packet[11+3*i])
-//       {
-// 		    printf("hour is error\n");
-// 		    return false;
-// 		  }
-// 		  if(stc._for_center_segment._ptr_seg_exec_time[i]._minute!=DataMessageIn.packet[12+3*i])
-//       {
-//         printf("min is error\n");
-// 		    return false;
-// 		  }
-// 	    stc._for_center_segment._ptr_seg_exec_time[i]._actMode=DataMessageIn.packet[13+3*i];
-// 	    printf("hour: %d minute: %d planid:%d actMode:%d\n",stc._for_center_segment._ptr_seg_exec_time[i]._hour,stc._for_center_segment._ptr_seg_exec_time[i]._minute,stc._for_center_segment._ptr_seg_exec_time[i]._planid,stc._for_center_segment._ptr_seg_exec_time[i]._actMode);
-// 	  }
-// 	  int numWeekDay=DataMessageIn.packet[11+3*i];
+	  int numWeekDay=DataMessageIn.packet[11+3*i];
 
-// 	  if( DataMessageIn.packetLength < 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, 0x00); return false; }
-// 	  else if( DataMessageIn.packetLength > 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, DataMessageIn.packetLength - 12); return false; }
-// 	  vReturnToCenterACK(0x5F, 0x1A);
+	  if( DataMessageIn.packetLength < 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x16, 0x08, 0x00); return false; }
+    else if( DataMessageIn.packetLength > 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x16, 0x08, DataMessageIn.packetLength - 12); return false; }
+    vReturnToCenterACK(0x5F, 0x16);
 
-
-// 	  stc.Lock_to_Save_Segment_from_Center();
-// 	  // smem.vSetTCPhasePlanSegTypeData(TC_SegType, DataMessageIn.packet[9], true);
-// 	  screenLast92TCPlanSegmentUpdate.DisplaySegmentUpdate();
-//     return true;
-//   }
-//   catch(...){ return false; }
-// }
+    for (int j=0;j<numWeekDay;j++) 
+    {
+     switch (DataMessageIn.packet[12+3*i+j]) 
+     {
+        case 0x01:
+          stc._for_center_weekdayseg[0]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x02:
+          stc._for_center_weekdayseg[1]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x03:
+          stc._for_center_weekdayseg[2]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x04:
+          stc._for_center_weekdayseg[3]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x05:
+          stc._for_center_weekdayseg[4]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x06:
+          stc._for_center_weekdayseg[5]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x07:
+          stc._for_center_weekdayseg[6]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x11:
+          stc._for_center_weekdayseg[7]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x12:
+          stc._for_center_weekdayseg[8]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x13:
+          stc._for_center_weekdayseg[9]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x14:
+          stc._for_center_weekdayseg[10]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x15:
+          stc._for_center_weekdayseg[11]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x16:
+          stc._for_center_weekdayseg[12]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        case 0x17:
+          stc._for_center_weekdayseg[13]._segment_type=stc._for_center_segment._segment_type;
+        break;
+        default:
+        break;
+      }
+    }
+    stc.Lock_to_Save_Actuate_Segment_from_Center();
+    stc.Lock_to_Save_Actuate_WeekDaySegment_from_Center();
+    // screenLast92TCPlanSegmentUpdate.DisplaySegmentUpdate();
+    return true;
+  } catch(...){ return false; }
+}
 //---------------------------------------------------------------------------
-bool PTRAFFIC92TC::vQueryActuatedSegment_5F4A(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+bool PTRAFFIC92TC::vQueryActuatedSegment_5F4A(MESSAGEOK DataMessageIn) //202103針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason //5FCA
 {
   try
   {
@@ -3104,7 +3135,7 @@ bool PTRAFFIC92TC::vQueryActuatedSegment_5F4A(MESSAGEOK DataMessageIn) //202009�
   catch(...){ return false; }
 }
 //---------------------------------------------------------------------------
-bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //202103針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
 {
   try
   {
@@ -3114,7 +3145,7 @@ bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //20
   catch(...){ return false; }
 }
 //---------------------------------------------------------------------------
-bool PTRAFFIC92TC::vQueryActuatedHolidaySegment_5F4B(MESSAGEOK DataMessageIn) //202009針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason
+bool PTRAFFIC92TC::vQueryActuatedHolidaySegment_5F4B(MESSAGEOK DataMessageIn) //202103針對竹縣盲人號誌開發,只實作行人觸動部份 by Eason //5FCB
 {
   try
   {

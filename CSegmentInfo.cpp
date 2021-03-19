@@ -3,8 +3,13 @@
 #include <stdlib.h>
 
 pthread_mutex_t CSegmentInfo::_segment_mutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t CActsegmentInfo::_act_segment_mutex=PTHREAD_MUTEX_INITIALIZER;
 //----------------------------------------------------------
 CSegmentInfo::CSegmentInfo(void):_segment_type(1), _segment_count(0)
+{
+}
+//----------------------------------------------------------
+CActsegmentInfo::CActsegmentInfo(void):_segment_type(1), _segment_count(0)
 {
 }
 //----------------------------------------------------------
@@ -44,5 +49,32 @@ try{
   return *this;
 }
 catch(...){ perror("ERROR: CSegmentInfo::operator=\n");  return *this;}
+}
+//----------------------------------------------------------
+CActsegmentInfo &CActsegmentInfo::operator=(const CActsegmentInfo &actsegment_info)
+{
+try{
+  if(this!=&actsegment_info){
+//mallocFuck
+/*
+    if(_ptr_seg_exec_time){  //if(_ptr_plan_exec!=NULL), so that this CSegmentInfo is not empty
+        if(_segment_count==0) perror("ERROR: CSegmentInfo::operator=\n");
+      free(_ptr_seg_exec_time);
+      _segment_type=9999; _segment_count=0;
+    }
+*/
+    _segment_type  = actsegment_info._segment_type;
+    _segment_count = actsegment_info._segment_count;
+
+//mallocFuck    _ptr_seg_exec_time = (SSegExecTime *)malloc(sizeof(SSegExecTime)*_segment_count);
+    for( int j=0; j<_segment_count; j++ ){
+      _ptr_seg_exec_time[j]._hour     = actsegment_info._ptr_seg_exec_time[j]._hour;
+      _ptr_seg_exec_time[j]._minute   = actsegment_info._ptr_seg_exec_time[j]._minute;
+      _ptr_seg_exec_time[j]._actMode   = actsegment_info._ptr_seg_exec_time[j]._actMode;
+    }
+  }
+  return *this;
+}
+catch(...){ perror("ERROR: CActsegmentInfo::operator=\n");  return *this;}
 }
 //----------------------------------------------------------

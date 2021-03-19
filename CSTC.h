@@ -156,8 +156,11 @@ class CSTC
   static CPhaseInfo      phase[AMOUNT_PHASEORDER];
   static CPlanInfo       plan[AMOUNT_PLANID];
   static CSegmentInfo    segment[AMOUNT_SEGMENT];
+  static CActsegmentInfo _actuate_segment[AMOUNT_SEGMENT]; //Eason_Ver3.3a
   static CWeekDaySegType weekdayseg[AMOUNT_WEEKDAY_SEG]; //{0-6,7-13} according to {1-7,11-17}
+  static CWeekDaySegType weekdayactseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
   static CHoliDaySegType holidayseg[AMOUNT_HOLIDAY_SEG]; //{0-12} according to {8-20}
+  static CHoliDaySegType holidayactseg[AMOUNT_HOLIDAY_SEG]; //Eason_Ver3.3a
 
   static CReverseTimeInfo    reversetime[AMOUNT_REVERSETIME];
   static CWeekDayRevType weekdayrev[AMOUNT_WEEKDAY_REV]; //{0-6,7-13} according to {1-7,11-17}
@@ -169,6 +172,7 @@ class CSTC
   static CPhaseInfo   _exec_phase;
   static CPlanInfo    _exec_plan;
   static CSegmentInfo _exec_segment;
+  static CSegmentInfo _exec_actuate_segment;
   static CReverseTimeInfo _exec_rev;
 
   static unsigned short int _exec_phase_current_subphase;  //start from 0
@@ -196,6 +200,7 @@ class CSTC
 
   static void ReadPlanData(void);
   static void ReadSegmentData(void);
+  static void ReadActuateSegmentData(void); //Eason_Ver3.3a
   static void ReadReverseTimeTypeData(void);
 
   static void SetFlashAllRedPhaseInfo(void);
@@ -213,9 +218,12 @@ class CSTC
 //  static bool _for_center_plan_completed, _panel_plan_completed;
 
   static bool Lock_to_Load_Segment(CSegmentInfo &lsegment, const unsigned short int &segment_type);
+  static bool Lock_to_Load_Actuate_Segment(CActsegmentInfo &lsegment, const unsigned short int &segment_type); //Eason_Ver3.3a
 //OT20110517  static void Lock_to_Save_Segment(const CSegmentInfo &ssegment);
   static void Lock_to_Save_Segment(CSegmentInfo &ssegment);
+  static void Lock_to_Save_Actuate_Segment(CActsegmentInfo &ssegment); //Eason_Ver3.3a
   static bool Lock_to_Reset_Segment(CSegmentInfo &lsegment, const unsigned short int &segment_type, const unsigned short int &segment_count);
+  static bool Lock_to_Reset_Actuate_Segment(CActsegmentInfo &lsegment, const unsigned short int &segment_type, const unsigned short int &segment_count); //Eason_Ver3.3a
 
   static void Lock_to_Save_HoliDaySegment(const CHoliDaySegType &sholidaysegtype);
 
@@ -309,6 +317,7 @@ class CSTC
     static CPhaseInfo   _panel_phase,   _for_center_phase;
     static CPlanInfo    _panel_plan,    _for_center_plan;
     static CSegmentInfo _panel_segment, _for_center_segment;
+    static CActsegmentInfo _act_panel_segment, _act_center_segment;
     static CWeekDaySegType _panel_weekdayseg[AMOUNT_WEEKDAY_SEG];
     static CWeekDaySegType _for_center_weekdayseg[AMOUNT_WEEKDAY_SEG];
     static CHoliDaySegType _panel_holidayseg, _for_center_holidayseg;
@@ -336,10 +345,14 @@ class CSTC
     //segment_type={0-20}, weekday={1-7,11-17}, holiday_segment={8-20}
     static bool Lock_to_Load_Segment_for_Panel (const unsigned short int &segment_type);
     static bool Lock_to_Load_Segment_for_Center(const unsigned short int &segment_type);
+    static bool Lock_to_Load_Actuate_Segment_for_Panel (const unsigned short int &segment_type); //Eason_Ver3.3a
+    static bool Lock_to_Load_Actuate_Segment_for_Center(const unsigned short int &segment_type); //Eason_Ver3.3a
     static bool Lock_to_Load_Segment_for_Panel_inWeekDay (const unsigned short int &weekday);
     static bool Lock_to_Load_Segment_for_Center_inWeekDay(const unsigned short int &weekday);
     static bool Lock_to_Load_WeekDaySegment_for_Panel (void);
     static bool Lock_to_Load_WeekDaySegment_for_Center(void);
+    static bool Lock_to_Load_Actuate_WeekDaySegment_for_Panel (void); //Eason_Ver3.3a
+    static bool Lock_to_Load_Actuate_WeekDaySegment_for_Center(void); //Eason_Ver3.3a
     static bool Lock_to_Load_HoliDaySegment_for_Panel (const unsigned short int &holiday_segment_type);
     static bool Lock_to_Load_HoliDaySegment_for_Center(const unsigned short int &holiday_segment_type);
 
@@ -348,6 +361,8 @@ class CSTC
 
     static bool Lock_to_Reset_Segment_for_Panel (const unsigned short int &segment_type, const unsigned short int &segment_count);
     static bool Lock_to_Reset_Segment_for_Center(const unsigned short int &segment_type, const unsigned short int &segment_count);
+    static bool Lock_to_Reset_Actuate_Segment_for_Panel (const unsigned short int &segment_type, const unsigned short int &segment_count); //Eason_Ver3.3a
+    static bool Lock_to_Reset_Actuate_Segment_for_Center(const unsigned short int &segment_type, const unsigned short int &segment_count); //Eason_Ver3.3a
     //OT940622
     static bool Lock_to_Reset_Phase_for_Panel (const unsigned short int &phase_order, const unsigned short int &subphase_count, const unsigned short int &signal_count);
     static bool Lock_to_Reset_Phase_for_Center(const unsigned short int &phase_order, const unsigned short int &subphase_count, const unsigned short int &signal_count);
@@ -364,6 +379,10 @@ class CSTC
 
     static void Lock_to_Save_Segment_from_Panel(void);
     static void Lock_to_Save_Segment_from_Center(void);
+    static void Lock_to_Save_Actuate_Segment_from_Panel(void); //Eason_Ver3.3a
+    static void Lock_to_Save_Actuate_Segment_from_Center(void); //Eason_Ver3.3a
+    static void Lock_to_Save_Actuate_WeekDaySegment_from_Panel(void); //Eason_Ver3.3a
+    static void Lock_to_Save_Actuate_WeekDaySegment_from_Center(void); //Eason_Ver3.3a
     static void Lock_to_Save_WeekDaySegment_from_Panel(void);
     static void Lock_to_Save_WeekDaySegment_from_Center(void);
     static void Lock_to_Save_HoliDaySegment_from_Panel(void);
@@ -467,6 +486,8 @@ class CSTC
     unsigned int vGetRevTimerSec(void);
 
     bool vReportCCTRevStatus5F82(void);
+    static void vReport5F09(void); //Eason_Ver3.3a
+    unsigned short GetCurrentActNumber(); //Eason_Ver3.3a
 
     static unsigned int vDetermineTimeToNextPlan(void);
     static void vReportBF02CCTProtocalSendKaikinStep(void);

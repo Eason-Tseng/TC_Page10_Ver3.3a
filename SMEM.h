@@ -434,6 +434,7 @@ class SMEM
         bool bSmemTC_PhaseAlive[255];                                           //�ֳt�P�_Phase�O�_�s�b
         bool bSmemTC_PlanAlive[255];
         bool bSmemTC_SegTypeAlive[255];
+        bool bActSmemTC_ActSegTypeAlive[255];
 
         bool bTCDoorStatus;
 

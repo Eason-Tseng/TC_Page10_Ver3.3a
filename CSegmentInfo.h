@@ -51,6 +51,27 @@ class CSegmentInfo
     CSegmentInfo &operator=(const CSegmentInfo &segment_info);
 };
 //----------------------------------------------------------
+//----------------------------------------------------------
+struct SActSegExecTime
+{
+  unsigned short int _hour;  //amount according to _segment_count
+  unsigned short int _minute;  //amount according to _segment_count
+  unsigned short int _actMode;
+  // SActSegExecTime(void):_actMode(0){}
+};
+//----------------------------------------------------------
+class CActsegmentInfo
+{
+  public:
+    unsigned short int _segment_type;
+    unsigned short int _segment_count;
+    SActSegExecTime _ptr_seg_exec_time[32];  
 
+    static pthread_mutex_t _act_segment_mutex;
+
+    CActsegmentInfo(void);
+    CActsegmentInfo &operator=(const CActsegmentInfo &actsegment_info);
+};
+//----------------------------------------------------------
 
 #endif

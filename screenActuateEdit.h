@@ -10,15 +10,15 @@ class ScreenActuateEdit:public SCREEN
       ScreenActuateEdit(void);
       ~ScreenActuateEdit(void);
 
-      void DisplayActuateEdit(void);
-      void doKeyWork(BYTE);                                                     //®Ú¾ÚKEYªº­È§@¨Æ
+      void DisplayActuateEdit(int Pagein);
+      void doKeyWork(BYTE);                                                     //ï¿½Ú¾ï¿½KEYï¿½ï¿½ï¿½È§@ï¿½ï¿½
 
     private:
-//      DISP_WORD planEdit1[2];                                                     //¦¹­¶ªºªÅ¥Õ³B
-      unsigned int cPosition;                                                   //²{¦bªº¦ì¸m
-      int cSelect;                                                              //¤W¤U¤Á´«   0:¤é´Á 1:®É¶¡
+//      DISP_WORD planEdit1[2];                                                     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥Õ³B
+      unsigned int cPosition;                                                   //ï¿½{ï¿½bï¿½ï¿½ï¿½ï¿½m
+      int cSelect;                                                              //ï¿½Wï¿½Uï¿½ï¿½ï¿½ï¿½   0:ï¿½ï¿½ï¿½ 1:ï¿½É¶ï¿½
 //      BYTE planTemp[2];
-
+      int LastPage;
       DISP_WORD cActuateSwitch;
       bool bTMP_ActuateSwitch;
       DISP_WORD cActuatePlan[2];
@@ -34,11 +34,11 @@ class ScreenActuateEdit:public SCREEN
       unsigned char ucActuateType_By_TOD;
       DISP_WORD cActuateType_By_TOD;
 
-      void initDispWord(void);                                                  //ªì©l¤Æ¦¹µe­±ªº®y¼Ðµ¥°Ñ¼Æ
+      void initDispWord(void);                                                  //ï¿½ï¿½lï¿½Æ¦ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½yï¿½Ðµï¿½ï¿½Ñ¼ï¿½
       void DisplaySetSegtype(int,int);
 
       BYTE actuateEditBitmap[3840];
-      void loadBitmapFromFile(void);                                            //±N©³¹ÏLoad¶i°O¾ÐÅé
+      void loadBitmapFromFile(void);                                            //ï¿½Nï¿½ï¿½ï¿½ï¿½Loadï¿½iï¿½Oï¿½ï¿½ï¿½ï¿½
 
       void doKey0Work(void);
       void doKey1Work(void);

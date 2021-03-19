@@ -189,6 +189,7 @@ void SendRequestToKeypad(void);                                                 
 #define TC_Phase 0
 #define TC_Plan 1
 #define TC_SegType 2
+#define TC_Act_SegType 3
 
 #define TC_RedCountNA 0
 #define TC_RedCountVerHK 1
@@ -479,6 +480,12 @@ typedef struct sRevSyncStatus{
 #define cACTUATEARWENSTATUS 410
 
 #define cNETMASKSET         411
+//--------Eason_Ver3.3a-------------
+#define cACTWEEKDAYEDITF2       412
+#define cACTWEEKDAY             413
+#define cACTUATESEGTYPE         414
+#define cACTUATESEGTYPEEDITF2   415
+
 
 //smem.vSetACK_W2W / smem.vGetACK_W2W
 #define cTCToCenter          0

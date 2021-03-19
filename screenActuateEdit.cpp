@@ -1,4 +1,6 @@
 #include "screenActuateEdit.h"
+#include "screenActuateSegtype.h" //Eason_Ver3.3a
+#include "CSTC.h" //Eason_Ver3.3a
 
 #include "LCD240x128.h"
 #include "SCREENMain.h"
@@ -33,7 +35,7 @@ try {
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateEdit::DisplayActuateEdit(void)
+void ScreenActuateEdit::DisplayActuateEdit(int Pagein)
 {
 try {
     smem.SetcFace(cActuateEdit);
@@ -53,6 +55,9 @@ try {
     vDisplayActuateByTOD();
 
     setCursor8x16(cActuateSwitch.X,cActuateSwitch.Y+16);
+
+    if(Pagein != INVAILDVALUE)
+      LastPage = Pagein;
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
@@ -496,7 +501,14 @@ void ScreenActuateEdit::doKeyF3Work(void)
 //---------------------------------------------------------------------------
 void ScreenActuateEdit::doKeyF4Work(void)
 {
+  if(LastPage == cACTUATESEGTYPE) //Eason_Ver3.3a
+  {
+    screenActuateSegtype.DisplayActuateSegtype(stc.GetCurrentActNumber(),cActuateEdit);
+  }
+  else
+  {
     screenMain.DisplayMain();
+  }
 }
 //---------------------------------------------------------------------------
 void ScreenActuateEdit::doKeyUPWork(void)
