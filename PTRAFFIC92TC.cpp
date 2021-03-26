@@ -118,21 +118,21 @@ try {
           vQueryActuatedType_5F49(message);
           break;
 
-        // case 0x1A:
-        //   vSetActuatedSegment_5F1A(message);
-        //   break;
+        case 0x1A:
+          vSetActuatedSegment_5F1A(message);
+          break;
 
-        // case 0x4A:
-        //   vQueryActuatedSegment_5F4A(message);
-        //   break;
+        case 0x4A:
+          vQueryActuatedSegment_5F4A(message);
+          break;
 
-        // case 0x1B:
-        //   vSetActuatedHolidaySegment_5F1B(message);
-        //   break;
+        case 0x1B:
+          vSetActuatedHolidaySegment_5F1B(message);
+          break;
 
-        // case 0x4B:
-        //   vQueryActuatedHolidaySegment_5F4B(message);
-        //   break;
+        case 0x4B:
+          vQueryActuatedHolidaySegment_5F4B(message);
+          break;
 
         case 0x2F:
           vWritePhaseByStep5F2F(message);
@@ -3004,6 +3004,8 @@ bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009針對
     smem.vSetActuatePhaseExtend(SubPhaseId);
     smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable,ActuateType.switchBit.b5);
 
+    vReturnToCenterACK(0x5F, 0x16);
+
     return true;
   }
   catch(...) { return false; }
@@ -3050,69 +3052,78 @@ bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202103針
     packet[11~13]  Hour+Min+ActuateType  時段（小時：分）+觸動編號
     */
     int i=0;
+    DATA_Bit ActuateType;
     stc.Lock_to_Reset_Actuate_Segment_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
     stc.Lock_to_Load_Actuate_WeekDaySegment_for_Center();
-    stc._for_center_segment._segment_type=DataMessageIn.packet[9];
-    stc._for_center_segment._segment_count=DataMessageIn.packet[10];
-
-    for (i=0;i<stc._for_center_segment._segment_count;i++) 
+    stc._act_center_segment._segment_type=DataMessageIn.packet[9];
+    stc._act_center_segment._segment_count=DataMessageIn.packet[10];
+    
+    for (i=0;i<stc._act_center_segment._segment_count;i++) 
     {
-      stc._for_center_segment._ptr_seg_exec_time[i]._hour=DataMessageIn.packet[11+3*i];
-      stc._for_center_segment._ptr_seg_exec_time[i]._minute=DataMessageIn.packet[12+3*i];
-      stc._for_center_segment._ptr_seg_exec_time[i]._planid=DataMessageIn.packet[13+3*i];
+      stc._act_center_segment._ptr_seg_exec_time[i]._hour=DataMessageIn.packet[11+3*i];
+      stc._act_center_segment._ptr_seg_exec_time[i]._minute=DataMessageIn.packet[12+3*i];
+      ActuateType.DBit = DataMessageIn.packet[13+3*i];
+      if (ActuateType.switchBit.b5)
+      {
+        stc._act_center_segment._ptr_seg_exec_time[i]._actMode = 4;
+      }
+      else
+      {
+        stc._act_center_segment._ptr_seg_exec_time[i]._actMode = 0;
+      }
     }
 
 	  int numWeekDay=DataMessageIn.packet[11+3*i];
 
-	  if( DataMessageIn.packetLength < 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x16, 0x08, 0x00); return false; }
-    else if( DataMessageIn.packetLength > 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x16, 0x08, DataMessageIn.packetLength - 12); return false; }
-    vReturnToCenterACK(0x5F, 0x16);
+	  if( DataMessageIn.packetLength < 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, 0x00); return false; }
+    else if( DataMessageIn.packetLength > 15+(3*DataMessageIn.packet[10])+numWeekDay) { vReturnToCenterNACK(0x5F, 0x1A, 0x08, DataMessageIn.packetLength - 12); return false; }
+    vReturnToCenterACK(0x5F, 0x1A);
 
     for (int j=0;j<numWeekDay;j++) 
     {
      switch (DataMessageIn.packet[12+3*i+j]) 
      {
         case 0x01:
-          stc._for_center_weekdayseg[0]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[0]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x02:
-          stc._for_center_weekdayseg[1]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[1]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x03:
-          stc._for_center_weekdayseg[2]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[2]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x04:
-          stc._for_center_weekdayseg[3]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[3]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x05:
-          stc._for_center_weekdayseg[4]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[4]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x06:
-          stc._for_center_weekdayseg[5]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[5]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x07:
-          stc._for_center_weekdayseg[6]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[6]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x11:
-          stc._for_center_weekdayseg[7]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[7]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x12:
-          stc._for_center_weekdayseg[8]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[8]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x13:
-          stc._for_center_weekdayseg[9]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[9]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x14:
-          stc._for_center_weekdayseg[10]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[10]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x15:
-          stc._for_center_weekdayseg[11]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[11]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x16:
-          stc._for_center_weekdayseg[12]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[12]._segment_type=stc._act_center_segment._segment_type;
         break;
         case 0x17:
-          stc._for_center_weekdayseg[13]._segment_type=stc._for_center_segment._segment_type;
+          stc._act_center_weekdayseg[13]._segment_type=stc._act_center_segment._segment_type;
         break;
         default:
         break;
@@ -3120,7 +3131,6 @@ bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202103針
     }
     stc.Lock_to_Save_Actuate_Segment_from_Center();
     stc.Lock_to_Save_Actuate_WeekDaySegment_from_Center();
-    // screenLast92TCPlanSegmentUpdate.DisplaySegmentUpdate();
     return true;
   } catch(...){ return false; }
 }
@@ -3129,6 +3139,117 @@ bool PTRAFFIC92TC::vQueryActuatedSegment_5F4A(MESSAGEOK DataMessageIn) //202103�
 {
   try
   {
+    bool bSegStatus;
+    int iQuerySegmentType = DataMessageIn.packet[9];
+    int iWeekDay = DataMessageIn.packet[10];
+
+    if( DataMessageIn.packetLength < 14) { vReturnToCenterNACK(0x5F, 0x4A, 0x08, 0x00); return false; }
+    else if( DataMessageIn.packetLength > 14) { vReturnToCenterNACK(0x5F, 0x4A, 0x08, DataMessageIn.packetLength - 12); return false; }
+
+    if(iQuerySegmentType == 0xFF) 
+    {
+      stc.Lock_to_Load_Actuate_Segment_for_Center_inWeekDay(iWeekDay);
+    } 
+    else 
+    {
+      bSegStatus = smem.vGetTCPhasePlanSegTypeData(TC_Act_SegType, iQuerySegmentType);
+      if(bSegStatus == false) 
+      {
+        vReturnToCenterNACK(0x5F, 0x4A, 0x02, 0x0); return false;
+      }
+      stc.Lock_to_Load_Actuate_Segment_for_Center(iQuerySegmentType);
+    }
+
+    stc.Lock_to_Load_Actuate_WeekDaySegment_for_Center();
+    unsigned char data[256];
+    int iDataPtr = 4; //Form 6 Start to send SignalStatus
+    int iNumWeekDayPrt = 0;
+    int iNumWeekDay = 0;
+    data[0] = 0x5F;
+    data[1] = 0xCA;
+    data[2] = stc._act_center_segment._segment_type;
+    data[3] = stc._act_center_segment._segment_count;
+
+    for (int i=0;i<stc._act_center_segment._segment_count;i++) 
+    {
+      data[iDataPtr] = stc._act_center_segment._ptr_seg_exec_time[i]._hour;   iDataPtr++;
+      data[iDataPtr] = stc._act_center_segment._ptr_seg_exec_time[i]._minute; iDataPtr++;
+      if(stc._act_center_segment._ptr_seg_exec_time[i]._actMode == 4)
+      {
+        data[iDataPtr] = 0x10; iDataPtr++;
+      }
+      else
+      {
+        data[iDataPtr] = 0; iDataPtr++;
+      }
+    }
+
+    iNumWeekDayPrt = iDataPtr;
+    iDataPtr++;
+
+    if(stc._act_center_weekdayseg[0]._segment_type == data[2]) // data[2] = stc._for_center_segment._segment_type
+    {
+      data[iDataPtr] = 0x01; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[1]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x02; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[2]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x03; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[3]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x04; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[4]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x05; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[5]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x06; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[6]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x07; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[7]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x11; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[8]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x12; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[9]._segment_type == data[2]) 
+    { 
+      data[iDataPtr] = 0x13; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[10]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x14; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[11]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x15; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[12]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x16; iNumWeekDay++; iDataPtr++;
+    }
+    if(stc._act_center_weekdayseg[13]._segment_type == data[2]) 
+    {
+      data[iDataPtr] = 0x17; iNumWeekDay++; iDataPtr++;
+    }
+
+    data[iNumWeekDayPrt] = iNumWeekDay;                           
+
+    MESSAGEOK _MsgOK;
+    _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, iDataPtr, true);
+    _MsgOK.InnerOrOutWard = cOutWard;
+    writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
 
     return true;
   }
@@ -3140,6 +3261,43 @@ bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //20
   try
   {
 
+    if( DataMessageIn.packetLength < 20+(3*DataMessageIn.packet[10])) { vReturnToCenterNACK(0x5F, 0x1B, 0x08, 0x00); return false; }
+    else if( DataMessageIn.packetLength > 20+(3*DataMessageIn.packet[10])) { vReturnToCenterNACK(0x5F, 0x1B, 0x08, DataMessageIn.packetLength - 12); return false; }
+    vReturnToCenterACK(0x5F, 0x1B);
+
+    int i=0;
+
+    stc.Lock_to_Reset_Actuate_Segment_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
+    stc.Lock_to_Load_Actuate_HoliDaySegment_for_Center(DataMessageIn.packet[9]);
+    stc._act_center_segment._segment_type=DataMessageIn.packet[9];
+    stc._act_center_segment._segment_count=DataMessageIn.packet[10];
+
+    for (i=0;i<stc._act_center_segment._segment_count;i++) 
+    {
+      stc._act_center_segment._ptr_seg_exec_time[i]._hour=DataMessageIn.packet[11+3*i];
+      stc._act_center_segment._ptr_seg_exec_time[i]._minute=DataMessageIn.packet[12+3*i];
+      if(DataMessageIn.packet[13+3*i] == 0x10)
+      {
+        stc._act_center_segment._ptr_seg_exec_time[i]._actMode = 4;
+      }
+      else
+      {
+        stc._act_center_segment._ptr_seg_exec_time[i]._actMode = 0;
+      }
+    }
+
+    stc._act_center_holidayseg._segment_type=DataMessageIn.packet[9];
+    stc._act_center_holidayseg._start_year=DataMessageIn.packet[11+3*i]+1911;
+    stc._act_center_holidayseg._start_month=DataMessageIn.packet[12+3*i];
+    stc._act_center_holidayseg._start_day=DataMessageIn.packet[13+3*i];
+    stc._act_center_holidayseg._end_year=DataMessageIn.packet[14+3*i]+1911;
+    stc._act_center_holidayseg._end_month=DataMessageIn.packet[15+3*i];
+    stc._act_center_holidayseg._end_day=DataMessageIn.packet[16+3*i];
+
+
+    stc.Lock_to_Save_Actuate_Segment_from_Center();              //save
+    stc.Lock_to_Save_Actuate_HoliDaySegment_from_Center();       //save
+
     return true;
   }
   catch(...){ return false; }
@@ -3149,6 +3307,60 @@ bool PTRAFFIC92TC::vQueryActuatedHolidaySegment_5F4B(MESSAGEOK DataMessageIn) //
 {
   try
   {
+    int iQueryHolidaySegmentType = DataMessageIn.packet[9];
+
+    bool bSegStatus;
+    bSegStatus = smem.vGetTCPhasePlanSegTypeData(TC_Act_SegType, iQueryHolidaySegmentType);
+    if(bSegStatus == false) 
+    {
+      vReturnToCenterNACK(0x5F, 0x4B, 0x02, 0x0); return false;
+    }
+
+    if( DataMessageIn.packetLength < 13) { vReturnToCenterNACK(0x5F, 0x4B, 0x08, 0x00); return false; }
+    else if( DataMessageIn.packetLength > 13) { vReturnToCenterNACK(0x5F, 0x4B, 0x08, DataMessageIn.packetLength - 12); return false; }
+
+
+    if( stc.Lock_to_Load_Actuate_HoliDaySegment_for_Center(iQueryHolidaySegmentType) )
+    {
+    }
+    else 
+    {
+      return false;
+    }
+
+    unsigned char data[256];
+    int iDataPtr = 4; //Form 6 Start to send SignalStatus
+
+    data[0] = 0x5F;
+    data[1] = 0xCB;
+    data[2] = stc._act_center_holidayseg._segment_type;
+    data[3] = stc._act_center_segment._segment_count;
+
+    for (int i=0;i<stc._act_center_segment._segment_count;i++) 
+    {
+      data[iDataPtr] = stc._act_center_segment._ptr_seg_exec_time[i]._hour;   iDataPtr++;
+      data[iDataPtr] = stc._act_center_segment._ptr_seg_exec_time[i]._minute; iDataPtr++;
+      if(stc._act_center_segment._ptr_seg_exec_time[i]._actMode == 4)
+      {
+        data[iDataPtr] = 0x10; iDataPtr++;
+      }
+      else
+      {
+        data[iDataPtr] = 0; iDataPtr++;
+      }
+    }
+
+    data[iDataPtr] = stc._act_center_holidayseg._start_year - 1911; iDataPtr++;
+    data[iDataPtr] = stc._act_center_holidayseg._start_month;       iDataPtr++;
+    data[iDataPtr] = stc._act_center_holidayseg._start_day;         iDataPtr++;
+    data[iDataPtr] = stc._act_center_holidayseg._end_year - 1911;   iDataPtr++;
+    data[iDataPtr] = stc._act_center_holidayseg._end_month;         iDataPtr++;
+    data[iDataPtr] = stc._act_center_holidayseg._end_day;           iDataPtr++;
+
+    MESSAGEOK _MsgOK;
+    _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, iDataPtr, true);
+    _MsgOK.InnerOrOutWard = cOutWard;
+    writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
 
     return true;
   }

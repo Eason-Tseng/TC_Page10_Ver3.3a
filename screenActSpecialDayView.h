@@ -1,37 +1,42 @@
-#ifndef screenActuateWeekDayH
-#define screenActuateWeekDayH
+#ifndef screenActSpecialDayViewH
+#define screenActSpecialDayViewH
 //---------------------------------------------------------------------------
 #include "SCREEN.h"
 #include "CSegmentInfo.h"
 //---------------------------------------------------------------------------
-class ScreenActuateWeekDay:public SCREEN
+class ScreenActSpecialDayView:public SCREEN
 {
     public:
-      ScreenActuateWeekDay(void);
-      ~ScreenActuateWeekDay(void);
+      ScreenActSpecialDayView(void);
+      ~ScreenActSpecialDayView(void);
 
-      void DisplayActuateWeekDay(void);
+      void DisplayActSpecialDayView(int);
       void doKeyWork(BYTE);                                                     //�ھ�KEY���ȧ@��
 
     private:
       DISP_WORD dateWord[8];                                                    //��ܤ�j���m
-      DISP_WORD segtypeWord[28];                                                //��ܬP�d@~�C���ɶ���s��(1~20)����m
+      DISP_WORD specialDayWord[16];                                             //��ܸ�ƪ���m
+      DISP_WORD SpecialDayIDWord[2];                                            //special day No.
+      DISP_WORD SegIDWord[2];
 
-      //CCJ++
-      BYTE WeekTemp[28];
-      //CCJ--
+      int cPosition;                                                            //
+      int cSelect;                                                              //0:���\uFFFD 1:�S�O�餺�e
+      int cFace;
 
       void initDispWord(void);                                                  //��l�Ʀ��e�����y�е��Ѽ�
       void DisplayDate(void);                                                   //��ܤ��
+      void vDiskplaySegID(int);
+      void vDiskplayActSpecialDayID(int);
 
-      CActWeekDaySegType actweekDaySegtype[14];
-      void LoadActuateWeekDaySegtype(void);                                            //�q�ǫi���̱o��
-      void DisplayActuateWeekDaySegtype(void);                                         //��ܦb�e���W
+      CHoliDaySegType specialDaySegtype[13];
 
-      int cDatePosition;
-      int cSegPosition;
+      int iSeg;
+      unsigned int iSpecialDayID;
 
-      BYTE weekDayBitmap[3840];                                                 //����
+      void LoadActSpecialDaySegtype(void);                                         //�q�ǫi���̱o��
+      void DisplayActSpecialDaySegtype(int);                                       //��ܦb�e���W
+
+      BYTE specialDayBitmap[3840];                                              //����
       void loadBitmapFromFile(void);                                            //�N����Load�i�O����
 
       void doKey0Work(void);
@@ -62,6 +67,5 @@ class ScreenActuateWeekDay:public SCREEN
       void doKeyDefaultWork(void);
 };
 //---------------------------------------------------------------------------
-extern ScreenActuateWeekDay screenActuateWeekDay;
+extern ScreenActSpecialDayView screenActSpecialDayView;
 #endif
-

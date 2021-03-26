@@ -1,7 +1,10 @@
 #include "screenSegtypeMenu.h"
 #include "screenWeekDay.h"
-#include "screenActuateWeekDay.h"
 #include "screenSpecialDay.h"
+//----------Eason_Ver3.3a-----------
+#include "screenActuateWeekDay.h"
+#include "screenActspecialDay.h"
+//----------------------------------
 #include "screenSegtypeSel.h"
 #include <stdio.h>
 
@@ -163,12 +166,12 @@ void ScreenSegtypeMenu::doKey2Work(void)
 //---------------------------------------------------------------------------
 void ScreenSegtypeMenu::doKey3Work(void)
 {
-    // screenSegtypeSel.DisplaySegtypeSel();
-    screenActuateWeekDay.DisplayActuateWeekDay();
+    screenActuateWeekDay.DisplayActuateWeekDay(); //Eason_Ver3.3a
 }
 //---------------------------------------------------------------------------
 void ScreenSegtypeMenu::doKey4Work(void)
 {
+    screenActspecialDay.DisplayActspecialDay(); //Eason_Ver3.3a
 }
 //---------------------------------------------------------------------------
 void ScreenSegtypeMenu::doKey5Work(void)

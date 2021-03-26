@@ -17,7 +17,17 @@ CWeekDaySegType::CWeekDaySegType(void):_segment_type(0), _weekday(1)
 {
 }
 //----------------------------------------------------------
+CActWeekDaySegType::CActWeekDaySegType(void):_segment_type(0), _weekday(1)
+{
+}
+//----------------------------------------------------------
 CHoliDaySegType::CHoliDaySegType(void):_segment_type(0), _start_year(0), _start_month(0), _start_day(0)
+                                                       , _end_year(0)  , _end_month(0)  , _end_day(0)
+
+{
+}
+//----------------------------------------------------------
+CActHoliDaySegType::CActHoliDaySegType(void):_segment_type(0), _start_year(0), _start_month(0), _start_day(0)
                                                        , _end_year(0)  , _end_month(0)  , _end_day(0)
 
 {

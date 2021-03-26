@@ -13,6 +13,15 @@ class CWeekDaySegType
     CWeekDaySegType(void);
 };
 //----------------------------------------------------------
+class CActWeekDaySegType
+{
+  public:
+    unsigned short int _segment_type;  //SegmentType is 0~7 for weekday
+    unsigned short int _weekday;  //weekday is defined as {1-7,11-17} in P_92
+                                  //and is re-defined as {0-6,7-13} accordingly
+    CActWeekDaySegType(void);
+};
+//----------------------------------------------------------
 class CHoliDaySegType
 {
   public:
@@ -25,6 +34,20 @@ class CHoliDaySegType
     unsigned short int _end_day;
 
     CHoliDaySegType(void);
+};
+//----------------------------------------------------------
+class CActHoliDaySegType
+{
+  public:
+    unsigned short int _segment_type;  //SegmentType is 8~20 for holiday
+    unsigned short int _start_year;
+    unsigned short int _start_month;
+    unsigned short int _start_day;
+    unsigned short int _end_year;
+    unsigned short int _end_month;
+    unsigned short int _end_day;
+
+    CActHoliDaySegType(void);
 };
 //----------------------------------------------------------
 struct SSegExecTime

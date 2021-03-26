@@ -1,37 +1,32 @@
-#ifndef screenActuateWeekDayH
-#define screenActuateWeekDayH
+#ifndef screenActspecialDayH
+#define screenActspecialDayH
 //---------------------------------------------------------------------------
 #include "SCREEN.h"
 #include "CSegmentInfo.h"
 //---------------------------------------------------------------------------
-class ScreenActuateWeekDay:public SCREEN
+class ScreenActspecialDay:public SCREEN
 {
     public:
-      ScreenActuateWeekDay(void);
-      ~ScreenActuateWeekDay(void);
+      ScreenActspecialDay(void);
+      ~ScreenActspecialDay(void);
 
-      void DisplayActuateWeekDay(void);
+      void DisplayActspecialDay(void);
       void doKeyWork(BYTE);                                                     //�ھ�KEY���ȧ@��
 
     private:
       DISP_WORD dateWord[8];                                                    //��ܤ�j���m
-      DISP_WORD segtypeWord[28];                                                //��ܬP�d@~�C���ɶ���s��(1~20)����m
-
-      //CCJ++
-      BYTE WeekTemp[28];
-      //CCJ--
+      DISP_WORD segtypeWord[52];                                                //��ܬP�d@~�C���ɶ���s��(1~20)����m
 
       void initDispWord(void);                                                  //��l�Ʀ��e�����y�е��Ѽ�
       void DisplayDate(void);                                                   //��ܤ��
 
-      CActWeekDaySegType actweekDaySegtype[14];
-      void LoadActuateWeekDaySegtype(void);                                            //�q�ǫi���̱o��
-      void DisplayActuateWeekDaySegtype(void);                                         //��ܦb�e���W
+      CActWeekDaySegType weekDaySegtype[14];
+      void DisplayActWeekDaySegtype(void);                                         //��ܦb�e���W
 
       int cDatePosition;
       int cSegPosition;
 
-      BYTE weekDayBitmap[3840];                                                 //����
+      BYTE speicalDayBitmap[3840];                                                 //����
       void loadBitmapFromFile(void);                                            //�N����Load�i�O����
 
       void doKey0Work(void);
@@ -62,6 +57,6 @@ class ScreenActuateWeekDay:public SCREEN
       void doKeyDefaultWork(void);
 };
 //---------------------------------------------------------------------------
-extern ScreenActuateWeekDay screenActuateWeekDay;
+extern ScreenActspecialDay screenActspecialDay;
 #endif
 

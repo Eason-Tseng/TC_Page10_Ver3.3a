@@ -485,6 +485,9 @@ typedef struct sRevSyncStatus{
 #define cACTWEEKDAY             413
 #define cACTUATESEGTYPE         414
 #define cACTUATESEGTYPEEDITF2   415
+#define cACTSPECIALDAY          416
+#define cACTSPECIALDAYVIEW      417
+#define cACTSPECIALDAYEDITF2    418
 
 
 //smem.vSetACK_W2W / smem.vGetACK_W2W

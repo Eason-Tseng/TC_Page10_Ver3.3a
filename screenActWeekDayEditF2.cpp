@@ -88,7 +88,7 @@ try {
 
 //replace origral data
     if(iSegtypePreviewSelectd != INVAILDVALUE && iSegtypePreviewSelectd >= 1 && iSegtypePreviewSelectd <= 20)
-      stc._panel_weekdayseg[iSegPositionPreview/2]._segment_type = iSegtypePreviewSelectd;
+      stc._act_panel_weekdayseg[iSegPositionPreview/2]._segment_type = iSegtypePreviewSelectd;
 
     LoadActWeekDaySegtype(false);
 
@@ -167,8 +167,8 @@ try {
       stc.Lock_to_Load_Actuate_WeekDaySegment_for_Panel();
     }
     for (int i=0;i<14;i++) {
-         actweekDaySegtype[i]._segment_type=stc._panel_weekdayseg[i]._segment_type;
-         actweekDaySegtype[i]._weekday=stc._panel_weekdayseg[i]._weekday;
+         actweekDaySegtype[i]._segment_type=stc._act_panel_weekdayseg[i]._segment_type;
+         actweekDaySegtype[i]._weekday=stc._act_panel_weekdayseg[i]._weekday;
 
          WeekTemp[i*2] = actweekDaySegtype[i]._segment_type / 10;
          WeekTemp[i*2+1] = actweekDaySegtype[i]._segment_type % 10;
@@ -208,8 +208,8 @@ try {
         tmp_segtype += WeekTemp[i*2+1];
         if(tmp_segtype != 0)
           actweekDaySegtype[i]._segment_type = tmp_segtype;
-        stc._panel_weekdayseg[i]._segment_type=actweekDaySegtype[i]._segment_type;
-        stc._panel_weekdayseg[i]._weekday=actweekDaySegtype[i]._weekday;
+        stc._act_panel_weekdayseg[i]._segment_type=actweekDaySegtype[i]._segment_type;
+        stc._act_panel_weekdayseg[i]._weekday=actweekDaySegtype[i]._weekday;
       }
 
       if(bSaveToCSTC) {

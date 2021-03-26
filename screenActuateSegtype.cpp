@@ -3,7 +3,7 @@
 #include "screenActuateSegtypeEditF2.h"
 
 #include "screenActuateWeekDay.h"
-#include "screenSpecialDay.h"
+#include "screenActspecialDay.h"
 #include "screenActuateEdit.h"
 #include "screenRunTableList.h"
 
@@ -616,8 +616,8 @@ void ScreenActuateSegtype::doKeyF3Work(void)
 void ScreenActuateSegtype::doKeyF4Work(void)
 {
 //    screenSegtypeMenu.DisplaySegtypeMenu();
-    if(iLastPage == cSPECIALDAY) {
-      screenSpecialDay.DisplaySpecialDay();
+    if(iLastPage == cACTSPECIALDAY) {
+      screenActspecialDay.DisplayActspecialDay();
     }
     else if(iLastPage == cACTWEEKDAY){
       screenActuateWeekDay.DisplayActuateWeekDay();

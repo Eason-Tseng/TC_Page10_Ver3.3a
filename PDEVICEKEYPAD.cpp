@@ -118,6 +118,9 @@
 #include "screenActWeekDayEditF2.h"
 #include "screenActuateSegtype.h"
 #include "screenActuateSegtypeEditF2.h"
+#include "screenActspecialDay.h"
+#include "screenActSpecialDayView.h"
+#include "screenActSpecialDayEditF2.h"
 //-------------------------------------
 
 /*OTCombo0714*/
@@ -355,7 +358,7 @@ printf("Lock_to_Set_Control_Strategy by KEYPAD2!!!\n");
                  }
 
 //OT Debug 0523
-                 if(DATA_P3.switchBit.b6 == 0 && cSwitch != 3 && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable) && stc.GetCurrentActNumber() == 4) { //Actuate
+                 if(DATA_P3.switchBit.b6 == 0 && cSwitch != 3 && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable) && stc.GetCurrentActMode(0) == 4) { //Actuate
                    printf("Get Walkman Button Signal.\n");
 
                    if( smem.vGetUCData(TC_CCT_Send_ActuateArwen_Protocal) > 0 ) {
@@ -407,7 +410,7 @@ printf("Lock_to_Set_Control_Strategy by KEYPAD2!!!\n");
 */
                  }
 
-                 if(DATA_P3.switchBit.b6 == 0 && cSwitch != 3 && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable) && stc.GetCurrentActNumber() == 4) { //Actuate
+                 if(DATA_P3.switchBit.b6 == 0 && cSwitch != 3 && smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable) && stc.GetCurrentActMode(0) == 4) { //Actuate
                    printf("Get Walkman Button Signal.\n");
                    printf("smem.vGetUCData(TC92_ucControlStrategy):%d.\n", smem.vGetUCData(TC92_ucControlStrategy));
                    if(smem.vGetUCData(TC92_ucControlStrategy) == 0x01) {        //0x04 == TOD
@@ -879,6 +882,18 @@ try {
 
             case cACTUATESEGTYPEEDITF2:
                   screenActuateSegtypeEditF2.doKeyWork(key);
+            break;
+
+            case cACTSPECIALDAY:
+                  screenActspecialDay.doKeyWork(key);
+            break;
+
+            case cACTSPECIALDAYVIEW:
+                  screenActSpecialDayView.doKeyWork(key);
+            break;
+
+            case cACTSPECIALDAYEDITF2:
+                  screenActSpecialDayEditF2.doKeyWork(key);
             break;
 //---------------------------------------------------------------
 

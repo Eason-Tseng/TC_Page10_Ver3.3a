@@ -126,9 +126,9 @@ try {
     iFirmwareFirstVersion = 3;  //韌體版本
     iFirmwareSecondVersion = 3;
     iFirmwareSecond2Version = 0x10; //0x0a = A, 0x0b = B, .... ,0x10 = a, 0x11 = b .... ,0x16 = f;
-    iFirmwareYear = 2020;  //年
-    iFirmwareMonth = 11;  //月
-    iFirmwareDay = 11;  //日
+    iFirmwareYear = 2021;  //年
+    iFirmwareMonth = 03;  //月
+    iFirmwareDay = 26;  //日
 
     //20140415, add dynamic seg for HsinChu dynamic control.
     //20140211, add special version for SIPA ped.
@@ -2804,6 +2804,10 @@ try {
 
     case(TC_SegType):
       bTmp = bSmemTC_SegTypeAlive[iNumber];
+      break;
+    
+    case(TC_Act_SegType):
+      bTmp = bActSmemTC_ActSegTypeAlive[iNumber];
       break;
 
     default:

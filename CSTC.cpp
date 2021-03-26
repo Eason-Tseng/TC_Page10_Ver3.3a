@@ -100,13 +100,17 @@ CActsegmentInfo CSTC::_act_panel_segment;
 CActsegmentInfo CSTC::_act_center_segment;
 
 CWeekDaySegType CSTC::weekdayseg[AMOUNT_WEEKDAY_SEG];
-CWeekDaySegType CSTC::weekdayactseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
+CActWeekDaySegType CSTC::actweekdayseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
 CWeekDaySegType CSTC::_panel_weekdayseg[AMOUNT_WEEKDAY_SEG];
 CWeekDaySegType CSTC::_for_center_weekdayseg[AMOUNT_WEEKDAY_SEG];
+CActWeekDaySegType CSTC::_act_panel_weekdayseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
+CActWeekDaySegType CSTC::_act_center_weekdayseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
 CHoliDaySegType CSTC::holidayseg[AMOUNT_HOLIDAY_SEG];
-CHoliDaySegType CSTC::holidayactseg[AMOUNT_HOLIDAY_SEG]; //Eason_Ver3.3a
 CHoliDaySegType CSTC::_panel_holidayseg;
 CHoliDaySegType CSTC::_for_center_holidayseg;
+CActHoliDaySegType CSTC::actholidayseg[AMOUNT_HOLIDAY_SEG]; //Eason_Ver3.3a
+CActHoliDaySegType CSTC::_act_panel_holidayseg; //Eason_Ver3.3a
+CActHoliDaySegType CSTC::_act_center_holidayseg; //Eason_Ver3.3a
 
 CReverseTimeInfo CSTC::reversetime[AMOUNT_REVERSETIME];
 CReverseTimeInfo CSTC::_exec_rev;
@@ -213,6 +217,8 @@ try {
   for(unsigned short int i=0;i<AMOUNT_WEEKDAY_SEG;i++){
     weekdayseg[i]._segment_type=0;
     weekdayseg[i]._weekday=(i<7)?(i+1):(i+4); //{0-6,7-13} according to {1-7,11-17}
+    actweekdayseg[i]._segment_type=0;
+    actweekdayseg[i]._weekday=(i<7)?(i+1):(i+4); //{0-6,7-13} according to {1-7,11-17}
   }
   for(unsigned short int i=0;i<AMOUNT_HOLIDAY_SEG;i++)
     holidayseg[i]._segment_type=0;
@@ -535,17 +541,17 @@ void CSTC::ReadActuateSegmentData( void ) //Eason_Ver3.3a
     {
       for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
       {
-        fread( &weekdayactseg[i]._segment_type, sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &weekdayactseg[i]._weekday,      sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actweekdayseg[i]._segment_type, sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actweekdayseg[i]._weekday,      sizeof( unsigned short int ), 1, act_segment_rfile );
 
-        if(weekdayactseg[i]._segment_type>7)
+        if(actweekdayseg[i]._segment_type>7)
         perror("ERROR: ActWeekDaySegment not in {0-7}\n");
 
-        if((i< 7 && (i!=weekdayactseg[i]._weekday-1)) || (i>=7 && (i!=weekdayactseg[i]._weekday-4)))
-        perror("ERROR: WeekDayFile WeekDay != weekdayactseg[i]._weekday\n");
+        if((i< 7 && (i!=actweekdayseg[i]._weekday-1)) || (i>=7 && (i!=actweekdayseg[i]._weekday-4)))
+        perror("ERROR: WeekDayFile WeekDay != actweekdayseg[i]._weekday\n");
 
-        if     (i< 7) weekdayactseg[i]._weekday=(i+1);
-        else if(i>=7) weekdayactseg[i]._weekday=(i+4);
+        if     (i< 7) actweekdayseg[i]._weekday=(i+1);
+        else if(i>=7) actweekdayseg[i]._weekday=(i+4);
       }
       fclose( act_segment_rfile );
     }
@@ -558,14 +564,14 @@ void CSTC::ReadActuateSegmentData( void ) //Eason_Ver3.3a
     {
       for(int i=0;i<AMOUNT_HOLIDAY_SEG;i++)
       {
-        fread( &holidayactseg[i]._segment_type, sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._start_year,   sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._start_month,  sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._start_day,    sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._end_year,     sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._end_month,    sizeof( unsigned short int ), 1, act_segment_rfile );
-        fread( &holidayactseg[i]._end_day,      sizeof( unsigned short int ), 1, act_segment_rfile );
-        if(holidayactseg[i]._segment_type<8||holidayactseg[i]._segment_type>20)
+        fread( &actholidayseg[i]._segment_type, sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._start_year,   sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._start_month,  sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._start_day,    sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._end_year,     sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._end_month,    sizeof( unsigned short int ), 1, act_segment_rfile );
+        fread( &actholidayseg[i]._end_day,      sizeof( unsigned short int ), 1, act_segment_rfile );
+        if(actholidayseg[i]._segment_type<8||actholidayseg[i]._segment_type>20)
         perror("ERROR: ActHoliDaySegment not in {8-20}\n");
       }
       fclose( act_segment_rfile );
@@ -1518,6 +1524,7 @@ try {
               }
               else
               {
+                if(smem.vGetBOOLData(TC_CCT_In_LongTanu_ActuateType_Switch)) vReport5F09();
                 ReSetStep(true);
                 ReSetExtendTimer();
                 SetLightAfterExtendTimerReSet();
@@ -6847,6 +6854,45 @@ try {
   return Lock_to_Load_Segment(_for_center_segment, segment_type);
 } catch (...) {}
 }
+//-----------------------Eason_Ver3.3a-----------------------------------
+bool CSTC::Lock_to_Load_Actuate_Segment_for_Panel_inWeekDay(const unsigned short int &weekday)
+{
+  try 
+  {
+    if(weekday<1||(weekday>7&&weekday<11)||weekday>17) return false;
+
+    unsigned short int weekday_in_array, segment_type;
+    if(weekday<=7) weekday_in_array = weekday-1;
+    else           weekday_in_array = weekday-4;
+
+    /******** lock mutex ********/
+    pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
+      segment_type = actweekdayseg[weekday_in_array]._segment_type;
+    /******** unlock mutex ********/
+    pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
+
+  return Lock_to_Load_Actuate_Segment(_act_panel_segment, segment_type);
+} catch (...) {}
+}
+//-----------------------Eason_Ver3.3a-----------------------------------
+bool CSTC::Lock_to_Load_Actuate_Segment_for_Center_inWeekDay(const unsigned short int &weekday)
+{
+try {
+  if(weekday<1||(weekday>7&&weekday<11)||weekday>17) return false;
+
+  unsigned short int weekday_in_array, segment_type;
+  if(weekday<=7) weekday_in_array = weekday-1;
+  else           weekday_in_array = weekday-4;
+
+  /******** lock mutex ********/
+  pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
+    segment_type = actweekdayseg[weekday_in_array]._segment_type;
+  /******** unlock mutex ********/
+  pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
+
+  return Lock_to_Load_Actuate_Segment(_act_center_segment, segment_type);
+} catch (...) {}
+}
 //----------------------------------------------------------
 bool CSTC::Lock_to_Load_WeekDaySegment_for_Panel(void)
 {
@@ -6878,7 +6924,7 @@ bool CSTC::Lock_to_Load_Actuate_WeekDaySegment_for_Panel(void)
   {
     pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
     for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
-    _panel_weekdayseg[i] = weekdayactseg[i];
+    _act_panel_weekdayseg[i] = actweekdayseg[i];
     pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
   } catch (...) {}
 }
@@ -6889,7 +6935,7 @@ bool CSTC::Lock_to_Load_Actuate_WeekDaySegment_for_Center(void)
   {
     pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
     for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
-    _for_center_weekdayseg[i] = weekdayactseg[i];
+    _act_center_weekdayseg[i] = actweekdayseg[i];
     pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
   } catch (...) {}
 }
@@ -6924,6 +6970,39 @@ try {
   pthread_mutex_unlock(&CSegmentInfo::_segment_mutex);
 
   return Lock_to_Load_Segment(_for_center_segment, holiday_segment_type);
+} catch (...) {}
+}
+//----------------------------------------------------------
+bool CSTC::Lock_to_Load_Actuate_HoliDaySegment_for_Panel(const unsigned short int &holiday_segment_type)
+{
+try {
+  if(holiday_segment_type<8||holiday_segment_type>20) return false;
+
+  /******** lock mutex ********/
+  pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
+    _act_panel_holidayseg = actholidayseg[holiday_segment_type-8];
+    printf("IN CSTC, LOAD HOLIDAYSEGMENT FOR PANEL holiday_actuate_segment_type:%d\n", holiday_segment_type);
+  /******** unlock mutex ********/
+  pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
+
+  return Lock_to_Load_Actuate_Segment(_act_panel_segment, holiday_segment_type);
+} catch (...) {}
+}
+
+//----------------------------------------------------------
+bool CSTC::Lock_to_Load_Actuate_HoliDaySegment_for_Center(const unsigned short int &holiday_segment_type)
+{
+try {
+  printf("[OT]* Query holiday_actuate_segment_type:%d\n", holiday_segment_type);
+  if(holiday_segment_type<8||holiday_segment_type>20) return false;
+
+  /******** lock mutex ********/
+  pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
+    _act_center_holidayseg = actholidayseg[holiday_segment_type-8];
+  /******** unlock mutex ********/
+  pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
+
+  return Lock_to_Load_Actuate_Segment(_act_center_segment, holiday_segment_type);
 } catch (...) {}
 }
 //----------------------------------------------------------
@@ -7267,15 +7346,15 @@ void CSTC::Lock_to_Save_Actuate_WeekDaySegment_from_Panel(void) //Eason_Ver3.3a
 
       for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
       {
-        fwrite( &_panel_weekdayseg[i]._segment_type, sizeof( unsigned short int ), 1, weekdayseg_wfile );
-        fwrite( &_panel_weekdayseg[i]._weekday,      sizeof( unsigned short int ), 1, weekdayseg_wfile );
+        fwrite( &_act_panel_weekdayseg[i]._segment_type, sizeof( unsigned short int ), 1, weekdayseg_wfile );
+        fwrite( &_act_panel_weekdayseg[i]._weekday,      sizeof( unsigned short int ), 1, weekdayseg_wfile );
       }
       fclose( weekdayseg_wfile );
     }
     else perror("ERROR: write ActWeekDaySeg to file\n");
 
     for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
-    weekdayactseg[i] = _panel_weekdayseg[i];
+    actweekdayseg[i] = _act_panel_weekdayseg[i];
     pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
   } catch (...) {}
 }
@@ -7296,15 +7375,15 @@ void CSTC::Lock_to_Save_Actuate_WeekDaySegment_from_Center(void) //Eason_Ver3.3a
 
       for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
       {
-        fwrite( &_for_center_weekdayseg[i]._segment_type, sizeof( unsigned short int ), 1, weekdayseg_wfile );
-        fwrite( &_for_center_weekdayseg[i]._weekday,      sizeof( unsigned short int ), 1, weekdayseg_wfile );
+        fwrite( &_act_center_weekdayseg[i]._segment_type, sizeof( unsigned short int ), 1, weekdayseg_wfile );
+        fwrite( &_act_center_weekdayseg[i]._weekday,      sizeof( unsigned short int ), 1, weekdayseg_wfile );
       }
       fclose( weekdayseg_wfile );
     }
     else perror("ERROR: write ActWeekDaySeg to file\n");
 
     for(int i=0;i<AMOUNT_WEEKDAY_SEG;i++)
-    weekdayactseg[i] = _for_center_weekdayseg[i];
+    actweekdayseg[i] = _act_center_weekdayseg[i];
     pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
   } catch (...) {}
 }
@@ -7354,6 +7433,52 @@ try {
   pthread_mutex_unlock(&CSegmentInfo::_segment_mutex);
 } catch (...) {}
 }
+//--------------------Eason_Ver3.3a--------------------------------------
+void CSTC::Lock_to_Save_Actuate_HoliDaySegment(const CActHoliDaySegType &sholidaysegtype)
+{
+try {
+  /******** lock mutex ********/
+  pthread_mutex_lock(&CActsegmentInfo::_act_segment_mutex);
+
+  //** 1: write to file
+  FILE* holidayseg_wfile=NULL;
+  char filename[25];
+  sprintf( filename,"/Data/ActHoliDaySegType.bin\0" );
+  holidayseg_wfile = fopen(filename, "w"); //fopen return NULL if file not exist
+  if(holidayseg_wfile){
+
+    printf("Writing File HoliDaySegType\n");
+
+    for(int i=0;i<AMOUNT_HOLIDAY_SEG;i++){
+      if(i == (sholidaysegtype._segment_type-8) ){
+        fwrite( &sholidaysegtype._segment_type, sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._start_year,   sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._start_month,  sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._start_day,    sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._end_year,     sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._end_month,    sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &sholidaysegtype._end_day,      sizeof( unsigned short int ), 1, holidayseg_wfile );
+      }
+      else{
+        fwrite( &actholidayseg[i]._segment_type, sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._start_year,   sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._start_month,  sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._start_day,    sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._end_year,     sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._end_month,    sizeof( unsigned short int ), 1, holidayseg_wfile );
+        fwrite( &actholidayseg[i]._end_day,      sizeof( unsigned short int ), 1, holidayseg_wfile );
+      }
+    }
+    fclose( holidayseg_wfile );
+  }
+
+  //** 2: sync to holidayseg[]
+    actholidayseg[sholidaysegtype._segment_type-8] = sholidaysegtype;
+
+  /******** unlock mutex ********/
+  pthread_mutex_unlock(&CActsegmentInfo::_act_segment_mutex);
+} catch (...) {}
+}
 //----------------------------------------------------------
 void CSTC::Lock_to_Save_HoliDaySegment_from_Panel(void)
 {
@@ -7363,7 +7488,15 @@ void CSTC::Lock_to_Save_HoliDaySegment_from_Center(void)
 {
   Lock_to_Save_HoliDaySegment(_for_center_holidayseg);
 }
-
+//-----------------Eason_Ver3.3a------------------------------------
+void CSTC::Lock_to_Save_Actuate_HoliDaySegment_from_Panel(void)
+{
+  Lock_to_Save_Actuate_HoliDaySegment(_act_panel_holidayseg);
+}
+void CSTC::Lock_to_Save_Actuate_HoliDaySegment_from_Center(void)
+{
+  Lock_to_Save_Actuate_HoliDaySegment(_act_center_holidayseg);
+}
 //---------------------------------------------------------------------
 void CSTC::Lock_to_Save_HoliDayReverseTime_Step1(int iSelectSource)
 {
@@ -10378,7 +10511,7 @@ void CSTC::vReport5F09(void)
   catch (...) {}
 }
 //-----------------------Eason_Ver3.3a------------------------------------
-unsigned short CSTC::GetCurrentActNumber()
+unsigned short CSTC::GetCurrentActMode(unsigned short type) //0=Mode 1=Type
 {
   try 
   {
@@ -10392,6 +10525,35 @@ unsigned short CSTC::GetCurrentActNumber()
     cHour=now->tm_hour;
     cMin=now->tm_min;
 
+    for(int i=0;i<AMOUNT_HOLIDAY_SEG;i++) 
+    {
+      if(    (    ( (now->tm_year+1900) > actholidayseg[i]._start_year ) 
+               || ( (now->tm_year+1900)== actholidayseg[i]._start_year && (now->tm_mon+1) > actholidayseg[i]._start_month )
+               || ( (now->tm_year+1900)== actholidayseg[i]._start_year && (now->tm_mon+1)== actholidayseg[i]._start_month && (now->tm_mday)>= actholidayseg[i]._start_day ) )
+          && (    ( (now->tm_year+1900) < actholidayseg[i]._end_year )
+               || ( (now->tm_year+1900)== actholidayseg[i]._end_year   && (now->tm_mon+1) < actholidayseg[i]._end_month )
+               || ( (now->tm_year+1900)== actholidayseg[i]._end_year   && (now->tm_mon+1)== actholidayseg[i]._end_month   && (now->tm_mday)<= actholidayseg[i]._end_day ) ) )
+      {
+        Lock_to_Load_Actuate_HoliDaySegment_for_Panel(actholidayseg[i]._segment_type);
+
+        count = 0;
+        for (int i=0;i<_act_panel_segment._segment_count;i++) 
+        {                 
+          usiSegTime = _act_panel_segment._ptr_seg_exec_time[i]._hour*3600 + _act_panel_segment._ptr_seg_exec_time[i]._minute*60;
+          if(nowTime >= usiSegTime) 
+          {
+            count++;
+          }
+        }
+        if (count>32) count=32;
+
+        if(type == 0)  return _act_panel_segment._ptr_seg_exec_time[count-1]._actMode;
+        if(type == 1)  return _act_panel_holidayseg._segment_type;
+
+        break;
+      }
+    }
+
     if(   ((((((now->tm_mday-1)/7)+1)%2)==0 ) && (now->tm_wday>=((now->tm_mday-1)%7))) || ((((((now->tm_mday-1)/7)+1)%2)> 0 ) && (now->tm_wday< ((now->tm_mday-1)%7))) ) //Even week
     {
       if (now->tm_wday==0)  weekday=13;
@@ -10403,9 +10565,10 @@ unsigned short CSTC::GetCurrentActNumber()
       else weekday=(now->tm_wday-1);
     }
 
-    Lock_to_Load_Actuate_Segment_for_Panel(_panel_weekdayseg[weekday]._segment_type);
+    Lock_to_Load_Actuate_Segment_for_Panel(_act_panel_weekdayseg[weekday]._segment_type);
 
     nowTime = cHour*3600 + cMin*60;
+    count = 0;
     for (int i=0;i<_act_panel_segment._segment_count;i++) 
     {                 
       usiSegTime = _act_panel_segment._ptr_seg_exec_time[i]._hour*3600 + _act_panel_segment._ptr_seg_exec_time[i]._minute*60;
@@ -10415,7 +10578,9 @@ unsigned short CSTC::GetCurrentActNumber()
       }
     }
     if (count>32) count=32;
+
     
-    return _act_panel_segment._ptr_seg_exec_time[count-1]._actMode;
+    if(type == 0)  return _act_panel_segment._ptr_seg_exec_time[count-1]._actMode;
+    if(type == 1)  return _act_panel_weekdayseg[weekday]._segment_type;
   } catch (...){}
 }

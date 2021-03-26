@@ -503,7 +503,7 @@ void ScreenActuateEdit::doKeyF4Work(void)
 {
   if(LastPage == cACTUATESEGTYPE) //Eason_Ver3.3a
   {
-    screenActuateSegtype.DisplayActuateSegtype(stc.GetCurrentActNumber(),cActuateEdit);
+    screenActuateSegtype.DisplayActuateSegtype(stc.GetCurrentActMode(1),cActuateEdit);
   }
   else
   {

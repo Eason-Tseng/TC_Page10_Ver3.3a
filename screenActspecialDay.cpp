@@ -1,9 +1,8 @@
-#include "screenActuateWeekDay.h"
-#include "screenActWeekDayEditF2.h"
+#include "screenActspecialDay.h"
+#include "screenActSpecialDayView.h"
 #include "SCREENMain.h"
 #include "screenActuateSegtype.h"
 #include "screenSegtypeMenu.h"
-//#include "faceDefine.h"
 #include "LCD240x128.h"
 #include "CSTC.h"
 #include <stdio.h>
@@ -11,70 +10,52 @@
 #include "SMEM.h"
 
 //---------------------------------------------------------------------------
-ScreenActuateWeekDay screenActuateWeekDay;
+ScreenActspecialDay screenActspecialDay;
 //---------------------------------------------------------------------------
-ScreenActuateWeekDay::ScreenActuateWeekDay(void)
+ScreenActspecialDay::ScreenActspecialDay(void)
 {
     loadBitmapFromFile();
     initDispWord();
     for (int i=0;i<14;i++) {
-         actweekDaySegtype[i]._segment_type=0;
-         actweekDaySegtype[i]._weekday=0;
-         //CCJ++
-         WeekTemp[i*2] = 0;
-         WeekTemp[i*2+1] = 0;
-         //CCJ--
+         weekDaySegtype[i]._segment_type=0;
+         weekDaySegtype[i]._weekday=0;
     }
     cDatePosition=0;
-    cSegPosition=0;
+    cSegPosition = 0;
 }
 //---------------------------------------------------------------------------
-ScreenActuateWeekDay::~ScreenActuateWeekDay(void)
+ScreenActspecialDay::~ScreenActspecialDay(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::loadBitmapFromFile(void)
+void ScreenActspecialDay::loadBitmapFromFile(void)
 {
 try {
     FILE *bitmap;
-    bitmap=fopen("//cct//bitmap//backGround//TC5F//ActuateweekDay.bit","rb");
+    bitmap=fopen("//cct//bitmap//backGround//TC5F//ActspecialDay.bit","rb");
     if (bitmap) {
-        fread(weekDayBitmap,3840,1,bitmap);
+        fread(speicalDayBitmap,3840,1,bitmap);
         fclose(bitmap);
     }
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::DisplayActuateWeekDay(void)
+void ScreenActspecialDay::DisplayActspecialDay(void)
 {
 try {
-    smem.SetcFace(cACTWEEKDAY);
-    lcd240x128.DISPLAY_GRAPHIC(0,weekDayBitmap,128,30);
-    DisplayDate();  DisplayDate();
-    LoadActuateWeekDaySegtype();
-    DisplayActuateWeekDaySegtype();
-    DisplayActuateWeekDaySegtype();
+    smem.SetcFace(cACTSPECIALDAY);
+    lcd240x128.DISPLAY_GRAPHIC(0,speicalDayBitmap,128,30);
+    DisplayDate();
+    DisplayActWeekDaySegtype();
 
     time_t currentTime=time(NULL);
     struct tm *now=localtime(&currentTime);
 
-    if(   ((((((now->tm_mday-1)/7)+1)%2)==0 ) && (now->tm_wday>=((now->tm_mday-1)%7)))  //Even week
-       || ((((((now->tm_mday-1)/7)+1)%2)> 0 ) && (now->tm_wday< ((now->tm_mday-1)%7))) ) {
-       printf("printfMsg Even Week.\n");
-       if (now->tm_wday==0)  cSegPosition=26;
-       else cSegPosition=((now->tm_wday-1)*2)+14;
-    }
-    else {
-      printf("printfMsg odd Week.\n");
-      if (now->tm_wday==0)  cSegPosition=12;
-      else cSegPosition=(now->tm_wday-1)*2;
-    }
-
-    setCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    setCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::initDispWord(void)
+void ScreenActspecialDay::initDispWord(void)
 {
 try {
     for (int i=0;i<8;i++) {
@@ -85,32 +66,48 @@ try {
          dateWord[i].width=8;
          dateWord[i].height=16;
     }
-    for (int i=0;i<28;i++) {
-         if (i>=0 && i<=1) segtypeWord[i].X=56+i*8;
-         else if (i>=2 && i<=3) segtypeWord[i].X=80+(i-2)*8;
-         else if (i>=4 && i<=5) segtypeWord[i].X=104+(i-4)*8;
-         else if (i>=6 && i<=7) segtypeWord[i].X=128+(i-6)*8;
-         else if (i>=8 && i<=9) segtypeWord[i].X=152+(i-8)*8;
-         else if (i>=10 && i<=11) segtypeWord[i].X=176+(i-10)*8;
-         else if (i>=12 && i<=13) segtypeWord[i].X=200+(i-12)*8;
-         else if (i>=14 && i<=15) segtypeWord[i].X=56+(i-14)*8;
-         else if (i>=16 && i<=17) segtypeWord[i].X=80+(i-16)*8;
-         else if (i>=18 && i<=19) segtypeWord[i].X=104+(i-18)*8;
-         else if (i>=20 && i<=21) segtypeWord[i].X=128+(i-20)*8;
-         else if (i>=22 && i<=23) segtypeWord[i].X=152+(i-22)*8;
-         else if (i>=24 && i<=25) segtypeWord[i].X=176+(i-24)*8;
-         else if (i>=26 && i<=27) segtypeWord[i].X=200+(i-26)*8;
+    for (int i=0;i<52;i++) {
+         if (i>=0 && i<=1) segtypeWord[i].X=64+i*8;
+         else if (i>=2 && i<=3) segtypeWord[i].X=88+(i-2)*8;
+         else if (i>=4 && i<=5) segtypeWord[i].X=112+(i-4)*8;
+         else if (i>=6 && i<=7) segtypeWord[i].X=136+(i-6)*8;
+         else if (i>=8 && i<=9) segtypeWord[i].X=160+(i-8)*8;
+         else if (i>=10 && i<=11) segtypeWord[i].X=184+(i-10)*8;
+         else if (i>=12 && i<=13) segtypeWord[i].X=208+(i-12)*8;
 
+         else if (i>=14 && i<=15) segtypeWord[i].X=64+(i-14)*8;
+         else if (i>=16 && i<=17) segtypeWord[i].X=88+(i-16)*8;
+         else if (i>=18 && i<=19) segtypeWord[i].X=112+(i-18)*8;
+         else if (i>=20 && i<=21) segtypeWord[i].X=136+(i-20)*8;
+         else if (i>=22 && i<=23) segtypeWord[i].X=160+(i-22)*8;
+         else if (i>=24 && i<=25) segtypeWord[i].X=184+(i-24)*8;
+         else if (i>=26 && i<=27) segtypeWord[i].X=208+(i-26)*8;
 
-         if (i>=0 && i<=13)  segtypeWord[i].Y=52;
-         else if (i>=14 && i<=27)  segtypeWord[i].Y=72;
+         else if (i>=28 && i<=29) segtypeWord[i].X=64+(i-28)*8;
+         else if (i>=30 && i<=31) segtypeWord[i].X=88+(i-30)*8;
+         else if (i>=32 && i<=33) segtypeWord[i].X=112+(i-32)*8;
+         else if (i>=34 && i<=35) segtypeWord[i].X=136+(i-34)*8;
+         else if (i>=36 && i<=37) segtypeWord[i].X=160+(i-36)*8;
+         else if (i>=38 && i<=39) segtypeWord[i].X=184+(i-38)*8;
+
+         else if (i>=40 && i<=41) segtypeWord[i].X=64+(i-40)*8;
+         else if (i>=42 && i<=43) segtypeWord[i].X=88+(i-42)*8;
+         else if (i>=44 && i<=45) segtypeWord[i].X=112+(i-44)*8;
+         else if (i>=46 && i<=47) segtypeWord[i].X=136+(i-46)*8;
+         else if (i>=48 && i<=49) segtypeWord[i].X=160+(i-48)*8;
+         else if (i>=50 && i<=51) segtypeWord[i].X=184+(i-50)*8;
+
+         if (i>=0 && i<=13)  segtypeWord[i].Y=24;
+         else if (i>=14 && i<=27)  segtypeWord[i].Y=40;
+         else if (i>=28 && i<=39)  segtypeWord[i].Y=64;
+         else if (i>=40 && i<=51)  segtypeWord[i].Y=80;
          segtypeWord[i].width=8;
          segtypeWord[i].height=16;
     }
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::DisplayDate(void)
+void ScreenActspecialDay::DisplayDate(void)
 {
 try {
     unsigned short cYear=0,cMonth=0,cDay=0;
@@ -132,28 +129,22 @@ try {
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::LoadActuateWeekDaySegtype(void)
+void ScreenActspecialDay::DisplayActWeekDaySegtype(void)
 {
 try {
-    stc.Lock_to_Load_Actuate_WeekDaySegment_for_Panel();
-    for (int i=0;i<14;i++) {
-         actweekDaySegtype[i]._segment_type=stc._act_panel_weekdayseg[i]._segment_type;
-         actweekDaySegtype[i]._weekday=stc._act_panel_weekdayseg[i]._weekday;
+    for (int i=0;i<26;i+=2) {
+         if(i < 14) {
+           lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i+14].X,segtypeWord[i+14].Y,word8x16[((i/2)+8)/10],segtypeWord[i+14].height,segtypeWord[i+14].width/8);
+           lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i+15].X,segtypeWord[i+15].Y,word8x16[((i/2)+8)%10],segtypeWord[i+15].height,segtypeWord[i+15].width/8);
+         } else {
+           lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i+26].X,segtypeWord[i+26].Y,word8x16[((i/2)+8)/10],segtypeWord[i+26].height,segtypeWord[i+26].width/8);
+           lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i+27].X,segtypeWord[i+27].Y,word8x16[((i/2)+8)%10],segtypeWord[i+27].height,segtypeWord[i+27].width/8);
+         }
     }
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::DisplayActuateWeekDaySegtype(void)
-{
-try {
-    for (int i=0;i<28;i+=2) {
-         lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i].X,segtypeWord[i].Y,word8x16[actweekDaySegtype[i/2]._segment_type/10],segtypeWord[i].height,segtypeWord[i].width/8);
-         lcd240x128.DISPLAY_GRAPHIC_XY(segtypeWord[i+1].X,segtypeWord[i+1].Y,word8x16[actweekDaySegtype[i/2]._segment_type%10],segtypeWord[i+1].height,segtypeWord[i+1].width/8);
-    }
-  } catch (...) {}
-}
-//---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyWork(BYTE key)
+void ScreenActspecialDay::doKeyWork(BYTE key)
 {
 try {
     switch (key) {
@@ -238,136 +229,142 @@ try {
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey0Work(void)
+void ScreenActspecialDay::doKey0Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey1Work(void)
+void ScreenActspecialDay::doKey1Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey2Work(void)
+void ScreenActspecialDay::doKey2Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey3Work(void)
+void ScreenActspecialDay::doKey3Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey4Work(void)
+void ScreenActspecialDay::doKey4Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey5Work(void)
+void ScreenActspecialDay::doKey5Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey6Work(void)
+void ScreenActspecialDay::doKey6Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey7Work(void)
+void ScreenActspecialDay::doKey7Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey8Work(void)
+void ScreenActspecialDay::doKey8Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKey9Work(void)
+void ScreenActspecialDay::doKey9Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyAWork(void)
+void ScreenActspecialDay::doKeyAWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyBWork(void)
+void ScreenActspecialDay::doKeyBWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyCWork(void)
+void ScreenActspecialDay::doKeyCWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyDWork(void)
+void ScreenActspecialDay::doKeyDWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyEWork(void)
+void ScreenActspecialDay::doKeyEWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyFWork(void)
+void ScreenActspecialDay::doKeyFWork(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyF1Work(void)
+void ScreenActspecialDay::doKeyF1Work(void)
 {
     screenMain.DisplayMain();
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyF2Work(void)
-{
-    screenActWeekDayEditF2.DisplayActuateWeekDay();
-}
-//---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyF3Work(void)
+void ScreenActspecialDay::doKeyF2Work(void)
 {
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyF4Work(void)
+void ScreenActspecialDay::doKeyF3Work(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenActspecialDay::doKeyF4Work(void)
 {
     screenSegtypeMenu.DisplaySegtypeMenu();
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyUPWork(void)
+void ScreenActspecialDay::doKeyUPWork(void)
 {
-    clearCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
-    if (cSegPosition>=14 && cSegPosition<=27) cSegPosition-=14;
-    setCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    clearCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+
+    if (cSegPosition>=14 && cSegPosition<=39) cSegPosition-=14;
+    else if (cSegPosition>=40 && cSegPosition<=51) cSegPosition-=12;
+    setCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyDOWNWork(void)
+void ScreenActspecialDay::doKeyDOWNWork(void)
 {
-    clearCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
-    if (cSegPosition>=0 && cSegPosition<=13) cSegPosition+=14;
-    setCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    clearCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    if (cSegPosition>=0 && cSegPosition<=25) cSegPosition+=14;
+    else if (cSegPosition>=28 && cSegPosition<=39) cSegPosition+=12;
+    setCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyLEFTWork(void)
+void ScreenActspecialDay::doKeyLEFTWork(void)
 {
 try {
-    clearCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    clearCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
 
-    if (cSegPosition>=0 && cSegPosition<=13) {
-        if (cSegPosition==0) cSegPosition=1;
-    } else {
-        if (cSegPosition==14) cSegPosition=15;
-    }
+    if (cSegPosition > 1)
+      cSegPosition-=2;
 
-    cSegPosition--;
-    setCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    setCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyRIGHTWork(void)
+void ScreenActspecialDay::doKeyRIGHTWork(void)
 {
 try {
-    clearCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
-    cSegPosition++;
-    if (cSegPosition>=0 && cSegPosition<=14) {
-        if (cSegPosition>=13) cSegPosition=13;
-    } else {
-        if (cSegPosition>=27) cSegPosition=27;
-    }
-    setCursor8x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    clearCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
+    if (cSegPosition < 50)
+      cSegPosition+=2;
+    setCursor16x16(segtypeWord[cSegPosition].X,segtypeWord[cSegPosition].Y+16);
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
-void ScreenActuateWeekDay::doKeyEnterWork(void)
+void ScreenActspecialDay::doKeyEnterWork(void)
 {
-    int x=actweekDaySegtype[cSegPosition/2]._segment_type;
-    if (x>=0 && x<=20) screenActuateSegtype.DisplayActuateSegtype(x, cACTWEEKDAY);
+  int x;
+  if(cSegPosition < 14) {
+    x= (cSegPosition/2)+8;
+    if (x>=0 && x<=20) screenActSpecialDayView.DisplayActSpecialDayView(x);
+  } else if(cSegPosition >= 28 && cSegPosition < 40) {
+    x= ((cSegPosition-14)/2)+8;
+    if (x>=0 && x<=20) screenActSpecialDayView.DisplayActSpecialDayView(x);
+  } else if(cSegPosition >= 14 && cSegPosition < 28) {
+    x= ((cSegPosition-14)/2)+8;
+    screenActuateSegtype.DisplayActuateSegtype(x, cACTSPECIALDAY);
+  } else if(cSegPosition >= 40) {
+    x= ((cSegPosition-26)/2)+8;
+    screenActuateSegtype.DisplayActuateSegtype(x, cACTSPECIALDAY);
+  }
 }
 //---------------------------------------------------------------------------

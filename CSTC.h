@@ -158,9 +158,9 @@ class CSTC
   static CSegmentInfo    segment[AMOUNT_SEGMENT];
   static CActsegmentInfo _actuate_segment[AMOUNT_SEGMENT]; //Eason_Ver3.3a
   static CWeekDaySegType weekdayseg[AMOUNT_WEEKDAY_SEG]; //{0-6,7-13} according to {1-7,11-17}
-  static CWeekDaySegType weekdayactseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
+  static CActWeekDaySegType actweekdayseg[AMOUNT_WEEKDAY_SEG]; //Eason_Ver3.3a
   static CHoliDaySegType holidayseg[AMOUNT_HOLIDAY_SEG]; //{0-12} according to {8-20}
-  static CHoliDaySegType holidayactseg[AMOUNT_HOLIDAY_SEG]; //Eason_Ver3.3a
+  static CActHoliDaySegType actholidayseg[AMOUNT_HOLIDAY_SEG]; //Eason_Ver3.3a
 
   static CReverseTimeInfo    reversetime[AMOUNT_REVERSETIME];
   static CWeekDayRevType weekdayrev[AMOUNT_WEEKDAY_REV]; //{0-6,7-13} according to {1-7,11-17}
@@ -226,6 +226,7 @@ class CSTC
   static bool Lock_to_Reset_Actuate_Segment(CActsegmentInfo &lsegment, const unsigned short int &segment_type, const unsigned short int &segment_count); //Eason_Ver3.3a
 
   static void Lock_to_Save_HoliDaySegment(const CHoliDaySegType &sholidaysegtype);
+  static void Lock_to_Save_Actuate_HoliDaySegment(const CActHoliDaySegType &sholidaysegtype); //Eason_Ver3.3a
 
   static void Lock_to_Determine_SegmentPlanPhase(void);
   //OT20140414
@@ -320,7 +321,10 @@ class CSTC
     static CActsegmentInfo _act_panel_segment, _act_center_segment;
     static CWeekDaySegType _panel_weekdayseg[AMOUNT_WEEKDAY_SEG];
     static CWeekDaySegType _for_center_weekdayseg[AMOUNT_WEEKDAY_SEG];
+    static CActWeekDaySegType _act_panel_weekdayseg[AMOUNT_WEEKDAY_SEG];
+    static CActWeekDaySegType _act_center_weekdayseg[AMOUNT_WEEKDAY_SEG];
     static CHoliDaySegType _panel_holidayseg, _for_center_holidayseg;
+    static CActHoliDaySegType _act_panel_holidayseg,_act_center_holidayseg;
 
     static CReverseTimeInfo _panel_reversetime, _for_center_reversetime;
     static CWeekDayRevType _panel_weekdayrev[AMOUNT_WEEKDAY_REV];
@@ -349,12 +353,16 @@ class CSTC
     static bool Lock_to_Load_Actuate_Segment_for_Center(const unsigned short int &segment_type); //Eason_Ver3.3a
     static bool Lock_to_Load_Segment_for_Panel_inWeekDay (const unsigned short int &weekday);
     static bool Lock_to_Load_Segment_for_Center_inWeekDay(const unsigned short int &weekday);
+    static bool Lock_to_Load_Actuate_Segment_for_Panel_inWeekDay (const unsigned short int &weekday); //Eason_Ver3.3a
+    static bool Lock_to_Load_Actuate_Segment_for_Center_inWeekDay(const unsigned short int &weekday); //Eason_Ver3.3a
     static bool Lock_to_Load_WeekDaySegment_for_Panel (void);
     static bool Lock_to_Load_WeekDaySegment_for_Center(void);
     static bool Lock_to_Load_Actuate_WeekDaySegment_for_Panel (void); //Eason_Ver3.3a
     static bool Lock_to_Load_Actuate_WeekDaySegment_for_Center(void); //Eason_Ver3.3a
     static bool Lock_to_Load_HoliDaySegment_for_Panel (const unsigned short int &holiday_segment_type);
     static bool Lock_to_Load_HoliDaySegment_for_Center(const unsigned short int &holiday_segment_type);
+    static bool Lock_to_Load_Actuate_HoliDaySegment_for_Panel (const unsigned short int &holiday_segment_type); //Eason_Ver3.3a
+    static bool Lock_to_Load_Actuate_HoliDaySegment_for_Center(const unsigned short int &holiday_segment_type); //Eason_Ver3.3a
 
     static bool Lock_to_Load_Current_Segment_for_Panel(void);
     static bool Lock_to_Load_Current_Plan_for_Panel(void);
@@ -387,6 +395,8 @@ class CSTC
     static void Lock_to_Save_WeekDaySegment_from_Center(void);
     static void Lock_to_Save_HoliDaySegment_from_Panel(void);
     static void Lock_to_Save_HoliDaySegment_from_Center(void);
+    static void Lock_to_Save_Actuate_HoliDaySegment_from_Panel(void); //Eason_Ver3.3a
+    static void Lock_to_Save_Actuate_HoliDaySegment_from_Center(void); //Eason_Ver3.3a
 
     static void Lock_to_Save_WeekDayReversetime_from_Panel(void);
     static void Lock_to_Save_WeekDayReversetime_from_Center(void);
@@ -487,7 +497,7 @@ class CSTC
 
     bool vReportCCTRevStatus5F82(void);
     static void vReport5F09(void); //Eason_Ver3.3a
-    unsigned short GetCurrentActNumber(); //Eason_Ver3.3a
+    unsigned short GetCurrentActMode(unsigned short type); //Eason_Ver3.3a
 
     static unsigned int vDetermineTimeToNextPlan(void);
     static void vReportBF02CCTProtocalSendKaikinStep(void);

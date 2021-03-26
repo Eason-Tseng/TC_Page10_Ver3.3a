@@ -25,7 +25,7 @@ class ScreenActWeekDayEditF2:public SCREEN
       void initDispWord(void);                                                  //��l�Ʀ��e�����y�е��Ѽ�
       void DisplayDate(void);                                                   //��ܤ��
 
-      CWeekDaySegType actweekDaySegtype[14];
+      CActWeekDaySegType actweekDaySegtype[14];
       void LoadActWeekDaySegtype(bool);                                            //�q�ǫi���̱o��
       void DisplayActWeekDaySegtype(void);                                         //��ܦb�e���W
       bool SaveActWeekDaySegtype(bool);                                            //�g�^�ǫi����
