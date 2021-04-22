@@ -3004,7 +3004,7 @@ bool PTRAFFIC92TC::vSetActuatedType_5F19(MESSAGEOK DataMessageIn) //202009針對
     smem.vSetActuatePhaseExtend(SubPhaseId);
     smem.vSetBOOLData(TC_CCT_In_LongTanu_ActuateType_FunctionEnable,ActuateType.switchBit.b5);
 
-    vReturnToCenterACK(0x5F, 0x16);
+    vReturnToCenterACK(0x5F, 0x19);
 
     return true;
   }
@@ -3052,11 +3052,13 @@ bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202103針
     packet[11~13]  Hour+Min+ActuateType  時段（小時：分）+觸動編號
     */
     int i=0;
+    int iQuerySegmentType;
     DATA_Bit ActuateType;
     stc.Lock_to_Reset_Actuate_Segment_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
     stc.Lock_to_Load_Actuate_WeekDaySegment_for_Center();
     stc._act_center_segment._segment_type=DataMessageIn.packet[9];
     stc._act_center_segment._segment_count=DataMessageIn.packet[10];
+    iQuerySegmentType = DataMessageIn.packet[9];
     
     for (i=0;i<stc._act_center_segment._segment_count;i++) 
     {
@@ -3131,6 +3133,7 @@ bool PTRAFFIC92TC::vSetActuatedSegment_5F1A(MESSAGEOK DataMessageIn) //202103針
     }
     stc.Lock_to_Save_Actuate_Segment_from_Center();
     stc.Lock_to_Save_Actuate_WeekDaySegment_from_Center();
+    smem.vSetTCPhasePlanSegTypeData(TC_Act_SegType, iQuerySegmentType,true);
     return true;
   } catch(...){ return false; }
 }
@@ -3266,11 +3269,13 @@ bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //20
     vReturnToCenterACK(0x5F, 0x1B);
 
     int i=0;
+    int iQuerySegmentType;
 
     stc.Lock_to_Reset_Actuate_Segment_for_Center(DataMessageIn.packet[9],DataMessageIn.packet[10]);
     stc.Lock_to_Load_Actuate_HoliDaySegment_for_Center(DataMessageIn.packet[9]);
     stc._act_center_segment._segment_type=DataMessageIn.packet[9];
     stc._act_center_segment._segment_count=DataMessageIn.packet[10];
+    iQuerySegmentType = DataMessageIn.packet[9];
 
     for (i=0;i<stc._act_center_segment._segment_count;i++) 
     {
@@ -3297,6 +3302,7 @@ bool PTRAFFIC92TC::vSetActuatedHolidaySegment_5F1B(MESSAGEOK DataMessageIn) //20
 
     stc.Lock_to_Save_Actuate_Segment_from_Center();              //save
     stc.Lock_to_Save_Actuate_HoliDaySegment_from_Center();       //save
+    smem.vSetTCPhasePlanSegTypeData(TC_Act_SegType, iQuerySegmentType,true);
 
     return true;
   }

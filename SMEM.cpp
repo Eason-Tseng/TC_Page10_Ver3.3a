@@ -127,8 +127,8 @@ try {
     iFirmwareSecondVersion = 3;
     iFirmwareSecond2Version = 0x10; //0x0a = A, 0x0b = B, .... ,0x10 = a, 0x11 = b .... ,0x16 = f;
     iFirmwareYear = 2021;  //年
-    iFirmwareMonth = 03;  //月
-    iFirmwareDay = 26;  //日
+    iFirmwareMonth = 04;  //月
+    iFirmwareDay = 22;  //日
 
     //20140415, add dynamic seg for HsinChu dynamic control.
     //20140211, add special version for SIPA ped.
